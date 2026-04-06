@@ -1,5 +1,5 @@
-import React, { useRef, useCallback } from "react";
-import { View, Text, Pressable, type GestureResponderEvent, type LayoutChangeEvent } from "react-native";
+import React from "react";
+import { View, Text, Platform } from "react-native";
 import { useTokens } from "../../lib/theme/PersonaProvider";
 
 interface SliderProps {
@@ -11,113 +11,53 @@ interface SliderProps {
   step?: number;
 }
 
-/** Interactive labeled slider for priority weighting */
+/** Interactive labeled slider for priority weighting. Uses native range input on web for reliable touch/drag. */
 export function Slider({ label, value, onValueChange, min = 0, max = 100, step = 5 }: SliderProps) {
   const tokens = useTokens();
   const percent = ((value - min) / (max - min)) * 100;
-  const trackWidth = useRef(0);
-
-  const onLayout = useCallback((e: LayoutChangeEvent) => {
-    trackWidth.current = e.nativeEvent.layout.width;
-  }, []);
-
-  const handlePress = useCallback(
-    (e: GestureResponderEvent) => {
-      if (trackWidth.current <= 0) return;
-      const x = e.nativeEvent.locationX;
-      const ratio = Math.max(0, Math.min(1, x / trackWidth.current));
-      const raw = min + ratio * (max - min);
-      const stepped = Math.round(raw / step) * step;
-      const clamped = Math.max(min, Math.min(max, stepped));
-      onValueChange(clamped);
-    },
-    [min, max, step, onValueChange],
-  );
-
-  /** Decrement button */
-  const decrement = useCallback(() => {
-    onValueChange(Math.max(min, value - step));
-  }, [value, min, step, onValueChange]);
-
-  /** Increment button */
-  const increment = useCallback(() => {
-    onValueChange(Math.min(max, value + step));
-  }, [value, max, step, onValueChange]);
 
   return (
-    <View style={{ gap: 6 }}>
+    <View style={{ gap: 4 }}>
       <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
         <Text style={{ fontSize: tokens.typography.bodySize, fontWeight: "500", color: tokens.colors.text.primary }}>
           {label}
         </Text>
-        <Text style={{ fontSize: tokens.typography.bodySize, fontWeight: "600", color: tokens.colors.accent.DEFAULT }}>
-          {value}
-        </Text>
+        <View
+          style={{
+            backgroundColor: tokens.colors.accent.DEFAULT + "20",
+            borderRadius: 8,
+            paddingHorizontal: 10,
+            paddingVertical: 2,
+            minWidth: 40,
+            alignItems: "center",
+          }}
+        >
+          <Text style={{ fontSize: tokens.typography.bodySize, fontWeight: "700", color: tokens.colors.accent.DEFAULT }}>
+            {value}
+          </Text>
+        </View>
       </View>
 
-      <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
-        <Pressable
-          onPress={decrement}
-          accessibilityLabel={`Decrease ${label}`}
-          accessibilityRole="button"
-          style={{
-            width: 32,
-            height: 32,
-            borderRadius: 16,
-            backgroundColor: tokens.colors.surface.elevated,
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Text style={{ color: tokens.colors.text.primary, fontSize: 18, fontWeight: "700" }}>-</Text>
-        </Pressable>
-
-        <Pressable
-          onPress={handlePress}
-          onLayout={onLayout}
-          accessibilityLabel={`${label} slider, value ${value}`}
-          accessibilityRole="adjustable"
-          style={{
-            flex: 1,
-            height: 28,
-            justifyContent: "center",
-          }}
-        >
-          <View
-            style={{
-              height: 10,
-              backgroundColor: tokens.colors.surface.elevated,
-              borderRadius: 5,
-              overflow: "hidden",
-            }}
-          >
-            <View
-              style={{
-                height: "100%",
-                width: `${percent}%`,
-                backgroundColor: tokens.colors.accent.DEFAULT,
-                borderRadius: 5,
-              }}
-            />
-          </View>
-        </Pressable>
-
-        <Pressable
-          onPress={increment}
-          accessibilityLabel={`Increase ${label}`}
-          accessibilityRole="button"
-          style={{
-            width: 32,
-            height: 32,
-            borderRadius: 16,
-            backgroundColor: tokens.colors.surface.elevated,
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Text style={{ color: tokens.colors.text.primary, fontSize: 18, fontWeight: "700" }}>+</Text>
-        </Pressable>
-      </View>
+      {Platform.OS === "web" ? (
+        <WebSlider
+          value={value}
+          min={min}
+          max={max}
+          step={step}
+          onChange={onValueChange}
+          accentColor={tokens.colors.accent.DEFAULT}
+          trackColor={tokens.colors.surface.elevated}
+        />
+      ) : (
+        <NativeSliderFallback
+          value={value}
+          min={min}
+          max={max}
+          percent={percent}
+          accentColor={tokens.colors.accent.DEFAULT}
+          trackColor={tokens.colors.surface.elevated}
+        />
+      )}
 
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         <Text style={{ fontSize: tokens.typography.captionSize, color: tokens.colors.text.muted }}>
@@ -126,6 +66,91 @@ export function Slider({ label, value, onValueChange, min = 0, max = 100, step =
         <Text style={{ fontSize: tokens.typography.captionSize, color: tokens.colors.text.muted }}>
           High priority
         </Text>
+      </View>
+    </View>
+  );
+}
+
+/** Web: uses native HTML range input — supports click, drag, and touch natively */
+function WebSlider({
+  value,
+  min,
+  max,
+  step,
+  onChange,
+  accentColor,
+  trackColor,
+}: {
+  value: number;
+  min: number;
+  max: number;
+  step: number;
+  onChange: (v: number) => void;
+  accentColor: string;
+  trackColor: string;
+}) {
+  const percent = ((value - min) / (max - min)) * 100;
+
+  return (
+    <View style={{ paddingVertical: 8 }}>
+      {/* @ts-ignore — input type=range is web-only */}
+      <input
+        type="range"
+        min={min}
+        max={max}
+        step={step}
+        value={value}
+        onChange={(e: { target: { value: string } }) => onChange(Number(e.target.value))}
+        style={{
+          width: "100%",
+          height: 8,
+          appearance: "none",
+          WebkitAppearance: "none",
+          background: `linear-gradient(to right, ${accentColor} 0%, ${accentColor} ${percent}%, ${trackColor} ${percent}%, ${trackColor} 100%)`,
+          borderRadius: 4,
+          outline: "none",
+          cursor: "pointer",
+          accentColor: accentColor,
+        }}
+      />
+    </View>
+  );
+}
+
+/** Native fallback: visual-only bar (will be replaced with gesture handler in Phase 2) */
+function NativeSliderFallback({
+  value,
+  min,
+  max,
+  percent,
+  accentColor,
+  trackColor,
+}: {
+  value: number;
+  min: number;
+  max: number;
+  percent: number;
+  accentColor: string;
+  trackColor: string;
+}) {
+  return (
+    <View style={{ paddingVertical: 8 }}>
+      <View
+        style={{
+          height: 8,
+          backgroundColor: trackColor,
+          borderRadius: 4,
+          overflow: "hidden",
+        }}
+      >
+        <View
+          style={{
+            height: "100%",
+            width: `${percent}%`,
+            backgroundColor: accentColor,
+            borderRadius: 4,
+          }}
+        />
       </View>
     </View>
   );

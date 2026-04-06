@@ -26,21 +26,21 @@ export function OnboardingQuestion({
   const tokens = useTokens();
 
   return (
-    <View className="flex-1 justify-between">
-      <View className="gap-6 flex-1">
-        <View className="gap-2">
-          <Text className="text-text-primary font-bold" style={{ fontSize: tokens.typography.titleSize }}>
+    <View style={{ flex: 1, justifyContent: "space-between" }}>
+      <View style={{ gap: 24, flex: 1 }}>
+        <View style={{ gap: 8 }}>
+          <Text style={{ fontSize: tokens.typography.titleSize, fontWeight: "700", color: tokens.colors.text.primary }}>
             {question}
           </Text>
           {hint && (
-            <Text className="text-text-muted" style={{ fontSize: tokens.typography.captionSize }}>
+            <Text style={{ fontSize: tokens.typography.captionSize, color: tokens.colors.text.muted }}>
               {hint}
             </Text>
           )}
         </View>
-        <View className="flex-1">{children}</View>
+        <View style={{ flex: 1 }}>{children}</View>
       </View>
-      <View className="gap-3 pt-4">
+      <View style={{ gap: 12, paddingTop: 16 }}>
         <Button label={nextLabel} onPress={onNext} disabled={nextDisabled} />
         {onBack && <Button label="Back" variant="ghost" onPress={onBack} />}
       </View>
