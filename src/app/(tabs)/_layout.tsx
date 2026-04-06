@@ -15,9 +15,14 @@ export default function TabsLayout() {
         },
         tabBarActiveTintColor: tokens.colors.accent.DEFAULT,
         tabBarInactiveTintColor: tokens.colors.text.muted,
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontWeight: "600",
+        },
       }}
     >
       <Tabs.Screen name="index" options={{ title: "Home" }} />
+      <Tabs.Screen name="explore" options={{ title: "Explore" }} />
     </Tabs>
   );
 }
