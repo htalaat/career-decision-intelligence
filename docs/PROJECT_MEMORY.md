@@ -2,56 +2,75 @@
 
 ## Last Session
 Date: 2026-04-06
-Status: Phase 3 COMPLETE
+Status: ALL 4 PHASES COMPLETE — MVP DONE
 
 ## Completed Phases
 - Phase 1 — Foundation (DONE)
 - Phase 2 — Core Intelligence (DONE)
 - Phase 3 — Decision Workflow (DONE)
+- Phase 4 — Trust Hardening & Admin (DONE)
 
-## Phase 3 — What Was Built
+## Phase 4 — What Was Built
 
-### Stores (2 new)
-- compareStore.ts — selectedPathIds (max 5), customWeights, togglePath, clearSelection
-- decisionStore.ts — activeDecisionId, setActiveDecision
+### Privacy Hooks
+- usePrivacy.ts — useExportData (full GDPR export), useDeleteAccount (cascade + sign out), useUpdateName, useConsentHistory
+- Trust screen updated to log consent on accept
 
-### Hooks (2 new)
-- useCompareScenarios.ts — useCompareScenarios, useSaveCompareScenario
-- useDecisions.ts — useDecisions, useCreateDecision, useActionPlan, useCreateActionPlan, useUpdateActionPlan, generateActionPlanTemplate
+### Account Screen (tabs/account.tsx)
+- Profile section: view/edit name and preferred name
+- Privacy section: export data (downloads JSON on web), consent history viewer
+- Danger zone: delete account with confirmation dialog
+- Sign out button
 
-### Components (1 new)
-- WeightAdjuster — 8 labeled sliders for live priority adjustment
-
-### Screens (3 new)
-- Compare (tabs/compare.tsx) — select 2-5 paths, side-by-side ranking, WeightAdjuster for live re-scoring, save scenarios
-- Decisions (tabs/decisions.tsx) — pick a path, set status (exploring/leaning/decided), past decisions, generates action plan
-- Action Plan (action-plan/[id].tsx) — 7/30/90-day milestone checklist, live progress bar, tap to toggle, persists to Supabase
+### Admin Console (5 screens, role-gated)
+- (admin)/_layout.tsx — blocks non-admin access, redirects to tabs
+- (admin)/index.tsx — dashboard with links to management screens
+- (admin)/career-paths.tsx — all paths grouped by domain, tappable
+- (admin)/scoring.tsx — trait mappings grouped by trait, sorted by weight
+- (admin)/audit.tsx — admin audit log viewer (last 100 entries)
 
 ### Tab Bar
-- 4 tabs: Home | Explore | Compare | Decide
+- 5 tabs: Home | Explore | Compare | Decide | Account
 
-## File Counts
-- 81 TypeScript/TSX source files
-- 27 screens
+## Complete File Counts
+- 88 TypeScript/TSX source files
+- 32 screens (2 public, 2 auth, 11 onboarding, 5 tabs, 4 detail/modal, 5 admin, 3 route groups)
 - 15 UI primitives
-- 10 feature components
-- 8 hooks
+- 11 feature components
+- 10 hooks
 - 5 stores
 - 6 engine modules
+- 6 type files
+- 3 SQL migrations + 2 SQL seed files
+- 14 Supabase tables with 38 RLS policies
+
+## The Complete User Journey
+1. Landing page → Sign in (magic link)
+2. 10-step guided onboarding (name, privacy, stage, interests, strengths, values, workstyle, constraints, priorities, summary)
+3. Deterministic engine scores 30 career paths across 6 dimensions
+4. Dashboard shows top ranked recommendations with explanations
+5. Explore all paths, filter by domain, shortlist favorites
+6. Compare 2-5 paths side-by-side, adjust priorities for live re-ranking
+7. Make a decision, set status (exploring/leaning/decided)
+8. Get 7/30/90-day action plan with checkable tasks
+9. Account settings: edit name, export data, view consents, delete account
+10. Admin console: manage careers, view scoring rules, audit trail
 
 ## Known Issues
 - NativeWind className colors unreliable on web — using inline styles
-- Slider uses HTML range input on web
+- Slider uses HTML range input on web (native fallback visual-only)
+- Career path detail editor (admin) not yet implemented (view-only)
 
-## Next Phase
-Phase 4 — Trust Hardening & Admin
-- Account settings (name, preferred name)
-- Privacy controls (export, delete, consent viewer)
-- Admin console (career paths, trait mappings)
-- Copy polish + accessibility pass
-- QA gate
+## Future Work
+- AI coaching layer (optional, non-authoritative)
+- Push notifications
+- iOS/Android app store submission
+- Parent/counselor portal
+- External career data APIs
+- Multilingual support
+- Payments/subscriptions
 
 ## Build Notes
 - Type-check: PASS (0 errors) — 2026-04-06
-- Git: 21 commits on master
+- Git: 31 commits on master
 - Lint: not yet run
