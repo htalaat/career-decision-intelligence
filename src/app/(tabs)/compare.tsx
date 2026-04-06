@@ -1,0 +1,276 @@
+import React, { useState, useMemo, useCallback } from "react";
+import { View, Text, ScrollView, ActivityIndicator, Pressable } from "react-native";
+import { useRouter } from "expo-router";
+import { Screen } from "../../components/ui/Screen";
+import { Button } from "../../components/ui/Button";
+import { Badge } from "../../components/ui/Badge";
+import { Card } from "../../components/ui/Card";
+import { EmptyState } from "../../components/ui/EmptyState";
+import { WeightAdjuster } from "../../components/features/WeightAdjuster";
+import { useTokens } from "../../lib/theme/PersonaProvider";
+import { useCareerPaths } from "../../lib/hooks/useCareerPaths";
+import { useLatestRecommendation, buildEngineCareerPaths } from "../../lib/hooks/useRecommendations";
+import { useShortlist } from "../../lib/hooks/useShortlist";
+import { useSaveCompareScenario } from "../../lib/hooks/useCompareScenarios";
+import { useCompareStore } from "../../stores/compareStore";
+import { useRecommendationStore } from "../../stores/recommendationStore";
+import { generateRecommendations } from "../../lib/engine/rank";
+import type { EngineProfile } from "../../lib/engine/types";
+import { showSuccessToast } from "../../components/ui/Toast";
+
+const DEFAULT_WEIGHTS = {
+  income: 50, stability: 50, flexibility: 50, prestige: 50,
+  creativity: 50, impact: 50, study_duration: 50, risk: 50,
+};
+
+/** Compare screen: select paths, adjust weights, see live re-ranking */
+export default function CompareScreen() {
+  const router = useRouter();
+  const tokens = useTokens();
+  const { data: careerData, isLoading: careersLoading } = useCareerPaths();
+  const { data: recData } = useLatestRecommendation();
+  const shortlistedIds = useRecommendationStore((s) => s.shortlistedIds);
+  const { selectedPathIds, customWeights, togglePath, clearSelection, setCustomWeights } = useCompareStore();
+  const saveScenario = useSaveCompareScenario();
+  const [showWeights, setShowWeights] = useState(false);
+
+  useShortlist(); // sync shortlist
+
+  const paths = careerData?.paths ?? [];
+  const mappings = careerData?.mappings ?? [];
+  const currentWeights = customWeights ?? DEFAULT_WEIGHTS;
+
+  // Build score map: re-run engine with custom weights if adjusted
+  const compareResults = useMemo(() => {
+    if (selectedPathIds.length < 2 || !recData?.run) return null;
+
+    const profileSnapshot = recData.run.profile_snapshot as unknown as EngineProfile;
+    const profileWithWeights: EngineProfile = {
+      ...profileSnapshot,
+      weights: currentWeights as EngineProfile["weights"],
+    };
+
+    const enginePaths = buildEngineCareerPaths(paths, mappings)
+      .filter((p) => selectedPathIds.includes(p.id));
+
+    const result = generateRecommendations(profileWithWeights, enginePaths);
+    return result.scoredPaths;
+  }, [selectedPathIds, currentWeights, recData, paths, mappings]);
+
+  const handleWeightChange = useCallback((key: string, value: number) => {
+    setCustomWeights({ ...currentWeights, [key]: value });
+  }, [currentWeights, setCustomWeights]);
+
+  const handleReset = useCallback(() => {
+    setCustomWeights(null);
+  }, [setCustomWeights]);
+
+  const handleSave = useCallback(async () => {
+    if (!compareResults) return;
+    await saveScenario.mutateAsync({
+      title: `Comparison: ${compareResults.map((r) => r.title).join(" vs ")}`,
+      selectedPathIds,
+      customWeights: customWeights,
+      resultSnapshot: { scoredPaths: compareResults } as unknown as Record<string, unknown>,
+    });
+    showSuccessToast("Comparison saved!");
+  }, [compareResults, selectedPathIds, customWeights, saveScenario]);
+
+  // Get original scores from recommendation run for shortlisted paths
+  const originalScoreMap = useMemo(() => {
+    const map = new Map<string, number>();
+    for (const item of recData?.items ?? []) {
+      map.set(item.career_path_id as string, Number(item.overall_score));
+    }
+    return map;
+  }, [recData]);
+
+  if (careersLoading) {
+    return (
+      <Screen padded>
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+          <ActivityIndicator color={tokens.colors.accent.DEFAULT} size="large" />
+        </View>
+      </Screen>
+    );
+  }
+
+  // Selection phase: pick paths to compare
+  if (selectedPathIds.length < 2) {
+    const selectablePaths = shortlistedIds.length > 0
+      ? paths.filter((p: Record<string, unknown>) => shortlistedIds.includes(p.id as string))
+      : paths.slice(0, 10);
+
+    return (
+      <Screen scroll padded>
+        <View style={{ gap: 16, paddingTop: 16 }}>
+          <Text style={{ fontSize: tokens.typography.headingSize, fontWeight: "700", color: tokens.colors.text.primary }}>
+            Compare careers
+          </Text>
+          <Text style={{ fontSize: tokens.typography.bodySize, color: tokens.colors.text.secondary }}>
+            Select 2–5 career paths to compare side by side.
+            {shortlistedIds.length > 0 ? " Showing your shortlisted paths." : ""}
+          </Text>
+
+          {selectedPathIds.length > 0 && (
+            <Text style={{ fontSize: tokens.typography.captionSize, color: tokens.colors.accent.DEFAULT }}>
+              {selectedPathIds.length} selected — {selectedPathIds.length < 2 ? "select at least 2" : "ready to compare"}
+            </Text>
+          )}
+
+          <View style={{ gap: 8 }}>
+            {selectablePaths.map((p: Record<string, unknown>) => {
+              const isSelected = selectedPathIds.includes(p.id as string);
+              return (
+                <Pressable
+                  key={p.id as string}
+                  onPress={() => togglePath(p.id as string)}
+                  accessibilityLabel={`${isSelected ? "Deselect" : "Select"} ${p.title as string}`}
+                  accessibilityRole="checkbox"
+                  style={{
+                    backgroundColor: isSelected ? tokens.colors.accent.DEFAULT + "15" : tokens.colors.surface.secondary,
+                    borderRadius: 12,
+                    borderWidth: 1,
+                    borderColor: isSelected ? tokens.colors.accent.DEFAULT : tokens.colors.border.DEFAULT,
+                    padding: tokens.spacing.md,
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <View style={{ flex: 1, gap: 2 }}>
+                    <Text style={{ fontSize: tokens.typography.bodySize, fontWeight: "600", color: tokens.colors.text.primary }}>
+                      {p.title as string}
+                    </Text>
+                    <Text style={{ fontSize: tokens.typography.captionSize, color: tokens.colors.text.muted }}>
+                      {p.domain as string}
+                    </Text>
+                  </View>
+                  <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+                    {originalScoreMap.has(p.id as string) && (
+                      <Text style={{ fontSize: tokens.typography.captionSize, color: tokens.colors.text.muted }}>
+                        {originalScoreMap.get(p.id as string)}%
+                      </Text>
+                    )}
+                    <View style={{
+                      width: 24, height: 24, borderRadius: 12,
+                      backgroundColor: isSelected ? tokens.colors.accent.DEFAULT : tokens.colors.surface.elevated,
+                      alignItems: "center", justifyContent: "center",
+                    }}>
+                      {isSelected && <Text style={{ color: "#FFFFFF", fontSize: 14, fontWeight: "700" }}>✓</Text>}
+                    </View>
+                  </View>
+                </Pressable>
+              );
+            })}
+          </View>
+
+          {selectablePaths.length === 0 && (
+            <EmptyState
+              title="No paths to compare"
+              message="Shortlist some career paths first from the Explore tab."
+              actionLabel="Go to Explore"
+              onAction={() => router.push("/(tabs)/explore")}
+            />
+          )}
+        </View>
+      </Screen>
+    );
+  }
+
+  // Comparison phase: side-by-side view
+  return (
+    <Screen scroll padded>
+      <View style={{ gap: 20, paddingTop: 16 }}>
+        <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+          <Text style={{ fontSize: tokens.typography.headingSize, fontWeight: "700", color: tokens.colors.text.primary }}>
+            Comparison
+          </Text>
+          <Button label="New" variant="ghost" onPress={clearSelection} />
+        </View>
+
+        {/* Ranked comparison cards */}
+        {compareResults && (
+          <View style={{ gap: 10 }}>
+            {compareResults.map((result, index) => (
+              <Pressable
+                key={result.careerPathId}
+                onPress={() => router.push(`/career/${result.careerPathId}`)}
+                style={{
+                  backgroundColor: tokens.colors.surface.secondary,
+                  borderRadius: 12,
+                  borderWidth: 1,
+                  borderColor: index === 0 ? tokens.colors.accent.DEFAULT + "60" : tokens.colors.border.DEFAULT,
+                  padding: tokens.spacing.md,
+                  gap: 8,
+                }}
+              >
+                <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+                  <View style={{ flexDirection: "row", alignItems: "center", gap: 8, flex: 1 }}>
+                    <View style={{
+                      width: 28, height: 28, borderRadius: 14,
+                      backgroundColor: index === 0 ? tokens.colors.accent.DEFAULT : tokens.colors.surface.elevated,
+                      alignItems: "center", justifyContent: "center",
+                    }}>
+                      <Text style={{ fontSize: 13, fontWeight: "700", color: index === 0 ? "#FFFFFF" : tokens.colors.text.muted }}>
+                        {index + 1}
+                      </Text>
+                    </View>
+                    <View style={{ flex: 1 }}>
+                      <Text style={{ fontSize: tokens.typography.bodySize, fontWeight: "600", color: tokens.colors.text.primary }}>
+                        {result.title}
+                      </Text>
+                      <Text style={{ fontSize: tokens.typography.captionSize, color: tokens.colors.text.muted }}>
+                        {result.domain}
+                      </Text>
+                    </View>
+                  </View>
+                  <Badge
+                    label={`${result.overallScore}%`}
+                    variant={result.overallScore >= 70 ? "success" : result.overallScore >= 50 ? "warning" : "error"}
+                  />
+                </View>
+
+                {/* Mini breakdown */}
+                <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6, paddingLeft: 36 }}>
+                  {[
+                    { label: "Interest", value: result.breakdown.interestFit },
+                    { label: "Strength", value: result.breakdown.strengthFit },
+                    { label: "Values", value: result.breakdown.valuesFit },
+                    { label: "Goals", value: result.breakdown.goalsFit },
+                  ].map((d) => (
+                    <Text key={d.label} style={{ fontSize: 11, color: tokens.colors.text.muted }}>
+                      {d.label}: {d.value}%
+                    </Text>
+                  ))}
+                </View>
+              </Pressable>
+            ))}
+          </View>
+        )}
+
+        {/* Weight adjuster toggle */}
+        <Button
+          label={showWeights ? "Hide weight adjustment" : "Adjust priorities to see ranking change"}
+          variant="secondary"
+          onPress={() => setShowWeights(!showWeights)}
+        />
+
+        {showWeights && (
+          <WeightAdjuster
+            weights={currentWeights as Record<string, number> & { income: number; stability: number; flexibility: number; prestige: number; creativity: number; impact: number; study_duration: number; risk: number }}
+            onWeightChange={handleWeightChange}
+            onReset={handleReset}
+          />
+        )}
+
+        {/* Save scenario */}
+        <Button
+          label="Save this comparison"
+          onPress={handleSave}
+          loading={saveScenario.isPending}
+        />
+      </View>
+    </Screen>
+  );
+}
