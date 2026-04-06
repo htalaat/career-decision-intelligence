@@ -1,12 +1,14 @@
 import { Redirect } from "expo-router";
 import { View, ActivityIndicator } from "react-native";
 import { useAuthStore } from "../stores/authStore";
+import { useProfile } from "../lib/hooks/useProfile";
 
-/** Entry point: redirect based on auth state */
+/** Entry point: redirect based on auth and onboarding state */
 export default function Index() {
-  const { isLoading, isAuthenticated } = useAuthStore();
+  const { isLoading: authLoading, isAuthenticated } = useAuthStore();
+  const { data, isLoading: profileLoading } = useProfile();
 
-  if (isLoading) {
+  if (authLoading || (isAuthenticated && profileLoading)) {
     return (
       <View className="flex-1 items-center justify-center bg-surface">
         <ActivityIndicator color="#4F8CFF" size="large" />
@@ -16,6 +18,10 @@ export default function Index() {
 
   if (!isAuthenticated) {
     return <Redirect href="/(public)/landing" />;
+  }
+
+  if (!data?.profile.onboarding_completed) {
+    return <Redirect href="/(onboarding)/welcome" />;
   }
 
   return <Redirect href="/(tabs)" />;
