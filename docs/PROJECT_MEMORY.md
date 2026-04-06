@@ -2,96 +2,69 @@
 
 ## Last Session
 Date: 2026-04-06
-Status: Phase 1 COMPLETE
+Status: Phase 2 COMPLETE
 
 ## Current Phase
 Phase 1 — Foundation (DONE)
+Phase 2 — Core Intelligence (DONE)
 
-## What Was Built
+## Phase 2 — What Was Built
 
-### Task 1 — Project Scaffold
-- package.json with all dependencies (Expo 54, RN 0.81, NativeWind 4, Supabase, TanStack Query, Zustand, Zod)
-- tsconfig.json (strict, path aliases)
-- tailwind.config.js (custom design tokens)
-- app.json (Expo config, typed routes)
-- CLAUDE.md, .env.example, .gitignore
+### Decision Engine (src/lib/engine/)
+- types.ts — EngineProfile, EngineCareerPath, ScoreBreakdown, Penalty, Explanation, ScoredPath, RecommendationResult
+- score.ts — 6-dimension scoring (interest, strength, values, workstyle, goals, feasibility) with trait overlap computation
+- penalties.ts — constraint-based penalties (duration, financial, risk, family expectation)
+- confidence.ts — profile completeness score (0-1)
+- explain.ts — human-readable explanations with positives, negatives, missing info, validation questions
+- rank.ts — main entry: generateRecommendations() ties scoring + penalties + confidence + explanations
 
-### Task 2 — Design Tokens and PersonaProvider
-- src/lib/theme/colors.ts — base color palette
-- src/lib/theme/tokens.ts — TokenSet with casual/elder/power/accessibility personas
-- src/lib/theme/PersonaProvider.tsx — useTokens() and usePersona() hooks
+### Feature Components (5 new)
+- CareerCard — path preview with fit score badge and shortlist toggle
+- RecommendationCard — ranked card with top reasons and cautions
+- ScoreBreakdown — 6-dimension horizontal bar chart
+- ExplainBlock — collapsible "Why this score" panel
+- FilterBar — horizontal scrolling domain filter pills
 
-### Task 3 — UI Primitives (15 components)
-- Screen, Button, Card, Input, Chip, ChipGroup, Slider, Stepper, Select, Badge, Skeleton, EmptyState, ErrorState, ProgressBar, Toast
+### Hooks and Stores
+- useRecommendations.ts — useLatestRecommendation, useRunRecommendations, buildEngineProfile, buildEngineCareerPaths
+- useShortlist.ts — useShortlist, useAddToShortlist, useRemoveFromShortlist
+- recommendationStore.ts — latestRunId, shortlistedIds
 
-### Task 4 — Zod Schemas and Types
-- src/types/ — user, answers, weights, constraints, career, consent schemas
-- src/lib/utils/constants.ts — onboarding steps, trait keys, stage options
+### Screens (4 new/updated)
+- Dashboard (tabs/index.tsx) — greeting, top 5 recommendations, empty state
+- Explore (tabs/explore.tsx) — browse all 30 paths, domain filter, fit scores, shortlist
+- Career Detail (career/[id].tsx) — full detail with ScoreBreakdown, ExplainBlock, shortlist
+- Recommendation Results (recommendation/[runId].tsx) — all paths ranked
 
-### Task 5 — Database Schema
-- 14 tables in Supabase Postgres
-- 38 RLS policies
-- 6 performance indexes
-- Auto-profile trigger on signup
-
-### Task 6 — Supabase Client and Auth Store
-- src/lib/supabase/client.ts — singleton with SecureStore on native
-- src/lib/supabase/auth.ts — magic link sign-in, sign out
-- src/stores/authStore.ts — session, user, auth state listener
-
-### Task 7 — Root Layout and Routes
-- Root layout with QueryClientProvider + PersonaProvider
-- Auth-aware index redirect
-- Landing page, sign-in (magic link), verify screens
-- Tabs shell with dashboard placeholder
-
-### Task 8 — Onboarding Store and Feature Components
-- src/stores/onboardingStore.ts — step tracking, answer drafts
-- OnboardingQuestion, TrustNotice, UserGreeting, ProfileSummaryCard
-
-### Task 9 — Onboarding Screens (10 screens)
-- welcome, trust, stage, interests, strengths, values, workstyle, constraints, goals, summary
-- Stepper layout with progress bar
-
-### Task 10 — Profile Persistence
-- useProfile hook (fetch profile + student profile)
-- useSaveOnboarding mutation (batch save all answers)
-- useConsent hook (consent logging)
-- Summary screen wired to save to Supabase
-- Index.tsx checks onboarding completion state
-
-### Task 11 — Seed Career Data
-- 30 career paths across 10 domains
-- 307 trait mappings
-- JSON mirror for demo/offline mode
-- useCareerPaths hook
+### Wiring
+- Summary screen now: saves profile → builds engine inputs → runs engine → saves results → navigates to dashboard
+- Dashboard shows top recommendations from latest run
+- Explore shows fit scores from latest run
+- Career detail shows full score breakdown and explanation
 
 ## File Counts
-- 56 TypeScript/TSX source files
-- 20 screens (2 public, 2 auth, 11 onboarding, 5 tabs)
+- 73 TypeScript/TSX source files
+- 24 screens
 - 15 UI primitives
-- 4 feature components
-- 3 hooks
-- 2 stores
+- 9 feature components
+- 6 hooks
+- 3 stores
+- 6 engine modules
 - 6 type files
-- 3 SQL migrations
-- 2 SQL seed files
-- 1 JSON seed file
 
 ## Known Issues
-- Slider component is visual-only (no touch interaction yet) — works for prototype
-- NativeWind classes need metro config for web — may need babel/metro setup on first web run
+- NativeWind className colors unreliable on web — using inline styles for all colors/text
+- Slider uses HTML range input on web (native fallback is visual-only)
 
 ## Next Phase
-Phase 2 — Core Intelligence
-- Decision engine (score, rank, explain, penalties, confidence)
-- Recommendation generation + results screen
-- Career path detail with full explanation
-- Shortlist management
-- Explore screen with filters
-- Dashboard home with top recommendations
+Phase 3 — Decision Workflow
+- Compare screen (2-5 paths side-by-side)
+- WeightAdjuster with live re-ranking
+- Decision board (pick path, set status)
+- Action plan (7/30/90 day) with checklist
+- Decision history
 
 ## Build Notes
 - Type-check: PASS (0 errors) — 2026-04-06
-- Git: 11 clean commits on master
+- Git: 17 commits on master
 - Lint: not yet run
