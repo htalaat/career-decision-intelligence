@@ -12,13 +12,13 @@ interface ScreenProps {
 /** Safe-area screen wrapper with persona-aware background */
 export function Screen({ children, scroll = false, padded = true }: ScreenProps) {
   const tokens = useTokens();
-  const paddingClass = padded ? "px-5" : "";
+  const padding = padded ? tokens.spacing.screenPadding : 0;
 
   if (scroll) {
     return (
-      <SafeAreaView className="flex-1" style={{ backgroundColor: tokens.colors.surface.DEFAULT }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: tokens.colors.surface.DEFAULT }}>
         <ScrollView
-          className={`flex-1 ${paddingClass}`}
+          style={{ flex: 1, paddingHorizontal: padding }}
           contentContainerStyle={{ paddingBottom: tokens.spacing.xl }}
           showsVerticalScrollIndicator={false}
         >
@@ -29,8 +29,8 @@ export function Screen({ children, scroll = false, padded = true }: ScreenProps)
   }
 
   return (
-    <SafeAreaView className="flex-1" style={{ backgroundColor: tokens.colors.surface.DEFAULT }}>
-      <View className={`flex-1 ${paddingClass}`}>{children}</View>
+    <SafeAreaView style={{ flex: 1, backgroundColor: tokens.colors.surface.DEFAULT }}>
+      <View style={{ flex: 1, paddingHorizontal: padding }}>{children}</View>
     </SafeAreaView>
   );
 }

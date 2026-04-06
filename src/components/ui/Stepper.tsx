@@ -14,17 +14,26 @@ export function Stepper({ currentStep, totalSteps, stepLabel }: StepperProps) {
   const percent = (currentStep / totalSteps) * 100;
 
   return (
-    <View className="gap-2">
-      <View className="flex-row justify-between items-center">
-        <Text className="text-text-secondary font-medium" style={{ fontSize: tokens.typography.captionSize }}>
+    <View style={{ gap: 8 }}>
+      <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+        <Text style={{ fontSize: tokens.typography.captionSize, fontWeight: "500", color: tokens.colors.text.secondary }}>
           Step {currentStep} of {totalSteps}
         </Text>
         {stepLabel && (
-          <Text className="text-text-muted" style={{ fontSize: tokens.typography.captionSize }}>{stepLabel}</Text>
+          <Text style={{ fontSize: tokens.typography.captionSize, color: tokens.colors.text.muted }}>
+            {stepLabel}
+          </Text>
         )}
       </View>
-      <View className="h-1.5 bg-surface-elevated rounded-full overflow-hidden">
-        <View className="h-full bg-accent rounded-full" style={{ width: `${percent}%` }} />
+      <View style={{ height: 6, backgroundColor: tokens.colors.surface.elevated, borderRadius: 3, overflow: "hidden" }}>
+        <View
+          style={{
+            height: "100%",
+            width: `${percent}%`,
+            backgroundColor: tokens.colors.accent.DEFAULT,
+            borderRadius: 3,
+          }}
+        />
       </View>
     </View>
   );

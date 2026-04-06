@@ -22,7 +22,12 @@ export default function RootLayout() {
   return (
     <QueryClientProvider client={queryClient}>
       <PersonaProvider>
-        <Stack screenOptions={{ headerShown: false }} />
+        <Stack
+          screenOptions={{
+            headerShown: false,
+            contentStyle: { backgroundColor: "#0F1419" },
+          }}
+        />
       </PersonaProvider>
     </QueryClientProvider>
   );
