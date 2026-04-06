@@ -23,6 +23,8 @@ export default function TabsLayout() {
     >
       <Tabs.Screen name="index" options={{ title: "Home" }} />
       <Tabs.Screen name="explore" options={{ title: "Explore" }} />
+      <Tabs.Screen name="compare" options={{ title: "Compare" }} />
+      <Tabs.Screen name="decisions" options={{ title: "Decide" }} />
     </Tabs>
   );
 }
