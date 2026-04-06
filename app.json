@@ -1,0 +1,20 @@
+{
+  "expo": {
+    "name": "Career Decision Intelligence",
+    "slug": "career-decision-intelligence",
+    "version": "0.1.0",
+    "scheme": "career-decision",
+    "web": {
+      "bundler": "metro",
+      "output": "single",
+      "favicon": "./assets/images/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}
