@@ -1,0 +1,302 @@
+[
+  {
+    "slug": "software-engineer",
+    "title": "Software Engineer",
+    "domain": "Technology",
+    "summary": "Designs, builds, and maintains software systems ranging from mobile apps to large-scale distributed platforms. Works across the full development lifecycle, from requirements through deployment.",
+    "education_path": "Bachelor's degree in Computer Science, Software Engineering, or related field; bootcamp paths also viable.",
+    "typical_duration_years": 4,
+    "income_potential": "very_high",
+    "tags": ["technical", "analytical", "problem_solving", "creative"]
+  },
+  {
+    "slug": "data-scientist",
+    "title": "Data Scientist",
+    "domain": "Technology",
+    "summary": "Extracts insights from large datasets using statistical modelling, machine learning, and data visualisation to inform business strategy and product decisions.",
+    "education_path": "Bachelor's or Master's degree in Statistics, Mathematics, Computer Science, or Data Science.",
+    "typical_duration_years": 5,
+    "income_potential": "very_high",
+    "tags": ["analytical", "research", "technical", "quantitative"]
+  },
+  {
+    "slug": "cybersecurity-analyst",
+    "title": "Cybersecurity Analyst",
+    "domain": "Technology",
+    "summary": "Monitors networks and systems for security threats, investigates breaches, and implements protective controls to safeguard organisational data and infrastructure.",
+    "education_path": "Bachelor's degree in Cybersecurity, Computer Science, or IT; certifications such as CompTIA Security+, CISSP valuable.",
+    "typical_duration_years": 4,
+    "income_potential": "high",
+    "tags": ["technical", "analytical", "problem_solving", "attention_to_detail"]
+  },
+  {
+    "slug": "financial-analyst",
+    "title": "Financial Analyst",
+    "domain": "Finance",
+    "summary": "Evaluates investment opportunities, builds financial models, and produces reports to guide corporate or portfolio decisions. Works in banking, asset management, or corporate finance.",
+    "education_path": "Bachelor's degree in Finance, Economics, or Accounting; CFA designation often pursued.",
+    "typical_duration_years": 4,
+    "income_potential": "high",
+    "tags": ["analytical", "quantitative", "research", "strategic"]
+  },
+  {
+    "slug": "accountant",
+    "title": "Accountant",
+    "domain": "Finance",
+    "summary": "Prepares and audits financial statements, manages tax compliance, and ensures organisations adhere to accounting standards and regulatory requirements.",
+    "education_path": "Bachelor's degree in Accounting; CPA licensure typically required for public accounting.",
+    "typical_duration_years": 4,
+    "income_potential": "medium",
+    "tags": ["analytical", "attention_to_detail", "organizational", "quantitative"]
+  },
+  {
+    "slug": "fintech-product-manager",
+    "title": "Fintech Product Manager",
+    "domain": "Finance",
+    "summary": "Owns the roadmap for financial technology products, bridging customer needs, regulatory constraints, and engineering capability to ship compliant, user-centric features.",
+    "education_path": "Bachelor's degree in Finance, CS, or Business; MBA or product management experience preferred.",
+    "typical_duration_years": 5,
+    "income_potential": "very_high",
+    "tags": ["strategic", "technical", "leadership", "analytical"]
+  },
+  {
+    "slug": "physician",
+    "title": "Physician",
+    "domain": "Healthcare",
+    "summary": "Diagnoses and treats medical conditions, orders and interprets tests, and develops care plans for patients across a broad range of clinical specialties.",
+    "education_path": "Bachelor's degree, then Doctor of Medicine (MD) or Doctor of Osteopathic Medicine (DO); residency 3–7 years.",
+    "typical_duration_years": 11,
+    "income_potential": "very_high",
+    "tags": ["scientific", "analytical", "empathy", "problem_solving"]
+  },
+  {
+    "slug": "nurse-practitioner",
+    "title": "Nurse Practitioner",
+    "domain": "Healthcare",
+    "summary": "Provides primary and specialty healthcare including diagnosis, treatment, and prescriptions, often serving as a primary care provider in underserved communities.",
+    "education_path": "Bachelor's in Nursing (BSN), then Master's of Science in Nursing (MSN) with NP specialisation; licensure required.",
+    "typical_duration_years": 6,
+    "income_potential": "high",
+    "tags": ["empathy", "scientific", "helping_others", "communication"]
+  },
+  {
+    "slug": "health-informatics-specialist",
+    "title": "Health Informatics Specialist",
+    "domain": "Healthcare",
+    "summary": "Manages healthcare data systems and electronic health records to improve clinical workflows, data quality, and patient outcomes through technology-driven solutions.",
+    "education_path": "Bachelor's or Master's degree in Health Informatics, Information Systems, or related field.",
+    "typical_duration_years": 4,
+    "income_potential": "high",
+    "tags": ["technical", "analytical", "organizational", "helping_others"]
+  },
+  {
+    "slug": "ux-designer",
+    "title": "UX Designer",
+    "domain": "Design",
+    "summary": "Researches user behaviour, designs interaction flows, and creates wireframes and prototypes that result in intuitive and accessible digital experiences.",
+    "education_path": "Bachelor's degree in Design, HCI, or Psychology; portfolio-driven; bootcamps widely accepted.",
+    "typical_duration_years": 4,
+    "income_potential": "high",
+    "tags": ["creative", "empathy", "research", "artistic"]
+  },
+  {
+    "slug": "product-designer",
+    "title": "Product Designer",
+    "domain": "Design",
+    "summary": "Shapes the end-to-end user experience of digital products, integrating visual design, interaction design, and product thinking to drive engagement and usability.",
+    "education_path": "Bachelor's degree in Graphic Design, Interaction Design, or HCI; strong portfolio essential.",
+    "typical_duration_years": 4,
+    "income_potential": "high",
+    "tags": ["creative", "artistic", "strategic", "empathy"]
+  },
+  {
+    "slug": "brand-strategist",
+    "title": "Brand Strategist",
+    "domain": "Design",
+    "summary": "Develops brand identity, positioning, and messaging frameworks that differentiate organisations and connect with target audiences across channels.",
+    "education_path": "Bachelor's degree in Marketing, Design, or Communications; MBA or brand management experience beneficial.",
+    "typical_duration_years": 4,
+    "income_potential": "high",
+    "tags": ["creative", "strategic", "writing", "research"]
+  },
+  {
+    "slug": "management-consultant",
+    "title": "Management Consultant",
+    "domain": "Business",
+    "summary": "Partners with organisations to solve complex business problems, improve operations, and execute strategic change initiatives across industries.",
+    "education_path": "Bachelor's degree in Business, Economics, or Engineering; MBA strongly preferred for top-tier firms.",
+    "typical_duration_years": 5,
+    "income_potential": "very_high",
+    "tags": ["analytical", "strategic", "communication", "leadership"]
+  },
+  {
+    "slug": "operations-manager",
+    "title": "Operations Manager",
+    "domain": "Business",
+    "summary": "Oversees day-to-day business processes, optimises supply chains and workflows, and leads cross-functional teams to meet organisational performance targets.",
+    "education_path": "Bachelor's degree in Business Administration, Operations, or Industrial Engineering; PMP or Six Sigma certification valued.",
+    "typical_duration_years": 4,
+    "income_potential": "high",
+    "tags": ["leadership", "organizational", "strategic", "teamwork"]
+  },
+  {
+    "slug": "entrepreneur",
+    "title": "Entrepreneur",
+    "domain": "Business",
+    "summary": "Identifies market opportunities, builds ventures from the ground up, manages risk, and assembles the resources and teams needed to scale a business.",
+    "education_path": "No fixed requirement; Bachelor's in Business or relevant field common; experience and networks often outweigh credentials.",
+    "typical_duration_years": 4,
+    "income_potential": "very_high",
+    "tags": ["entrepreneurial", "leadership", "strategic", "resilience"]
+  },
+  {
+    "slug": "corporate-lawyer",
+    "title": "Corporate Lawyer",
+    "domain": "Law/Policy",
+    "summary": "Advises businesses on legal matters including mergers and acquisitions, contracts, corporate governance, and regulatory compliance.",
+    "education_path": "Bachelor's degree, then Juris Doctor (JD); bar exam required for licensure; specialisation in corporate law.",
+    "typical_duration_years": 7,
+    "income_potential": "very_high",
+    "tags": ["analytical", "writing", "attention_to_detail", "negotiation"]
+  },
+  {
+    "slug": "policy-analyst",
+    "title": "Policy Analyst",
+    "domain": "Law/Policy",
+    "summary": "Researches and evaluates public policies, drafts recommendations for government or non-profit clients, and communicates findings to stakeholders and policymakers.",
+    "education_path": "Bachelor's degree in Political Science, Economics, or Public Policy; Master's in Public Policy (MPP) often preferred.",
+    "typical_duration_years": 5,
+    "income_potential": "medium",
+    "tags": ["research", "writing", "analytical", "advocacy"]
+  },
+  {
+    "slug": "compliance-officer",
+    "title": "Compliance Officer",
+    "domain": "Law/Policy",
+    "summary": "Ensures that organisations meet legal, regulatory, and ethical standards by designing compliance programmes, conducting audits, and training staff.",
+    "education_path": "Bachelor's degree in Law, Business, or Finance; Certified Compliance & Ethics Professional (CCEP) credential valued.",
+    "typical_duration_years": 4,
+    "income_potential": "high",
+    "tags": ["analytical", "attention_to_detail", "organizational", "advocacy"]
+  },
+  {
+    "slug": "teacher",
+    "title": "Teacher",
+    "domain": "Education",
+    "summary": "Designs and delivers curriculum to K-12 or post-secondary students, adapting instruction to diverse learning needs and fostering academic and personal growth.",
+    "education_path": "Bachelor's degree in Education or subject specialisation; state teaching licensure required; Master's increasingly common.",
+    "typical_duration_years": 4,
+    "income_potential": "medium",
+    "tags": ["teaching", "empathy", "communication", "social"]
+  },
+  {
+    "slug": "edtech-developer",
+    "title": "EdTech Developer",
+    "domain": "Education",
+    "summary": "Builds educational technology platforms, tools, and content that improve learning outcomes, blending instructional design expertise with software engineering.",
+    "education_path": "Bachelor's degree in Computer Science, Education, or Instructional Design; portfolio of learning products valued.",
+    "typical_duration_years": 4,
+    "income_potential": "high",
+    "tags": ["technical", "creative", "teaching", "analytical"]
+  },
+  {
+    "slug": "academic-researcher",
+    "title": "Academic Researcher",
+    "domain": "Education",
+    "summary": "Conducts original research within a discipline, publishes findings in peer-reviewed journals, applies for grants, and contributes to knowledge that advances their field.",
+    "education_path": "Master's degree minimum; Doctor of Philosophy (PhD) typically required for independent research and faculty positions.",
+    "typical_duration_years": 9,
+    "income_potential": "medium",
+    "tags": ["research", "analytical", "writing", "scientific"]
+  },
+  {
+    "slug": "journalist",
+    "title": "Journalist",
+    "domain": "Media/Comms",
+    "summary": "Investigates, writes, and publishes news stories across print, broadcast, and digital platforms, upholding accuracy and public accountability.",
+    "education_path": "Bachelor's degree in Journalism or Communications; portfolio and internship experience critical.",
+    "typical_duration_years": 4,
+    "income_potential": "medium",
+    "tags": ["writing", "research", "communication", "advocacy"]
+  },
+  {
+    "slug": "content-strategist",
+    "title": "Content Strategist",
+    "domain": "Media/Comms",
+    "summary": "Plans and governs content across digital channels, aligning editorial calendars, tone of voice, and distribution with business and audience goals.",
+    "education_path": "Bachelor's degree in Communications, Marketing, or English; experience with SEO and content management platforms valued.",
+    "typical_duration_years": 4,
+    "income_potential": "high",
+    "tags": ["writing", "strategic", "creative", "analytical"]
+  },
+  {
+    "slug": "pr-manager",
+    "title": "PR Manager",
+    "domain": "Media/Comms",
+    "summary": "Manages an organisation's public image through media relations, crisis communications, and stakeholder engagement strategies.",
+    "education_path": "Bachelor's degree in Public Relations, Communications, or Journalism; APR certification beneficial.",
+    "typical_duration_years": 4,
+    "income_potential": "high",
+    "tags": ["communication", "writing", "strategic", "social"]
+  },
+  {
+    "slug": "startup-founder",
+    "title": "Startup Founder",
+    "domain": "Entrepreneurship",
+    "summary": "Conceives, launches, and scales a technology or product-driven startup, raising capital, building teams, and iterating on product-market fit under conditions of high uncertainty.",
+    "education_path": "No fixed requirement; technical or business background common; track record and networks often decisive.",
+    "typical_duration_years": 4,
+    "income_potential": "very_high",
+    "tags": ["entrepreneurial", "leadership", "resilience", "strategic"]
+  },
+  {
+    "slug": "venture-capital-analyst",
+    "title": "Venture Capital Analyst",
+    "domain": "Entrepreneurship",
+    "summary": "Evaluates early-stage investment opportunities, conducts due diligence, supports portfolio companies, and develops theses on emerging technology and market trends.",
+    "education_path": "Bachelor's degree in Finance, Business, or Engineering; MBA or startup experience increasingly valued.",
+    "typical_duration_years": 5,
+    "income_potential": "very_high",
+    "tags": ["analytical", "research", "strategic", "entrepreneurial"]
+  },
+  {
+    "slug": "franchise-operator",
+    "title": "Franchise Operator",
+    "domain": "Entrepreneurship",
+    "summary": "Licenses and operates a franchise business unit within an established brand system, managing staff, local marketing, and day-to-day operations to meet franchisor standards.",
+    "education_path": "No fixed degree requirement; business or management background helpful; franchisor training programmes provided.",
+    "typical_duration_years": 2,
+    "income_potential": "high",
+    "tags": ["leadership", "organizational", "entrepreneurial", "teamwork"]
+  },
+  {
+    "slug": "civil-engineer",
+    "title": "Civil Engineer",
+    "domain": "Engineering",
+    "summary": "Plans, designs, and oversees construction of infrastructure projects such as roads, bridges, water systems, and buildings, ensuring safety and regulatory compliance.",
+    "education_path": "Bachelor's degree in Civil Engineering; Professional Engineer (PE) licensure typically required for independent practice.",
+    "typical_duration_years": 4,
+    "income_potential": "high",
+    "tags": ["analytical", "technical", "problem_solving", "hands_on"]
+  },
+  {
+    "slug": "mechanical-engineer",
+    "title": "Mechanical Engineer",
+    "domain": "Engineering",
+    "summary": "Designs and develops mechanical systems, devices, and machines, applying principles of physics and materials science to create products across automotive, aerospace, and manufacturing sectors.",
+    "education_path": "Bachelor's degree in Mechanical Engineering; PE licensure valuable; graduate study common for R&D roles.",
+    "typical_duration_years": 4,
+    "income_potential": "high",
+    "tags": ["technical", "analytical", "creative", "hands_on"]
+  },
+  {
+    "slug": "environmental-engineer",
+    "title": "Environmental Engineer",
+    "domain": "Engineering",
+    "summary": "Develops solutions to environmental problems including pollution control, waste management, and sustainable infrastructure, working at the intersection of engineering and ecological science.",
+    "education_path": "Bachelor's degree in Environmental Engineering or Civil Engineering with environmental specialisation; PE licensure beneficial.",
+    "typical_duration_years": 4,
+    "income_potential": "high",
+    "tags": ["scientific", "analytical", "problem_solving", "advocacy"]
+  }
+]
