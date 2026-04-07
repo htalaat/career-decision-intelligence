@@ -30,6 +30,7 @@ export default function DecisionsScreen() {
   const [selectedStatus, setSelectedStatus] = useState<DecisionStatus>("exploring");
   const [notes, setNotes] = useState("");
   const [isCreating, setIsCreating] = useState(false);
+  const [expandedDecisionId, setExpandedDecisionId] = useState<string | null>(null);
 
   useShortlist();
 
@@ -144,37 +145,96 @@ export default function DecisionsScreen() {
             </Text>
             {(decisions ?? []).map((d: Record<string, unknown>) => {
               const summary = (d.summary as Record<string, unknown>) ?? {};
-              const isRejected = (summary as Record<string, unknown>).isRejected === true;
+              const isRejected = summary.isRejected === true;
               const statusVariant = isRejected ? "error" : d.status === "decided" ? "success" : d.status === "leaning" ? "warning" : "default";
-              const statusLabel = isRejected ? "rejected" : d.status as string;
+              const statusLabel = isRejected ? "Rejected" : (d.status as string);
+              const isExpanded = expandedDecisionId === (d.id as string);
+
               return (
-                <Pressable
+                <View
                   key={d.id as string}
-                  onPress={() => router.push(`/action-plan/${d.id as string}`)}
                   style={{
                     backgroundColor: tokens.colors.surface.secondary,
                     borderRadius: 12,
                     borderWidth: 1,
                     borderColor: tokens.colors.border.DEFAULT,
-                    padding: tokens.spacing.md,
-                    gap: 8,
+                    overflow: "hidden",
                   }}
                 >
-                  <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-                    <Text style={{ fontSize: tokens.typography.bodySize, fontWeight: "600", color: tokens.colors.text.primary, flex: 1 }}>
-                      {summary.careerTitle as string}
-                    </Text>
-                    <Badge label={statusLabel} variant={statusVariant} />
-                  </View>
-                  <Text style={{ fontSize: tokens.typography.captionSize, color: tokens.colors.text.muted }}>
-                    {summary.domain as string} • Score: {summary.score != null ? `${summary.score}%` : "N/A"}
-                  </Text>
-                  {(summary.notes as string) && (
-                    <Text style={{ fontSize: tokens.typography.captionSize, color: tokens.colors.text.secondary, fontStyle: "italic" }}>
-                      "{summary.notes as string}"
-                    </Text>
+                  <Pressable
+                    onPress={() => setExpandedDecisionId(isExpanded ? null : (d.id as string))}
+                    style={{ padding: tokens.spacing.md, gap: 8 }}
+                  >
+                    <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+                      <Text style={{ fontSize: tokens.typography.bodySize, fontWeight: "600", color: tokens.colors.text.primary, flex: 1 }}>
+                        {summary.careerTitle as string}
+                      </Text>
+                      <Badge label={statusLabel} variant={statusVariant} />
+                    </View>
+                    <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+                      <Text style={{ fontSize: tokens.typography.captionSize, color: tokens.colors.text.muted }}>
+                        {summary.domain as string} {summary.score != null ? `• ${summary.score}% fit` : ""}
+                      </Text>
+                      <Text style={{ fontSize: 11, color: tokens.colors.text.muted }}>
+                        {new Date(d.created_at as string).toLocaleDateString()} {new Date(d.created_at as string).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                      </Text>
+                    </View>
+                    {(summary.notes as string) && (
+                      <Text style={{ fontSize: tokens.typography.captionSize, color: tokens.colors.text.secondary, fontStyle: "italic" }}>
+                        "{summary.notes as string}"
+                      </Text>
+                    )}
+                  </Pressable>
+
+                  {isExpanded && (
+                    <View style={{ padding: tokens.spacing.md, paddingTop: 0, gap: 10, borderTopWidth: 1, borderTopColor: tokens.colors.surface.elevated }}>
+                      {/* Study direction */}
+                      {(summary.suggestedFaculty as string) && (
+                        <View style={{ gap: 2 }}>
+                          <Text style={{ fontSize: tokens.typography.captionSize, fontWeight: "600", color: tokens.colors.accent.DEFAULT }}>Study direction</Text>
+                          <Text style={{ fontSize: tokens.typography.captionSize, color: tokens.colors.text.secondary }}>
+                            {summary.suggestedFaculty as string}
+                          </Text>
+                        </View>
+                      )}
+                      {/* Reasons for */}
+                      {((summary.topPositives as string[]) ?? []).length > 0 && (
+                        <View style={{ gap: 2 }}>
+                          <Text style={{ fontSize: tokens.typography.captionSize, fontWeight: "600", color: tokens.colors.success }}>Why it fits</Text>
+                          {((summary.topPositives as string[]) ?? []).slice(0, 3).map((r, i) => (
+                            <Text key={i} style={{ fontSize: 12, color: tokens.colors.text.secondary }}>+ {r}</Text>
+                          ))}
+                        </View>
+                      )}
+                      {/* Blockers */}
+                      {((summary.whatMayBlock as string[]) ?? []).length > 0 && (
+                        <View style={{ gap: 2 }}>
+                          <Text style={{ fontSize: tokens.typography.captionSize, fontWeight: "600", color: tokens.colors.warning }}>Potential blockers</Text>
+                          {((summary.whatMayBlock as string[]) ?? []).slice(0, 2).map((r, i) => (
+                            <Text key={i} style={{ fontSize: 12, color: tokens.colors.text.secondary }}>- {r}</Text>
+                          ))}
+                        </View>
+                      )}
+                      {/* Validation questions */}
+                      {((summary.validationQuestions as string[]) ?? []).length > 0 && (
+                        <View style={{ gap: 2 }}>
+                          <Text style={{ fontSize: tokens.typography.captionSize, fontWeight: "600", color: tokens.colors.text.muted }}>Unresolved questions</Text>
+                          {((summary.validationQuestions as string[]) ?? []).slice(0, 2).map((r, i) => (
+                            <Text key={i} style={{ fontSize: 12, color: tokens.colors.text.secondary }}>? {r}</Text>
+                          ))}
+                        </View>
+                      )}
+                      {/* Action plan link */}
+                      {!isRejected && (
+                        <Button
+                          label="View action plan"
+                          variant="ghost"
+                          onPress={() => router.push(`/action-plan/${d.id as string}` as never)}
+                        />
+                      )}
+                    </View>
                   )}
-                </Pressable>
+                </View>
               );
             })}
           </View>

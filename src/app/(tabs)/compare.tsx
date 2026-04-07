@@ -10,7 +10,7 @@ import { useTokens } from "../../lib/theme/PersonaProvider";
 import { useCareerPaths } from "../../lib/hooks/useCareerPaths";
 import { useLatestRecommendation, buildEngineCareerPaths } from "../../lib/hooks/useRecommendations";
 import { useShortlist } from "../../lib/hooks/useShortlist";
-import { useSaveCompareScenario } from "../../lib/hooks/useCompareScenarios";
+import { useSaveCompareScenario, useCompareScenarios } from "../../lib/hooks/useCompareScenarios";
 import { useCompareStore } from "../../stores/compareStore";
 import { useRecommendationStore } from "../../stores/recommendationStore";
 import { generateRecommendations } from "../../lib/engine/rank";
@@ -31,6 +31,7 @@ export default function CompareScreen() {
   const shortlistedIds = useRecommendationStore((s) => s.shortlistedIds);
   const { selectedPathIds, customWeights, togglePath, clearSelection, setCustomWeights } = useCompareStore();
   const saveScenario = useSaveCompareScenario();
+  const { data: savedScenarios } = useCompareScenarios();
   const [showWeights, setShowWeights] = useState(false);
 
   useShortlist(); // sync shortlist
@@ -110,6 +111,45 @@ export default function CompareScreen() {
             Select 2–5 career paths to compare side by side.
             {shortlistedIds.length > 0 ? " Showing your shortlisted paths." : ""}
           </Text>
+
+          {/* Saved scenarios */}
+          {savedScenarios && savedScenarios.length > 0 && (
+            <View style={{ gap: 8 }}>
+              <Text style={{ fontSize: tokens.typography.bodySize, fontWeight: "600", color: tokens.colors.text.primary }}>
+                Saved comparisons
+              </Text>
+              {savedScenarios.map((scenario: Record<string, unknown>) => (
+                <Pressable
+                  key={scenario.id as string}
+                  onPress={() => {
+                    // Load the scenario's paths into the compare store
+                    const pathIds = (scenario.selected_path_ids as string[]) ?? [];
+                    for (const pid of pathIds) {
+                      if (!selectedPathIds.includes(pid)) togglePath(pid);
+                    }
+                    if (scenario.custom_weights) {
+                      setCustomWeights(scenario.custom_weights as Record<string, number>);
+                    }
+                  }}
+                  style={{
+                    backgroundColor: tokens.colors.surface.secondary,
+                    borderRadius: 10,
+                    borderWidth: 1,
+                    borderColor: tokens.colors.border.DEFAULT,
+                    padding: 12,
+                    gap: 4,
+                  }}
+                >
+                  <Text style={{ fontSize: tokens.typography.bodySize, fontWeight: "500", color: tokens.colors.text.primary }}>
+                    {scenario.title as string}
+                  </Text>
+                  <Text style={{ fontSize: 11, color: tokens.colors.text.muted }}>
+                    {(scenario.selected_path_ids as string[])?.length ?? 0} paths compared • {new Date(scenario.created_at as string).toLocaleDateString()}
+                  </Text>
+                </Pressable>
+              ))}
+            </View>
+          )}
 
           {selectedPathIds.length > 0 && (
             <Text style={{ fontSize: tokens.typography.captionSize, color: tokens.colors.accent.DEFAULT }}>
