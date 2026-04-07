@@ -1,0 +1,46 @@
+{
+  "meta": {
+    "version": "1.0",
+    "description": "Maintainable seed configuration for Career Decision Intelligence. Edit this file to update countries, faculty mappings, and study direction templates. Changes should be synced to Supabase via admin tooling or SQL re-seed.",
+    "lastUpdated": "2026-04-07"
+  },
+  "countries": [
+    { "code": "EG", "name": "Egypt", "costLevel": "low", "bachelorYears": 4, "masterYears": 2, "language": "Arabic/English", "visaComplexity": "none", "notes": "Large public university system. Private universities growing. Engineering and medicine competitive." },
+    { "code": "SA", "name": "Saudi Arabia", "costLevel": "low", "bachelorYears": 4, "masterYears": 2, "language": "Arabic/English", "visaComplexity": "none", "notes": "Strong government-funded universities. Scholarship programs. Vision 2030 STEM focus." },
+    { "code": "AE", "name": "UAE", "costLevel": "high", "bachelorYears": 4, "masterYears": 2, "language": "English", "visaComplexity": "easy", "notes": "International branch campuses. Strong industry links." },
+    { "code": "US", "name": "United States", "costLevel": "very_high", "bachelorYears": 4, "masterYears": 2, "language": "English", "visaComplexity": "complex", "notes": "World-leading research universities. Very expensive without scholarships." },
+    { "code": "GB", "name": "United Kingdom", "costLevel": "high", "bachelorYears": 3, "masterYears": 1, "language": "English", "visaComplexity": "moderate", "notes": "Strong 3-year bachelors. Graduate Route visa for 2 years post-study." },
+    { "code": "CA", "name": "Canada", "costLevel": "high", "bachelorYears": 4, "masterYears": 2, "language": "English/French", "visaComplexity": "moderate", "notes": "Co-op programs common. Pathway to permanent residency." },
+    { "code": "DE", "name": "Germany", "costLevel": "low", "bachelorYears": 3, "masterYears": 2, "language": "German/English", "visaComplexity": "moderate", "notes": "Tuition-free public universities. Many English-taught masters." },
+    { "code": "AU", "name": "Australia", "costLevel": "high", "bachelorYears": 3, "masterYears": 2, "language": "English", "visaComplexity": "moderate", "notes": "Group of Eight research universities. Post-study work visa." },
+    { "code": "MY", "name": "Malaysia", "costLevel": "low", "bachelorYears": 3, "masterYears": 2, "language": "English", "visaComplexity": "easy", "notes": "Affordable international education hub. UK/Australian branch campuses." },
+    { "code": "TR", "name": "Turkey", "costLevel": "low", "bachelorYears": 4, "masterYears": 2, "language": "Turkish/English", "visaComplexity": "easy", "notes": "Turkiye Burslari scholarships. Growing higher education system." }
+  ],
+  "facultyClusters": [
+    { "key": "engineering_technology", "label": "Engineering & Technology", "domains": ["Technology", "Engineering"] },
+    { "key": "computer_science_it", "label": "Computer Science & IT", "domains": ["Technology"] },
+    { "key": "business_management", "label": "Business & Management", "domains": ["Business", "Entrepreneurship"] },
+    { "key": "finance_economics", "label": "Finance & Economics", "domains": ["Finance"] },
+    { "key": "medicine_health", "label": "Medicine & Health Sciences", "domains": ["Healthcare"] },
+    { "key": "law_political_science", "label": "Law & Political Science", "domains": ["Law/Policy"] },
+    { "key": "natural_sciences", "label": "Natural Sciences", "domains": ["Healthcare", "Engineering"] },
+    { "key": "social_sciences", "label": "Social Sciences", "domains": ["Education", "Law/Policy"] },
+    { "key": "arts_design", "label": "Arts, Design & Architecture", "domains": ["Design"] },
+    { "key": "media_communications", "label": "Media & Communications", "domains": ["Media/Comms"] },
+    { "key": "education", "label": "Education", "domains": ["Education"] },
+    { "key": "humanities_languages", "label": "Humanities & Languages", "domains": ["Education", "Media/Comms"] },
+    { "key": "environmental_agriculture", "label": "Environmental Science", "domains": ["Engineering"] }
+  ],
+  "domainToFacultyMap": {
+    "Technology": ["computer_science_it", "engineering_technology"],
+    "Finance": ["finance_economics", "business_management"],
+    "Healthcare": ["medicine_health", "natural_sciences"],
+    "Design": ["arts_design", "media_communications"],
+    "Business": ["business_management", "finance_economics"],
+    "Law/Policy": ["law_political_science", "social_sciences"],
+    "Education": ["education", "social_sciences", "humanities_languages"],
+    "Media/Comms": ["media_communications", "humanities_languages"],
+    "Entrepreneurship": ["business_management", "computer_science_it"],
+    "Engineering": ["engineering_technology", "environmental_agriculture", "natural_sciences"]
+  }
+}

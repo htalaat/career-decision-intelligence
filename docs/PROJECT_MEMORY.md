@@ -1,6 +1,17 @@
 # PROJECT_MEMORY — Career Decision Intelligence
 
 ## Last Session
+Date: 2026-04-05
+Status: Batch 3 product-alignment correction complete — seed data + JSON mirror
+
+## Batch 3 (2026-04-05) — Study Direction Seed Corrections
+- supabase/seed/seed_study_directions.sql — 74 INSERT statements covering all 30 careers (1–3 directions each); correct slugs matched to seed_career_paths.sql (fintech-product-manager, health-informatics-specialist, venture-capital-analyst)
+- supabase/seed/seed_country_context.sql — 10 country rows: EG, SA, AE, US, GB, CA, DE, AU, MY, TR with education_system_notes, cost_level, visa_complexity
+- assets/mock-data/study-directions.json — full JSON mirror of both seed tables for offline/demo use
+- TypeScript check: PASS (0 errors)
+- Git: commit c5202d5 on master
+
+## Previous Session
 Date: 2026-04-06
 Status: ALL 4 PHASES COMPLETE — MVP DONE
 

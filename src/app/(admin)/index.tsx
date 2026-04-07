@@ -14,6 +14,7 @@ export default function AdminDashboard() {
     { label: "Career paths", description: "Manage career library and details", route: "/(admin)/career-paths" },
     { label: "Scoring rules", description: "View trait mappings and weights", route: "/(admin)/scoring" },
     { label: "Audit log", description: "View admin actions history", route: "/(admin)/audit" },
+    { label: "Seed configuration", description: "View countries, faculties, study direction mappings", route: "/(admin)/config" },
   ];
 
   return (
