@@ -10,10 +10,11 @@ import { useCareerPaths } from "../../lib/hooks/useCareerPaths";
 import { useLatestRecommendation } from "../../lib/hooks/useRecommendations";
 import { useDecisions, useCreateDecision, useCreateActionPlan, generateActionPlanTemplate } from "../../lib/hooks/useDecisions";
 import { useShortlist } from "../../lib/hooks/useShortlist";
+import { Input } from "../../components/ui/Input";
 import { useRecommendationStore } from "../../stores/recommendationStore";
 import { showSuccessToast, showErrorToast } from "../../components/ui/Toast";
 
-type DecisionStatus = "exploring" | "leaning" | "decided";
+type DecisionStatus = "exploring" | "leaning" | "decided" | "rejected";
 
 /** Decision board: pick a career path, set status, generate action plan */
 export default function DecisionsScreen() {
@@ -27,6 +28,7 @@ export default function DecisionsScreen() {
   const createActionPlan = useCreateActionPlan();
   const [selectedPathId, setSelectedPathId] = useState<string | null>(null);
   const [selectedStatus, setSelectedStatus] = useState<DecisionStatus>("exploring");
+  const [notes, setNotes] = useState("");
   const [isCreating, setIsCreating] = useState(false);
 
   useShortlist();
@@ -61,29 +63,47 @@ export default function DecisionsScreen() {
       // Create decision snapshot
       const decision = await createDecision.mutateAsync({
         chosenCareerPathId: selectedPathId,
-        status: selectedStatus,
+        status: selectedStatus === "rejected" ? "exploring" : selectedStatus as "exploring" | "leaning" | "decided",
         summary: {
           careerTitle: (career?.title as string) ?? "Unknown",
           domain: (career?.domain as string) ?? "",
           score: recItem ? Number(recItem.overall_score) : null,
           topPositives: (explanation.topPositives as string[]) ?? [],
           topNegatives: (explanation.topNegatives as string[]) ?? [],
+          studyDirection: explanation.studyDirection ?? null,
+          suggestedFaculty: explanation.suggestedFaculty ?? null,
+          whatMayBlock: (explanation.whatMayBlock as string[]) ?? [],
+          validationQuestions: (explanation.validationQuestions as string[]) ?? [],
+          notes: notes.trim() || null,
+          isRejected: selectedStatus === "rejected",
           status: selectedStatus,
         },
       });
 
-      // Generate and save action plan
-      const planTemplate = generateActionPlanTemplate(
-        (career?.title as string) ?? "this career",
-        (career?.education_path as string) ?? null,
-      );
-      await createActionPlan.mutateAsync({
-        decisionId: decision.id,
-        plan: planTemplate,
-      });
+      // Generate career-specific action plan (skip for rejected)
+      if (selectedStatus !== "rejected") {
+        const planTemplate = generateActionPlanTemplate(
+          (career?.title as string) ?? "this career",
+          (career?.education_path as string) ?? null,
+          {
+            suggestedFaculty: explanation.suggestedFaculty as string | null,
+            suggestedDegree: explanation.suggestedDegree as string | null,
+            whatToStudy: explanation.whatToStudy as string | null,
+            validationQuestions: (explanation.validationQuestions as string[]) ?? [],
+            whatMayBlock: (explanation.whatMayBlock as string[]) ?? [],
+            topPositives: (explanation.topPositives as string[]) ?? [],
+            countryConsiderations: explanation.countryConsiderations as string | null,
+          },
+        );
+        await createActionPlan.mutateAsync({
+          decisionId: decision.id,
+          plan: planTemplate,
+        });
+      }
 
       showSuccessToast("Decision recorded with action plan!");
       setSelectedPathId(null);
+      setNotes("");
       router.push(`/action-plan/${decision.id}`);
     } catch {
       showErrorToast("Failed to save decision", "Please try again.");
@@ -92,10 +112,11 @@ export default function DecisionsScreen() {
     }
   };
 
-  const statusOptions: Array<{ value: DecisionStatus; label: string; description: string }> = [
-    { value: "exploring", label: "Still exploring", description: "Gathering information" },
-    { value: "leaning", label: "Leaning toward", description: "Strong interest, not committed" },
-    { value: "decided", label: "Decided", description: "Ready to commit" },
+  const statusOptions: Array<{ value: string; label: string; description: string }> = [
+    { value: "exploring", label: "Still exploring", description: "Gathering information, not committed" },
+    { value: "leaning", label: "Leaning toward this", description: "Strong interest, want to validate" },
+    { value: "decided", label: "Decided", description: "Ready to commit and take action" },
+    { value: "rejected", label: "Not for me", description: "Ruled out after consideration" },
   ];
 
   if (isLoading) {
@@ -123,7 +144,9 @@ export default function DecisionsScreen() {
             </Text>
             {(decisions ?? []).map((d: Record<string, unknown>) => {
               const summary = (d.summary as Record<string, unknown>) ?? {};
-              const statusVariant = d.status === "decided" ? "success" : d.status === "leaning" ? "warning" : "default";
+              const isRejected = (summary as Record<string, unknown>).isRejected === true;
+              const statusVariant = isRejected ? "error" : d.status === "decided" ? "success" : d.status === "leaning" ? "warning" : "default";
+              const statusLabel = isRejected ? "rejected" : d.status as string;
               return (
                 <Pressable
                   key={d.id as string}
@@ -141,11 +164,16 @@ export default function DecisionsScreen() {
                     <Text style={{ fontSize: tokens.typography.bodySize, fontWeight: "600", color: tokens.colors.text.primary, flex: 1 }}>
                       {summary.careerTitle as string}
                     </Text>
-                    <Badge label={d.status as string} variant={statusVariant} />
+                    <Badge label={statusLabel} variant={statusVariant} />
                   </View>
                   <Text style={{ fontSize: tokens.typography.captionSize, color: tokens.colors.text.muted }}>
                     {summary.domain as string} • Score: {summary.score != null ? `${summary.score}%` : "N/A"}
                   </Text>
+                  {(summary.notes as string) && (
+                    <Text style={{ fontSize: tokens.typography.captionSize, color: tokens.colors.text.secondary, fontStyle: "italic" }}>
+                      "{summary.notes as string}"
+                    </Text>
+                  )}
                 </Pressable>
               );
             })}
@@ -221,7 +249,7 @@ export default function DecisionsScreen() {
                   {statusOptions.map((opt) => (
                     <Pressable
                       key={opt.value}
-                      onPress={() => setSelectedStatus(opt.value)}
+                      onPress={() => setSelectedStatus(opt.value as DecisionStatus)}
                       style={{
                         backgroundColor: selectedStatus === opt.value ? tokens.colors.accent.DEFAULT + "15" : tokens.colors.surface.secondary,
                         borderRadius: 12,
@@ -239,6 +267,17 @@ export default function DecisionsScreen() {
                     </Pressable>
                   ))}
                 </View>
+              )}
+
+              {/* Notes */}
+              {selectedPathId && (
+                <Input
+                  label="Notes (optional)"
+                  placeholder="Any thoughts, concerns, or things to remember..."
+                  value={notes}
+                  onChangeText={setNotes}
+                  helper="Personal notes about this decision"
+                />
               )}
 
               {/* Submit */}
