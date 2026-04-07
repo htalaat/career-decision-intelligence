@@ -6,17 +6,18 @@ import { generateExplanation } from "./explain";
 
 const SCORING_MODEL_VERSION = "v2";
 
-/** Weight distribution for 9 scoring dimensions */
+/** Weight distribution for 10 scoring dimensions */
 const DIMENSION_WEIGHTS = {
-  interestFit: 0.17,
-  strengthFit: 0.13,
-  valuesFit: 0.13,
-  workstyleFit: 0.07,
-  goalsFit: 0.10,
-  feasibilityFit: 0.08,
-  educationFit: 0.10,
-  countryFit: 0.07,
-  clusterReactionFit: 0.15,
+  interestFit: 0.14,
+  strengthFit: 0.11,
+  valuesFit: 0.11,
+  workstyleFit: 0.06,
+  goalsFit: 0.08,
+  feasibilityFit: 0.07,
+  educationFit: 0.08,
+  countryFit: 0.06,
+  clusterReactionFit: 0.14,
+  subjectFit: 0.15,
 };
 
 /**
@@ -34,7 +35,7 @@ export function generateRecommendations(
     const breakdown = computeScore(profile, career);
     const penalties = computePenalties(profile, career);
 
-    // Weighted overall score across 9 dimensions
+    // Weighted overall score across 10 dimensions
     const rawScore =
       breakdown.interestFit * DIMENSION_WEIGHTS.interestFit +
       breakdown.strengthFit * DIMENSION_WEIGHTS.strengthFit +
@@ -44,7 +45,8 @@ export function generateRecommendations(
       breakdown.feasibilityFit * DIMENSION_WEIGHTS.feasibilityFit +
       breakdown.educationFit * DIMENSION_WEIGHTS.educationFit +
       breakdown.countryFit * DIMENSION_WEIGHTS.countryFit +
-      breakdown.clusterReactionFit * DIMENSION_WEIGHTS.clusterReactionFit;
+      breakdown.clusterReactionFit * DIMENSION_WEIGHTS.clusterReactionFit +
+      breakdown.subjectFit * DIMENSION_WEIGHTS.subjectFit;
 
     // Apply penalties
     const penaltyTotal = totalPenalty(penalties);

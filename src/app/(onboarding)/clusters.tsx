@@ -46,6 +46,12 @@ export default function ClustersScreen() {
     decision_readiness: (answers.decision_readiness as string) ?? null,
     study_country_preference: null,
     clusterReactions: null,
+    subjectsEnjoyed: [],
+    subjectsGoodAt: [],
+    subjectsDisliked: [],
+    currentSubjects: [],
+    schoolSystem: null,
+    curriculumLevel: null,
   }), [answers]);
 
   /** Run engine with discovery-only profile to rank clusters */

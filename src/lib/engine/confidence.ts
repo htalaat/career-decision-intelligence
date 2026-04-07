@@ -51,5 +51,13 @@ export function computeConfidence(profile: EngineProfile): number {
   total++;
   if (profile.decision_readiness) filled++;
 
+  // Subjects
+  total++;
+  if (profile.currentSubjects.length >= 3) filled++;
+
+  // Subject feelings
+  total++;
+  if (profile.subjectsEnjoyed.length > 0 || profile.subjectsGoodAt.length > 0) filled++;
+
   return Math.round((filled / total) * 100) / 100;
 }

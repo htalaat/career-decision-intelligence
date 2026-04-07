@@ -12,6 +12,7 @@ interface ScoreBreakdownProps {
   educationFit?: number;
   countryFit?: number;
   clusterReactionFit?: number;
+  subjectFit?: number;
 }
 
 const DIMENSION_LABELS: Array<{ key: keyof ScoreBreakdownProps; label: string }> = [
@@ -24,6 +25,7 @@ const DIMENSION_LABELS: Array<{ key: keyof ScoreBreakdownProps; label: string }>
   { key: "educationFit", label: "Education path fit" },
   { key: "countryFit", label: "Country/location fit" },
   { key: "clusterReactionFit", label: "Your reaction fit" },
+  { key: "subjectFit", label: "Subject match" },
 ];
 
 /** Visual breakdown of the 8 scoring dimensions as horizontal bars */

@@ -180,6 +180,12 @@ export async function buildEngineProfile(userId: string): Promise<EngineProfile>
     decision_readiness: sp.decision_readiness ?? null,
     study_country_preference: null, // captured in answers
     clusterReactions: (answerMap.get("cluster_reactions") as Record<string, string>) ?? null,
+    subjectsEnjoyed: (answerMap.get("subjects_enjoyed") as string[]) ?? [],
+    subjectsGoodAt: (answerMap.get("subjects_good_at") as string[]) ?? [],
+    subjectsDisliked: (answerMap.get("subjects_disliked") as string[]) ?? [],
+    currentSubjects: (answerMap.get("current_subjects") as string[]) ?? [],
+    schoolSystem: (answerMap.get("school_system") as string) ?? null,
+    curriculumLevel: (answerMap.get("curriculum_level") as string) ?? null,
   };
 }
 

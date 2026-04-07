@@ -30,6 +30,12 @@ export interface EngineProfile {
   decision_readiness: string | null;
   study_country_preference: string | null;
   clusterReactions: Record<string, string> | null;
+  subjectsEnjoyed: string[];
+  subjectsGoodAt: string[];
+  subjectsDisliked: string[];
+  currentSubjects: string[];
+  schoolSystem: string | null;
+  curriculumLevel: string | null;
 }
 
 /** A career path with its trait mappings and study directions attached */
@@ -70,6 +76,7 @@ export interface ScoreBreakdown {
   educationFit: number;
   countryFit: number;
   clusterReactionFit: number;
+  subjectFit: number;
 }
 
 /** Penalty applied to a career path */

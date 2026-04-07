@@ -1,5 +1,36 @@
 import type { EngineProfile, EngineCareerPath, ScoreBreakdown } from "./types";
 
+const SUBJECT_TO_DOMAINS: Record<string, string[]> = {
+  physics: ["Engineering", "Technology"],
+  chemistry: ["Healthcare", "Engineering"],
+  biology: ["Healthcare"],
+  environmental_science: ["Engineering"],
+  computer_science: ["Technology"],
+  math: ["Technology", "Finance", "Engineering"],
+  further_math: ["Technology", "Finance", "Engineering"],
+  statistics: ["Finance", "Technology"],
+  english: ["Media/Comms", "Education", "Law/Policy"],
+  arabic: ["Media/Comms", "Education"],
+  french: ["Media/Comms", "Education"],
+  spanish: ["Media/Comms", "Education"],
+  german: ["Media/Comms", "Education"],
+  other_language: ["Media/Comms", "Education"],
+  history: ["Law/Policy", "Education"],
+  geography: ["Engineering", "Education"],
+  economics: ["Finance", "Business"],
+  psychology: ["Healthcare", "Education"],
+  sociology: ["Education", "Law/Policy"],
+  political_science: ["Law/Policy"],
+  philosophy: ["Law/Policy", "Education"],
+  business_studies: ["Business", "Entrepreneurship"],
+  accounting: ["Finance"],
+  art: ["Design"],
+  music: ["Media/Comms"],
+  drama: ["Media/Comms"],
+  design_tech: ["Design", "Engineering"],
+  media_studies: ["Media/Comms", "Design"],
+};
+
 /**
  * Compute fit scores between a student profile and a career path.
  * Each dimension is 0-100. Scoring is based on overlap between
@@ -21,6 +52,7 @@ export function computeScore(
   const educationFit = computeEducationFit(profile, career);
   const countryFit = computeCountryFit(profile, career);
   const clusterReactionFit = computeClusterReactionFit(profile, career);
+  const subjectFit = computeSubjectFit(profile, career);
 
   return {
     interestFit: clamp(interestFit),
@@ -32,6 +64,7 @@ export function computeScore(
     educationFit: clamp(educationFit),
     countryFit: clamp(countryFit),
     clusterReactionFit: clamp(clusterReactionFit),
+    subjectFit: clamp(subjectFit),
   };
 }
 
@@ -294,6 +327,53 @@ function mapRiskFit(domain: string, riskTolerance: string | null): number {
     case "low": return isSafe ? 85 : isRisky ? 40 : 60;
     default: return 60;
   }
+}
+
+/**
+ * Compute how well the student's subject choices align with the career's domain.
+ * Uses SUBJECT_TO_DOMAINS to map each subject to relevant career domains.
+ */
+function computeSubjectFit(profile: EngineProfile, career: EngineCareerPath): number {
+  const enjoyed = profile.subjectsEnjoyed ?? [];
+  const goodAt = profile.subjectsGoodAt ?? [];
+  const disliked = profile.subjectsDisliked ?? [];
+
+  if (enjoyed.length === 0 && goodAt.length === 0 && disliked.length === 0) return 55;
+
+  let score = 50;
+  let signals = 0;
+
+  // Check if any enjoyed subjects map to this career's domain
+  for (const subject of enjoyed) {
+    const domains = SUBJECT_TO_DOMAINS[subject] ?? [];
+    if (domains.includes(career.domain)) {
+      score += 15;
+      signals++;
+    }
+  }
+
+  // Check if any good-at subjects map to this career's domain
+  for (const subject of goodAt) {
+    const domains = SUBJECT_TO_DOMAINS[subject] ?? [];
+    if (domains.includes(career.domain)) {
+      score += 12;
+      signals++;
+    }
+  }
+
+  // Check if any disliked subjects map to this career's domain
+  for (const subject of disliked) {
+    const domains = SUBJECT_TO_DOMAINS[subject] ?? [];
+    if (domains.includes(career.domain)) {
+      score -= 15;
+      signals++;
+    }
+  }
+
+  // Bonus for having subject data at all
+  if (signals > 0) score += 5;
+
+  return score;
 }
 
 function clamp(value: number): number {

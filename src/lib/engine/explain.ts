@@ -1,6 +1,37 @@
 import type { EngineProfile, EngineCareerPath, ScoreBreakdown, Penalty, Explanation } from "./types";
 import { DIRECTION_CLUSTERS } from "../utils/constants";
 
+const SUBJECT_TO_DOMAINS: Record<string, string[]> = {
+  physics: ["Engineering", "Technology"],
+  chemistry: ["Healthcare", "Engineering"],
+  biology: ["Healthcare"],
+  environmental_science: ["Engineering"],
+  computer_science: ["Technology"],
+  math: ["Technology", "Finance", "Engineering"],
+  further_math: ["Technology", "Finance", "Engineering"],
+  statistics: ["Finance", "Technology"],
+  english: ["Media/Comms", "Education", "Law/Policy"],
+  arabic: ["Media/Comms", "Education"],
+  french: ["Media/Comms", "Education"],
+  spanish: ["Media/Comms", "Education"],
+  german: ["Media/Comms", "Education"],
+  other_language: ["Media/Comms", "Education"],
+  history: ["Law/Policy", "Education"],
+  geography: ["Engineering", "Education"],
+  economics: ["Finance", "Business"],
+  psychology: ["Healthcare", "Education"],
+  sociology: ["Education", "Law/Policy"],
+  political_science: ["Law/Policy"],
+  philosophy: ["Law/Policy", "Education"],
+  business_studies: ["Business", "Entrepreneurship"],
+  accounting: ["Finance"],
+  art: ["Design"],
+  music: ["Media/Comms"],
+  drama: ["Media/Comms"],
+  design_tech: ["Design", "Engineering"],
+  media_studies: ["Media/Comms", "Design"],
+};
+
 /**
  * Generate a human-readable explanation for why a career path scored the way it did.
  * Every explanation traces back to specific profile inputs.
@@ -77,6 +108,33 @@ export function generateExplanation(
       } else if (reaction === "not_for_me") {
         topNegatives.push(`You said '${clusterLabel}' wasn't for you, but your profile suggests some fit — worth a second look?`);
       }
+    }
+  }
+
+  // --- Subject signals ---
+  if (profile.subjectsEnjoyed.length > 0 || profile.subjectsGoodAt.length > 0) {
+    const enjoyedMatch = profile.subjectsEnjoyed.filter((s) => {
+      const domains = SUBJECT_TO_DOMAINS[s] ?? [];
+      return domains.includes(career.domain);
+    });
+    const goodAtMatch = profile.subjectsGoodAt.filter((s) => {
+      const domains = SUBJECT_TO_DOMAINS[s] ?? [];
+      return domains.includes(career.domain);
+    });
+    const dislikedMatch = profile.subjectsDisliked.filter((s) => {
+      const domains = SUBJECT_TO_DOMAINS[s] ?? [];
+      return domains.includes(career.domain);
+    });
+
+    if (enjoyedMatch.length > 0) {
+      topPositives.push(`You enjoy ${formatSubjectList(enjoyedMatch)} — directly relevant to this path`);
+    }
+    if (goodAtMatch.length > 0) {
+      topPositives.push(`You're strong in ${formatSubjectList(goodAtMatch)} — a good foundation`);
+    }
+    if (dislikedMatch.length > 0) {
+      topNegatives.push(`You said ${formatSubjectList(dislikedMatch)} isn't for you — but this path involves it`);
+      whatMayBlock.push(`This career area connects to subjects you don't enjoy (${formatSubjectList(dislikedMatch)})`);
     }
   }
 
@@ -183,6 +241,10 @@ export function generateExplanation(
 
 function formatTraitLabel(key: string): string {
   return key.replace(/_/g, " ");
+}
+
+function formatSubjectList(subjects: string[]): string {
+  return subjects.map((s) => s.replace(/_/g, " ")).join(", ");
 }
 
 function formatFacultyLabel(cluster: string): string {
