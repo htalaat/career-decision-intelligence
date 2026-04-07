@@ -59,13 +59,21 @@ export function useSaveOnboarding() {
       if (!sp) throw new Error("Student profile not found");
       const profileId = sp.id;
 
-      // Update stage
-      if (answers.current_stage) {
-        await supabase
-          .from("student_profiles")
-          .update({ current_stage: answers.current_stage as string, completion_percent: 100 })
-          .eq("id", profileId);
-      }
+      // Update student profile with new fields
+      await supabase
+        .from("student_profiles")
+        .update({
+          current_stage: answers.current_stage as string,
+          country: (answers.country as string) ?? null,
+          city_region: (answers.city_region as string) ?? null,
+          current_school: (answers.current_school as string) ?? null,
+          current_faculty: (answers.current_faculty as string) ?? null,
+          intended_field: (answers.intended_field as string) ?? null,
+          relocation_willingness: (answers.relocation_willingness as string) ?? null,
+          decision_readiness: (answers.decision_readiness as string) ?? null,
+          completion_percent: 100,
+        })
+        .eq("id", profileId);
 
       // Save answers (interests, strengths, values, workstyle)
       const answerKeys = ["interests", "strengths", "values", "workstyle"];

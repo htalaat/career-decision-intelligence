@@ -15,7 +15,7 @@ export default function StageScreen() {
     <OnboardingQuestion
       question="Where are you right now?"
       hint="This helps us tailor the paths we suggest."
-      onNext={() => { if (stage) { setAnswer("current_stage", stage); nextStep(); router.push("/(onboarding)/interests"); } }}
+      onNext={() => { if (stage) { setAnswer("current_stage", stage); nextStep(); router.push("/(onboarding)/academic" as never); } }}
       onBack={() => { prevStep(); router.back(); }}
       nextDisabled={!stage}
     >

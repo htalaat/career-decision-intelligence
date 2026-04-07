@@ -22,7 +22,7 @@ export default function GoalsScreen() {
     <OnboardingQuestion
       question="What matters most in your decision?"
       hint="Adjust the sliders to show your priorities. Higher = matters more."
-      onNext={() => { setAnswer("weights", weights); nextStep(); router.push("/(onboarding)/summary"); }}
+      onNext={() => { setAnswer("weights", weights); nextStep(); router.push("/(onboarding)/readiness" as never); }}
       onBack={() => { prevStep(); router.back(); }}
     >
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ gap: 20 }}>
