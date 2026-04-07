@@ -18,6 +18,7 @@ import {
   RELOCATION_OPTIONS, INTEREST_TRAITS, STRENGTH_TRAITS,
   VALUE_OPTIONS, WORKSTYLE_OPTIONS, READINESS_OPTIONS,
 } from "../lib/utils/constants";
+import { trackEvent, EVENTS } from "../lib/utils/analytics";
 
 /** Edit profile: change answers and optionally re-run recommendations */
 export default function EditProfileScreen() {
@@ -109,6 +110,7 @@ export default function EditProfileScreen() {
       } else {
         showSuccessToast("Profile updated!");
       }
+      trackEvent(rerun ? EVENTS.PROFILE_RERUN : EVENTS.PROFILE_EDITED);
       router.back();
     } catch {
       showErrorToast("Failed to save changes");

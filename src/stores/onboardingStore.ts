@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { trackEvent, EVENTS } from "../lib/utils/analytics";
 
 interface OnboardingState {
   currentStep: number;
@@ -19,7 +20,11 @@ export const useOnboardingStore = create<OnboardingState>((set) => ({
     set((s) => ({ answers: { ...s.answers, [key]: value } })),
 
   nextStep: () =>
-    set((s) => ({ currentStep: Math.min(s.currentStep + 1, 10) })),
+    set((s) => {
+      const next = Math.min(s.currentStep + 1, 13);
+      trackEvent(EVENTS.ONBOARDING_STEP_COMPLETED, { step: s.currentStep, nextStep: next });
+      return { currentStep: next };
+    }),
 
   prevStep: () =>
     set((s) => ({ currentStep: Math.max(s.currentStep - 1, 1) })),

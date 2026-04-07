@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "../supabase/client";
 import { useAuthStore } from "../../stores/authStore";
+import { trackEvent, EVENTS } from "../utils/analytics";
 
 /** Fetch saved comparison scenarios for the current user */
 export function useCompareScenarios() {
@@ -55,6 +56,7 @@ export function useSaveCompareScenario() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["compare-scenarios"] });
+      trackEvent(EVENTS.COMPARE_SCENARIO_SAVED);
     },
   });
 }

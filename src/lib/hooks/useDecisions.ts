@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "../supabase/client";
 import { useAuthStore } from "../../stores/authStore";
+import { trackEvent, EVENTS } from "../utils/analytics";
 
 /** Fetch all decision snapshots for the current user */
 export function useDecisions() {
@@ -53,6 +54,7 @@ export function useCreateDecision() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["decisions"] });
+      trackEvent(EVENTS.DECISION_CREATED);
     },
   });
 }

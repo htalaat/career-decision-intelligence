@@ -4,6 +4,7 @@ import { useAuthStore } from "../../stores/authStore";
 import { useRecommendationStore } from "../../stores/recommendationStore";
 import { generateRecommendations } from "../engine/rank";
 import type { EngineProfile, EngineCareerPath } from "../engine/types";
+import { trackEvent, EVENTS } from "../utils/analytics";
 
 /** Fetch the latest recommendation run for the current user */
 export function useLatestRecommendation() {
@@ -105,6 +106,7 @@ export function useRunRecommendations() {
     onSuccess: ({ runId }) => {
       setLatestRunId(runId);
       queryClient.invalidateQueries({ queryKey: ["recommendations"] });
+      trackEvent(EVENTS.RECOMMENDATIONS_GENERATED, { runId });
     },
   });
 }

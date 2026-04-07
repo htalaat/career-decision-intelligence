@@ -2,6 +2,7 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { supabase } from "../supabase/client";
 import { signOut } from "../supabase/auth";
 import { useAuthStore } from "../../stores/authStore";
+import { trackEvent, EVENTS } from "../utils/analytics";
 
 /** Fetch all consent logs for the current user */
 export function useConsentHistory() {
@@ -139,6 +140,9 @@ export function useExportData() {
         consents,
       };
     },
+    onSuccess: () => {
+      trackEvent(EVENTS.DATA_EXPORTED);
+    },
   });
 }
 
@@ -157,6 +161,9 @@ export function useDeleteAccount() {
         .eq("id", userId);
 
       if (error) throw error;
+
+      // Track before sign-out (last chance to fire)
+      trackEvent(EVENTS.ACCOUNT_DELETED);
 
       // Sign out
       await signOut();

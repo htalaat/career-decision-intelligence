@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "../supabase/client";
 import { useAuthStore } from "../../stores/authStore";
 import { useRecommendationStore } from "../../stores/recommendationStore";
+import { trackEvent, EVENTS } from "../utils/analytics";
 
 /** Fetch the user's shortlisted career path IDs */
 export function useShortlist() {
@@ -47,6 +48,7 @@ export function useAddToShortlist() {
     onSuccess: (_, careerPathId) => {
       toggleShortlist(careerPathId);
       queryClient.invalidateQueries({ queryKey: ["shortlist"] });
+      trackEvent(EVENTS.SHORTLIST_ADDED, { careerPathId });
     },
   });
 }
@@ -72,6 +74,7 @@ export function useRemoveFromShortlist() {
     onSuccess: (_, careerPathId) => {
       toggleShortlist(careerPathId);
       queryClient.invalidateQueries({ queryKey: ["shortlist"] });
+      trackEvent(EVENTS.SHORTLIST_REMOVED, { careerPathId });
     },
   });
 }

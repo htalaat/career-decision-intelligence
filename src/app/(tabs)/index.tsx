@@ -5,6 +5,7 @@ import { Screen } from "../../components/ui/Screen";
 import { RecommendationCard } from "../../components/features/RecommendationCard";
 import { Button } from "../../components/ui/Button";
 import { EmptyState } from "../../components/ui/EmptyState";
+import { ErrorState } from "../../components/ui/ErrorState";
 import { useTokens } from "../../lib/theme/PersonaProvider";
 import { useLatestRecommendation } from "../../lib/hooks/useRecommendations";
 import { useProfile } from "../../lib/hooks/useProfile";
@@ -14,8 +15,8 @@ import { useCareerPaths } from "../../lib/hooks/useCareerPaths";
 export default function DashboardScreen() {
   const router = useRouter();
   const tokens = useTokens();
-  const { data: profileData } = useProfile();
-  const { data: recData, isLoading } = useLatestRecommendation();
+  const { data: profileData, error: profileError, refetch: refetchProfile } = useProfile();
+  const { data: recData, isLoading, error: recError, refetch: refetchRec } = useLatestRecommendation();
   const { data: careerData } = useCareerPaths();
 
   const displayName = profileData?.profile?.preferred_name || profileData?.profile?.first_name || "there";
@@ -26,6 +27,20 @@ export default function DashboardScreen() {
         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
           <ActivityIndicator color={tokens.colors.accent.DEFAULT} size="large" />
         </View>
+      </Screen>
+    );
+  }
+
+  if (profileError || recError) {
+    return (
+      <Screen padded>
+        <ErrorState
+          message="Failed to load your data. Please try again."
+          onRetry={() => {
+            void refetchProfile();
+            void refetchRec();
+          }}
+        />
       </Screen>
     );
   }
