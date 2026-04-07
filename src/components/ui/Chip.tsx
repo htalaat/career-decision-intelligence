@@ -20,14 +20,14 @@ export function Chip({ label, selected, onPress }: ChipProps) {
       accessibilityState={{ checked: selected }}
       style={({ pressed }) => ({
         minHeight: 52,
-        borderRadius: 16,
-        paddingHorizontal: 16,
-        paddingVertical: 8,
-        borderWidth: selected ? 0 : 1,
+        borderRadius: tokens.borderRadius.full,
+        paddingHorizontal: 20,
+        paddingVertical: 12,
+        borderWidth: 2,
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: selected ? tokens.colors.accent.DEFAULT : tokens.colors.surface.secondary,
-        borderColor: tokens.colors.border.DEFAULT,
+        backgroundColor: selected ? tokens.colors.accent.muted : tokens.colors.surface.secondary,
+        borderColor: selected ? tokens.colors.accent.DEFAULT : tokens.colors.border.DEFAULT,
         opacity: pressed ? 0.85 : 1,
         transform: [{ scale: pressed ? 0.97 : 1 }],
       })}
@@ -35,8 +35,8 @@ export function Chip({ label, selected, onPress }: ChipProps) {
       <Text
         style={{
           fontSize: tokens.typography.bodySize,
-          fontWeight: selected ? "600" : "400",
-          color: selected ? tokens.colors.text.inverse : tokens.colors.text.primary,
+          fontWeight: selected ? "700" : "400",
+          color: selected ? tokens.colors.accent.DEFAULT : tokens.colors.text.primary,
         }}
       >
         {label}

@@ -2,7 +2,18 @@
 
 ## Last Session
 Date: 2026-04-05
-Status: Batch 3 direction cluster system — engine scoring, cluster reveal screen, reaction-driven ranking
+Status: Batch 3+4 — Searchable country input + complete light-theme pass
+
+## Batch 3+4 — Searchable Country + Light Theme Pass (2026-04-05)
+- src/lib/utils/constants.ts — COUNTRIES expanded from 27 to 100+ entries; priority countries (EG, SA, AE, GB, US, CA, DE) sorted first; full MENA, Europe, Asia Pacific, Americas, and sub-Saharan Africa coverage
+- src/components/ui/SearchableSelect.tsx — NEW: type-to-filter searchable dropdown with pinned options, selected indicator, "Change" affordance, 20-result cap, "No matches" empty state
+- src/app/(onboarding)/country.tsx — replaced basic Select with SearchableSelect; added "I don't know yet" pinned option; relocation dropdown only shows after country selected
+- Light theme pass: all 16 files audited — no hardcoded dark hex values found, no text.inverse misuse found
+- TrustNotice.tsx — replaced className gap/layout with inline style props (gap: 16, gap: 12)
+- ProfileSummaryCard.tsx — replaced className flex/gap with inline style props
+- All other files (compare, decisions, account, explore, career detail, action-plan, edit-profile, recommendation, CareerCard, RecommendationCard, CompareTable, ExplainBlock, FilterBar, WeightAdjuster) already using tokens correctly
+- TypeScript check: PASS (0 errors)
+- Git commit: d5019b5
 
 ## Batch 3 Cluster System (2026-04-05)
 - src/lib/engine/types.ts — added clusterReactions to EngineProfile, clusterReactionFit to ScoreBreakdown

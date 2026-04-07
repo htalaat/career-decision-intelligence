@@ -33,9 +33,9 @@ export default function SubjectsScreen() {
       onBack={() => { prevStep(); router.back(); }}
       nextDisabled={selected.length < 2}
     >
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ gap: 20 }}>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ gap: 28 }}>
         {SUBJECT_CATEGORIES.map((category) => (
-          <View key={category.category} style={{ gap: 8 }}>
+          <View key={category.category} style={{ gap: 12 }}>
             <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
               <Text style={{ fontSize: 18 }}>{category.emoji}</Text>
               <Text style={{
@@ -46,7 +46,7 @@ export default function SubjectsScreen() {
                 {category.category}
               </Text>
             </View>
-            <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
+            <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 10 }}>
               {category.subjects.map((subject) => {
                 const isSelected = selected.includes(subject.key);
                 return (
@@ -56,20 +56,21 @@ export default function SubjectsScreen() {
                     accessibilityLabel={`${subject.label}, ${isSelected ? "selected" : "not selected"}`}
                     accessibilityRole="checkbox"
                     style={({ pressed }) => ({
-                      paddingHorizontal: 16,
-                      paddingVertical: 10,
+                      paddingHorizontal: 18,
+                      paddingVertical: 12,
                       borderRadius: tokens.borderRadius.full,
-                      backgroundColor: isSelected ? tokens.colors.accent.DEFAULT : tokens.colors.surface.secondary,
+                      backgroundColor: isSelected ? tokens.colors.accent.muted : tokens.colors.surface.secondary,
                       borderWidth: 2,
                       borderColor: isSelected ? tokens.colors.accent.DEFAULT : tokens.colors.border.DEFAULT,
                       opacity: pressed ? 0.85 : 1,
                       transform: [{ scale: pressed ? 0.97 : 1 }],
+                      minHeight: 44,
                     })}
                   >
                     <Text style={{
                       fontSize: tokens.typography.captionSize,
-                      fontWeight: isSelected ? "600" : "400",
-                      color: isSelected ? tokens.colors.text.inverse : tokens.colors.text.primary,
+                      fontWeight: isSelected ? "700" : "400",
+                      color: isSelected ? tokens.colors.accent.DEFAULT : tokens.colors.text.primary,
                     }}>
                       {subject.label}
                     </Text>

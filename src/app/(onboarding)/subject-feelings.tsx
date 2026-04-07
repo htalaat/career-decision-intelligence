@@ -54,7 +54,7 @@ export default function SubjectFeelingsScreen() {
       onBack={() => { prevStep(); router.back(); }}
       nextDisabled={ratedCount < 2}
     >
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ gap: 12 }}>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ gap: 16 }}>
         {subjects.map((subject) => {
           const current = feelings[subject] ?? null;
           return (
