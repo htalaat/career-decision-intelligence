@@ -229,7 +229,7 @@ export default function CompareScreen() {
         </View>
 
         <Text style={{ fontSize: tokens.typography.captionSize, color: tokens.colors.text.muted }}>
-          Comparing {compareResults?.length ?? 0} paths side by side. Scroll right to see all columns.
+          Comparing {compareResults?.length ?? 0} paths. Stars (★) mark the best score in each dimension.
         </Text>
 
         {/* Side-by-side comparison table */}
@@ -260,8 +260,7 @@ export default function CompareScreen() {
         />
 
         <Button
-          label="Ready to decide? →"
-          variant="ghost"
+          label="Ready to decide? → Go to Plan"
           onPress={() => router.push("/(tabs)/plan" as never)}
         />
       </View>

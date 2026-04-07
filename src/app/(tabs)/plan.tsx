@@ -133,6 +133,14 @@ export default function DecisionsScreen() {
   return (
     <Screen scroll padded>
       <View style={{ gap: 24, paddingTop: 16 }}>
+        <Pressable
+          onPress={() => router.push("/(tabs)/discover" as never)}
+          style={{ flexDirection: "row", alignItems: "center", gap: 4, marginBottom: 4 }}
+        >
+          <Text style={{ fontSize: tokens.typography.captionSize, color: tokens.colors.accent.DEFAULT }}>
+            ← Back to Discover
+          </Text>
+        </Pressable>
         <Text style={{ fontSize: tokens.typography.headingSize, fontWeight: "700", color: tokens.colors.text.primary }}>
           Decisions
         </Text>
@@ -155,9 +163,9 @@ export default function DecisionsScreen() {
                   key={d.id as string}
                   style={{
                     backgroundColor: tokens.colors.surface.secondary,
-                    borderRadius: 12,
+                    borderRadius: 16,
                     borderWidth: 1,
-                    borderColor: tokens.colors.border.DEFAULT,
+                    borderColor: d.status === "decided" ? tokens.colors.teal : tokens.colors.border.DEFAULT,
                     overflow: "hidden",
                   }}
                 >
@@ -226,10 +234,12 @@ export default function DecisionsScreen() {
                       )}
                       {/* Action plan link */}
                       {!isRejected && (
-                        <Button
-                          label="View action plan →"
-                          onPress={() => router.push(`/action-plan/${d.id as string}` as never)}
-                        />
+                        <View style={{ marginTop: 4 }}>
+                          <Button
+                            label="View action plan →"
+                            onPress={() => router.push(`/action-plan/${d.id as string}` as never)}
+                          />
+                        </View>
                       )}
                     </View>
                   )}

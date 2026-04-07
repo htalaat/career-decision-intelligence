@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, ScrollView } from "react-native";
+import { View, Text } from "react-native";
 import { useTokens } from "../../lib/theme/PersonaProvider";
 import type { ScoredPath } from "../../lib/engine/types";
 
@@ -7,248 +7,156 @@ interface CompareTableProps {
   paths: ScoredPath[];
 }
 
-interface RowDef {
+interface DimensionDef {
   label: string;
-  getValue: (p: ScoredPath) => string | number;
-  format?: "score" | "text" | "list";
+  getValue: (p: ScoredPath) => number;
 }
 
-const SCORE_ROWS: RowDef[] = [
-  { label: "Overall fit", getValue: (p) => p.overallScore, format: "score" },
-  { label: "Interest fit", getValue: (p) => p.breakdown.interestFit, format: "score" },
-  { label: "Strength fit", getValue: (p) => p.breakdown.strengthFit, format: "score" },
-  { label: "Values alignment", getValue: (p) => p.breakdown.valuesFit, format: "score" },
-  { label: "Work-style fit", getValue: (p) => p.breakdown.workstyleFit, format: "score" },
-  { label: "Goals alignment", getValue: (p) => p.breakdown.goalsFit, format: "score" },
-  { label: "Feasibility", getValue: (p) => p.breakdown.feasibilityFit, format: "score" },
-  { label: "Education fit", getValue: (p) => p.breakdown.educationFit, format: "score" },
-  { label: "Country fit", getValue: (p) => p.breakdown.countryFit, format: "score" },
+const DIMENSIONS: DimensionDef[] = [
+  { label: "Overall fit", getValue: (p) => p.overallScore },
+  { label: "Interest match", getValue: (p) => p.breakdown.interestFit },
+  { label: "Strength match", getValue: (p) => p.breakdown.strengthFit },
+  { label: "Values fit", getValue: (p) => p.breakdown.valuesFit },
+  { label: "Subject match", getValue: (p) => p.breakdown.subjectFit },
+  { label: "Your reaction", getValue: (p) => p.breakdown.clusterReactionFit },
+  { label: "Education fit", getValue: (p) => p.breakdown.educationFit },
+  { label: "Feasibility", getValue: (p) => p.breakdown.feasibilityFit },
 ];
 
-/** True side-by-side comparison table for 2-5 career paths */
+/** Mobile-friendly stacked comparison — one card per career with all dimensions */
 export function CompareTable({ paths }: CompareTableProps) {
   const tokens = useTokens();
-  const colWidth = Math.max(160, 280 / paths.length);
+
+  if (paths.length === 0) return null;
+
+  // Find the best score for each dimension to highlight winners
+  const bestScores = DIMENSIONS.map((dim) => ({
+    dim,
+    best: Math.max(...paths.map((p) => dim.getValue(p))),
+  }));
 
   return (
-    <ScrollView horizontal showsHorizontalScrollIndicator={true}>
-      <View style={{ minWidth: "100%" }}>
-        {/* Header row: career titles */}
-        <View style={{ flexDirection: "row", borderBottomWidth: 1, borderBottomColor: tokens.colors.border.DEFAULT, paddingBottom: 12, marginBottom: 8 }}>
-          <View style={{ width: 120 }} />
-          {paths.map((p) => (
-            <View key={p.careerPathId} style={{ width: colWidth, paddingHorizontal: 6 }}>
-              <Text style={{ fontSize: tokens.typography.bodySize, fontWeight: "700", color: tokens.colors.text.primary }} numberOfLines={2}>
-                {p.title}
-              </Text>
-              <Text style={{ fontSize: 11, color: tokens.colors.text.muted }}>
-                {p.domain}
+    <View style={{ gap: 16 }}>
+      {paths.map((path, pathIndex) => (
+        <View
+          key={path.careerPathId}
+          style={{
+            backgroundColor: tokens.colors.surface.secondary,
+            borderRadius: 16,
+            borderWidth: 2,
+            borderColor: pathIndex === 0 ? tokens.colors.accent.DEFAULT : tokens.colors.border.DEFAULT,
+            padding: 16,
+            gap: 14,
+          }}
+        >
+          {/* Career header */}
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <View style={{
+              width: 32, height: 32, borderRadius: 16,
+              backgroundColor: pathIndex === 0 ? tokens.colors.accent.DEFAULT : tokens.colors.surface.elevated,
+              alignItems: "center", justifyContent: "center",
+              marginRight: 10,
+            }}>
+              <Text style={{
+                fontSize: 14, fontWeight: "700",
+                color: pathIndex === 0 ? "#FFFFFF" : tokens.colors.text.muted,
+              }}>
+                {pathIndex + 1}
               </Text>
             </View>
-          ))}
-        </View>
-
-        {/* Section: Scores */}
-        <SectionHeader label="Fit scores" tokens={tokens} />
-        {SCORE_ROWS.map((row) => (
-          <ScoreRow key={row.label} row={row} paths={paths} colWidth={colWidth} tokens={tokens} />
-        ))}
-
-        {/* Section: Study direction */}
-        <SectionHeader label="Study direction" tokens={tokens} />
-        <TextRow
-          label="Suggested faculty"
-          paths={paths}
-          colWidth={colWidth}
-          tokens={tokens}
-          getValue={(p) => p.explanation.suggestedFaculty ?? "\u2014"}
-        />
-        <TextRow
-          label="Suggested degree"
-          paths={paths}
-          colWidth={colWidth}
-          tokens={tokens}
-          getValue={(p) => p.explanation.suggestedDegree ?? "\u2014"}
-        />
-        <TextRow
-          label="What to study"
-          paths={paths}
-          colWidth={colWidth}
-          tokens={tokens}
-          getValue={(p) => p.explanation.whatToStudy ?? "\u2014"}
-        />
-
-        {/* Section: Risks & blockers */}
-        <SectionHeader label="Risks & considerations" tokens={tokens} />
-        <ListRow
-          label="Watch-outs"
-          paths={paths}
-          colWidth={colWidth}
-          tokens={tokens}
-          getValue={(p) => p.explanation.topNegatives}
-        />
-        <ListRow
-          label="What may block"
-          paths={paths}
-          colWidth={colWidth}
-          tokens={tokens}
-          getValue={(p) => p.explanation.whatMayBlock}
-        />
-
-        {/* Section: Validation */}
-        <SectionHeader label="What to verify next" tokens={tokens} />
-        <ListRow
-          label="Questions"
-          paths={paths}
-          colWidth={colWidth}
-          tokens={tokens}
-          getValue={(p) => p.explanation.validationQuestions.slice(0, 2)}
-        />
-
-        {/* Section: Why it fits */}
-        <SectionHeader label="Why it fits" tokens={tokens} />
-        <ListRow
-          label="Top reasons"
-          paths={paths}
-          colWidth={colWidth}
-          tokens={tokens}
-          getValue={(p) => p.explanation.topPositives.slice(0, 3)}
-        />
-      </View>
-    </ScrollView>
-  );
-}
-
-/** Section header row */
-function SectionHeader({ label, tokens }: { label: string; tokens: ReturnType<typeof useTokens> }) {
-  return (
-    <View style={{ paddingVertical: 10, marginTop: 8, borderBottomWidth: 1, borderBottomColor: tokens.colors.border.DEFAULT }}>
-      <Text style={{ fontSize: tokens.typography.captionSize, fontWeight: "700", color: tokens.colors.accent.DEFAULT, textTransform: "uppercase", letterSpacing: 1 }}>
-        {label}
-      </Text>
-    </View>
-  );
-}
-
-/** Numeric score row with bar chart and highlight for best value */
-function ScoreRow({
-  row,
-  paths,
-  colWidth,
-  tokens,
-}: {
-  row: RowDef;
-  paths: ScoredPath[];
-  colWidth: number;
-  tokens: ReturnType<typeof useTokens>;
-}) {
-  const values = paths.map((p) => Number(row.getValue(p)));
-  const maxVal = Math.max(...values);
-
-  return (
-    <View style={{ flexDirection: "row", paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: tokens.colors.surface.elevated }}>
-      <View style={{ width: 120, justifyContent: "center" }}>
-        <Text style={{ fontSize: tokens.typography.captionSize, color: tokens.colors.text.secondary }}>
-          {row.label}
-        </Text>
-      </View>
-      {paths.map((p, i) => {
-        const val = values[i] ?? 0;
-        const isMax = val === maxVal && paths.length > 1;
-        const color = val >= 70 ? tokens.colors.success : val >= 50 ? tokens.colors.warning : tokens.colors.error;
-
-        return (
-          <View key={p.careerPathId} style={{ width: colWidth, paddingHorizontal: 6 }}>
-            <View style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
-              <View style={{ flex: 1, height: 6, backgroundColor: tokens.colors.surface.elevated, borderRadius: 3, overflow: "hidden" }}>
-                <View style={{ height: "100%", width: `${Math.min(100, val)}%`, backgroundColor: color, borderRadius: 3 }} />
-              </View>
+            <View style={{ flex: 1 }}>
               <Text style={{
-                fontSize: 12,
-                fontWeight: isMax ? "700" : "500",
-                color: isMax ? color : tokens.colors.text.muted,
-                minWidth: 30,
-                textAlign: "right",
+                fontSize: tokens.typography.titleSize,
+                fontWeight: tokens.typography.titleWeight,
+                color: tokens.colors.text.primary,
               }}>
-                {val}%
+                {path.title}
+              </Text>
+              <Text style={{ fontSize: tokens.typography.captionSize, color: tokens.colors.text.secondary }}>
+                {path.domain} · {path.overallScore}% overall
               </Text>
             </View>
           </View>
-        );
-      })}
-    </View>
-  );
-}
 
-/** Single-line text row */
-function TextRow({
-  label,
-  paths,
-  colWidth,
-  tokens,
-  getValue,
-}: {
-  label: string;
-  paths: ScoredPath[];
-  colWidth: number;
-  tokens: ReturnType<typeof useTokens>;
-  getValue: (p: ScoredPath) => string;
-}) {
-  return (
-    <View style={{ flexDirection: "row", paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: tokens.colors.surface.elevated }}>
-      <View style={{ width: 120, justifyContent: "center" }}>
-        <Text style={{ fontSize: tokens.typography.captionSize, color: tokens.colors.text.secondary }}>
-          {label}
-        </Text>
-      </View>
-      {paths.map((p) => (
-        <View key={p.careerPathId} style={{ width: colWidth, paddingHorizontal: 6 }}>
-          <Text style={{ fontSize: 12, color: tokens.colors.text.primary, lineHeight: 16 }} numberOfLines={4}>
-            {getValue(p)}
-          </Text>
+          {/* Score dimensions */}
+          {DIMENSIONS.map((dim, dimIndex) => {
+            const value = dim.getValue(path);
+            const isBest = paths.length > 1 && value === bestScores[dimIndex]?.best && value > 0;
+            const barColor = value >= 70 ? tokens.colors.teal : value >= 50 ? tokens.colors.gold : tokens.colors.error;
+
+            return (
+              <View key={dim.label} style={{ gap: 4 }}>
+                <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+                  <Text style={{
+                    fontSize: tokens.typography.captionSize,
+                    color: tokens.colors.text.secondary,
+                  }}>
+                    {dim.label}
+                  </Text>
+                  <Text style={{
+                    fontSize: tokens.typography.captionSize,
+                    fontWeight: isBest ? "700" : "500",
+                    color: isBest ? barColor : tokens.colors.text.primary,
+                  }}>
+                    {value}%{isBest ? " ★" : ""}
+                  </Text>
+                </View>
+                <View style={{
+                  height: 6, borderRadius: 3,
+                  backgroundColor: tokens.colors.surface.elevated,
+                  overflow: "hidden",
+                }}>
+                  <View style={{
+                    height: "100%",
+                    width: `${Math.min(100, value)}%`,
+                    backgroundColor: barColor,
+                    borderRadius: 3,
+                  }} />
+                </View>
+              </View>
+            );
+          })}
+
+          {/* Study direction */}
+          {path.explanation.suggestedFaculty && (
+            <View style={{
+              backgroundColor: tokens.colors.accent.muted,
+              borderRadius: 10,
+              padding: 10,
+            }}>
+              <Text style={{ fontSize: tokens.typography.captionSize, fontWeight: "600", color: tokens.colors.accent.DEFAULT }}>
+                📚 Study direction
+              </Text>
+              <Text style={{ fontSize: tokens.typography.captionSize, color: tokens.colors.text.primary, marginTop: 4 }}>
+                {path.explanation.suggestedFaculty}
+              </Text>
+              {path.explanation.suggestedDegree && (
+                <Text style={{ fontSize: 12, color: tokens.colors.text.secondary, marginTop: 2 }}>
+                  {path.explanation.suggestedDegree}
+                </Text>
+              )}
+            </View>
+          )}
+
+          {/* Key positives and negatives */}
+          {path.explanation.topPositives.length > 0 && (
+            <View style={{ gap: 4 }}>
+              <Text style={{ fontSize: 12, fontWeight: "600", color: tokens.colors.teal }}>Why it fits:</Text>
+              {path.explanation.topPositives.slice(0, 2).map((r, i) => (
+                <Text key={i} style={{ fontSize: 12, color: tokens.colors.text.secondary }}>+ {r}</Text>
+              ))}
+            </View>
+          )}
+          {path.explanation.topNegatives.length > 0 && (
+            <View style={{ gap: 4 }}>
+              <Text style={{ fontSize: 12, fontWeight: "600", color: tokens.colors.gold }}>Watch out:</Text>
+              {path.explanation.topNegatives.slice(0, 1).map((r, i) => (
+                <Text key={i} style={{ fontSize: 12, color: tokens.colors.text.secondary }}>- {r}</Text>
+              ))}
+            </View>
+          )}
         </View>
       ))}
-    </View>
-  );
-}
-
-/** Bulleted list row for arrays of strings */
-function ListRow({
-  label,
-  paths,
-  colWidth,
-  tokens,
-  getValue,
-}: {
-  label: string;
-  paths: ScoredPath[];
-  colWidth: number;
-  tokens: ReturnType<typeof useTokens>;
-  getValue: (p: ScoredPath) => string[];
-}) {
-  return (
-    <View style={{ flexDirection: "row", paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: tokens.colors.surface.elevated }}>
-      <View style={{ width: 120, justifyContent: "center" }}>
-        <Text style={{ fontSize: tokens.typography.captionSize, color: tokens.colors.text.secondary }}>
-          {label}
-        </Text>
-      </View>
-      {paths.map((p) => {
-        const items = getValue(p);
-        return (
-          <View key={p.careerPathId} style={{ width: colWidth, paddingHorizontal: 6, gap: 2 }}>
-            {items.length === 0 ? (
-              <Text style={{ fontSize: 11, color: tokens.colors.text.muted }}>{"\u2014"}</Text>
-            ) : (
-              items.map((item, i) => (
-                <Text key={i} style={{ fontSize: 11, color: tokens.colors.text.secondary, lineHeight: 15 }}>
-                  {"\u2022"} {item}
-                </Text>
-              ))
-            )}
-          </View>
-        );
-      })}
     </View>
   );
 }
