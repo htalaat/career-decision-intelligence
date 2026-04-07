@@ -4,6 +4,7 @@
     "slug": "career-decision-intelligence",
     "version": "0.1.0",
     "scheme": "career-decision",
+    "userInterfaceStyle": "dark",
     "web": {
       "bundler": "metro",
       "output": "single",
