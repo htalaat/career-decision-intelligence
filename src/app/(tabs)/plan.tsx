@@ -253,7 +253,7 @@ export default function DecisionsScreen() {
               title="No paths to decide on"
               message="Generate recommendations first, then shortlist paths you're interested in."
               actionLabel="Go to Explore"
-              onAction={() => router.push("/(tabs)/explore")}
+              onAction={() => router.push("/(tabs)/discover" as never)}
             />
           ) : (
             <>

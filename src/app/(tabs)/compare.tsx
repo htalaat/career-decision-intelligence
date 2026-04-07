@@ -209,7 +209,7 @@ export default function CompareScreen() {
               title="No paths to compare"
               message="Shortlist some career paths first from the Explore tab."
               actionLabel="Go to Explore"
-              onAction={() => router.push("/(tabs)/explore")}
+              onAction={() => router.push("/(tabs)/discover" as never)}
             />
           )}
         </View>
@@ -262,7 +262,7 @@ export default function CompareScreen() {
         <Button
           label="Ready to decide? →"
           variant="ghost"
-          onPress={() => router.push("/(tabs)/decisions" as never)}
+          onPress={() => router.push("/(tabs)/plan" as never)}
         />
       </View>
     </Screen>
