@@ -55,42 +55,46 @@ export default function SubjectsScreen() {
                     onPress={() => toggleSubject(subject.key)}
                     accessibilityLabel={`${subject.label}, ${isSelected ? "selected" : "not selected"}`}
                     accessibilityRole="checkbox"
-                    style={({ pressed }) => ({
-                      paddingHorizontal: 16,
-                      paddingVertical: 14,
+                  >
+                    <View style={{
+                      paddingLeft: 14,
+                      paddingRight: 16,
+                      paddingTop: 14,
+                      paddingBottom: 14,
                       borderRadius: 14,
                       backgroundColor: isSelected ? tokens.colors.accent.muted : tokens.colors.surface.secondary,
                       borderWidth: 2,
                       borderColor: isSelected ? tokens.colors.accent.DEFAULT : tokens.colors.border.DEFAULT,
-                      opacity: pressed ? 0.9 : 1,
-                      transform: [{ scale: pressed ? 0.98 : 1 }],
                       minHeight: 48,
-                      flexDirection: "row" as const,
-                      alignItems: "center" as const,
-                    })}
-                  >
-                    <View style={{
-                      width: 22,
-                      height: 22,
-                      borderRadius: 11,
-                      borderWidth: 2,
-                      borderColor: isSelected ? tokens.colors.accent.DEFAULT : tokens.colors.border.DEFAULT,
-                      backgroundColor: isSelected ? tokens.colors.accent.DEFAULT : "transparent",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      marginRight: 12,
+                      display: "flex" as never,
+                      flexDirection: "row" as never,
+                      alignItems: "center" as never,
                     }}>
-                      {isSelected && (
-                        <Text style={{ color: tokens.colors.text.inverse, fontSize: 12, fontWeight: "700" }}>✓</Text>
-                      )}
+                      <View style={{
+                        width: 22,
+                        height: 22,
+                        borderRadius: 11,
+                        borderWidth: 2,
+                        borderColor: isSelected ? tokens.colors.accent.DEFAULT : tokens.colors.border.DEFAULT,
+                        backgroundColor: isSelected ? tokens.colors.accent.DEFAULT : "transparent",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        marginRight: 12,
+                        flexShrink: 0,
+                      }}>
+                        {isSelected && (
+                          <Text style={{ color: "#FFFFFF", fontSize: 12, fontWeight: "700" }}>✓</Text>
+                        )}
+                      </View>
+                      <Text style={{
+                        fontSize: tokens.typography.bodySize,
+                        fontWeight: isSelected ? "600" : "400",
+                        color: isSelected ? tokens.colors.accent.DEFAULT : tokens.colors.text.primary,
+                        flexShrink: 1,
+                      }}>
+                        {subject.label}
+                      </Text>
                     </View>
-                    <Text style={{
-                      fontSize: tokens.typography.bodySize,
-                      fontWeight: isSelected ? "600" : "400",
-                      color: isSelected ? tokens.colors.accent.DEFAULT : tokens.colors.text.primary,
-                    }}>
-                      {subject.label}
-                    </Text>
                   </Pressable>
                 );
               })}

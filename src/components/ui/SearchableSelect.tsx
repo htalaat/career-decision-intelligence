@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from "react";
-import { View, Text, TextInput, ScrollView, Pressable } from "react-native";
+import { View, Text, TextInput, Pressable } from "react-native";
 import { useTokens } from "../../lib/theme/PersonaProvider";
 
 interface SearchableSelectOption {
@@ -16,7 +16,7 @@ interface SearchableSelectProps {
   pinnedOptions?: SearchableSelectOption[];
 }
 
-/** Type-to-filter searchable dropdown */
+/** Type-to-filter searchable select with radio indicators */
 export function SearchableSelect({
   label,
   options,
@@ -31,13 +31,13 @@ export function SearchableSelect({
   const selectedLabel = [...pinnedOptions, ...options].find((o) => o.value === value)?.label;
 
   const filtered = useMemo(() => {
-    if (!search.trim()) return options.slice(0, 15);
+    if (!search.trim()) return options.slice(0, 12);
     const q = search.toLowerCase();
-    return options.filter((o) => o.label.toLowerCase().includes(q)).slice(0, 20);
+    return options.filter((o) => o.label.toLowerCase().includes(q)).slice(0, 15);
   }, [search, options]);
 
   return (
-    <View style={{ gap: 8 }}>
+    <View style={{ gap: 10 }}>
       <Text style={{ fontSize: tokens.typography.captionSize, fontWeight: "500", color: tokens.colors.text.secondary }}>
         {label}
       </Text>
@@ -53,7 +53,7 @@ export function SearchableSelect({
           backgroundColor: tokens.colors.surface.secondary,
           borderWidth: 2,
           borderColor: value ? tokens.colors.accent.DEFAULT : tokens.colors.border.DEFAULT,
-          borderRadius: tokens.borderRadius.md,
+          borderRadius: 14,
           paddingHorizontal: 16,
           paddingVertical: 14,
           fontSize: tokens.typography.bodySize,
@@ -62,78 +62,102 @@ export function SearchableSelect({
         }}
       />
 
-      {/* Selected indicator */}
+      {/* Selected state */}
       {value && !search && (
-        <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
-          <Text style={{ fontSize: tokens.typography.captionSize, color: tokens.colors.accent.DEFAULT, fontWeight: "600" }}>
-            ✓ {selectedLabel}
-          </Text>
-          <Pressable onPress={() => { onSelect(""); setSearch(""); }}>
-            <Text style={{ fontSize: tokens.typography.captionSize, color: tokens.colors.text.muted }}>Change</Text>
-          </Pressable>
-        </View>
+        <Pressable onPress={() => { onSelect(""); setSearch(""); }}>
+          <View style={{
+            display: "flex" as never,
+            flexDirection: "row" as never,
+            alignItems: "center" as never,
+            gap: 8,
+          }}>
+            <Text style={{ fontSize: tokens.typography.captionSize, color: tokens.colors.accent.DEFAULT, fontWeight: "600" }}>
+              ✓ {selectedLabel}
+            </Text>
+            <Text style={{ fontSize: tokens.typography.captionSize, color: tokens.colors.text.muted }}>— tap to change</Text>
+          </View>
+        </Pressable>
       )}
 
-      {/* Pinned options (always visible) */}
+      {/* Pinned options */}
       {pinnedOptions.length > 0 && !search && !value && (
         <View style={{ gap: 6 }}>
           {pinnedOptions.map((opt) => (
-            <Pressable
-              key={opt.value}
-              onPress={() => { onSelect(opt.value); setSearch(""); }}
-              style={{
+            <Pressable key={opt.value} onPress={() => { onSelect(opt.value); setSearch(""); }}>
+              <View style={{
                 backgroundColor: tokens.colors.accent.muted,
-                borderRadius: tokens.borderRadius.md,
-                padding: 12,
+                borderRadius: 14,
+                padding: 14,
                 minHeight: tokens.touchTarget.min,
-                justifyContent: "center",
-              }}
-            >
-              <Text style={{ fontSize: tokens.typography.bodySize, fontWeight: "500", color: tokens.colors.accent.DEFAULT }}>
-                {opt.label}
-              </Text>
+                display: "flex" as never,
+                flexDirection: "row" as never,
+                alignItems: "center" as never,
+              }}>
+                <View style={{
+                  width: 22, height: 22, borderRadius: 11, borderWidth: 2,
+                  borderColor: tokens.colors.accent.DEFAULT, backgroundColor: "transparent",
+                  marginRight: 12, flexShrink: 0,
+                }} />
+                <Text style={{ fontSize: tokens.typography.bodySize, fontWeight: "500", color: tokens.colors.accent.DEFAULT, flexShrink: 1 }}>
+                  {opt.label}
+                </Text>
+              </View>
             </Pressable>
           ))}
         </View>
       )}
 
-      {/* Filtered results */}
+      {/* Filtered results — NO nested ScrollView, parent OnboardingQuestion handles scroll */}
       {(search.trim() || (!value && pinnedOptions.length === 0)) && (
-        <ScrollView style={{ maxHeight: 250 }} nestedScrollEnabled>
-          <View style={{ gap: 4 }}>
-            {filtered.map((opt) => {
-              const isSelected = opt.value === value;
-              return (
-                <Pressable
-                  key={opt.value}
-                  onPress={() => { onSelect(opt.value); setSearch(""); }}
-                  style={{
-                    backgroundColor: isSelected ? tokens.colors.accent.muted : tokens.colors.surface.secondary,
-                    borderRadius: tokens.borderRadius.sm,
-                    borderWidth: 1,
+        <View style={{ gap: 6 }}>
+          {filtered.map((opt) => {
+            const isSelected = opt.value === value;
+            return (
+              <Pressable key={opt.value} onPress={() => { onSelect(opt.value); setSearch(""); }}>
+                <View style={{
+                  backgroundColor: isSelected ? tokens.colors.accent.muted : tokens.colors.surface.secondary,
+                  borderRadius: 14,
+                  borderWidth: 2,
+                  borderColor: isSelected ? tokens.colors.accent.DEFAULT : tokens.colors.border.DEFAULT,
+                  paddingLeft: 14,
+                  paddingRight: 16,
+                  paddingTop: 12,
+                  paddingBottom: 12,
+                  minHeight: 48,
+                  display: "flex" as never,
+                  flexDirection: "row" as never,
+                  alignItems: "center" as never,
+                }}>
+                  {/* Radio circle */}
+                  <View style={{
+                    width: 22, height: 22, borderRadius: 11, borderWidth: 2,
                     borderColor: isSelected ? tokens.colors.accent.DEFAULT : tokens.colors.border.DEFAULT,
-                    padding: 12,
-                    minHeight: 44,
-                    justifyContent: "center",
-                  }}
-                >
+                    backgroundColor: isSelected ? tokens.colors.accent.DEFAULT : "transparent",
+                    alignItems: "center", justifyContent: "center",
+                    marginRight: 12, flexShrink: 0,
+                  }}>
+                    {isSelected && (
+                      <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: "#FFFFFF" }} />
+                    )}
+                  </View>
                   <Text style={{
                     fontSize: tokens.typography.bodySize,
                     fontWeight: isSelected ? "600" : "400",
                     color: isSelected ? tokens.colors.accent.DEFAULT : tokens.colors.text.primary,
+                    flexShrink: 1,
                   }}>
                     {opt.label}
                   </Text>
-                </Pressable>
-              );
-            })}
-            {filtered.length === 0 && (
-              <Text style={{ fontSize: tokens.typography.captionSize, color: tokens.colors.text.muted, padding: 12, textAlign: "center" }}>
-                No matches found
-              </Text>
-            )}
-          </View>
-        </ScrollView>
+                </View>
+              </Pressable>
+            );
+          })}
+          {filtered.length === 0 && (
+            <Text style={{ fontSize: tokens.typography.captionSize, color: tokens.colors.text.muted, padding: 12, textAlign: "center" }}>
+              No matches found
+            </Text>
+          )}
+        </View>
       )}
     </View>
   );

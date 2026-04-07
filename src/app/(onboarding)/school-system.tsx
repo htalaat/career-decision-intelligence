@@ -47,19 +47,22 @@ export default function SchoolSystemScreen() {
               accessibilityLabel={system.label}
               accessibilityRole="radio"
               accessibilityState={{ selected: isSelected }}
-              style={{
+            >
+              <View style={{
                 backgroundColor: isSelected ? tokens.colors.accent.muted : tokens.colors.surface.secondary,
                 borderRadius: tokens.borderRadius.lg,
                 borderWidth: 2,
                 borderColor: isSelected ? tokens.colors.accent.DEFAULT : tokens.colors.border.DEFAULT,
-                padding: 16,
-                flexDirection: "row",
-                alignItems: "center",
-                gap: 14,
+                paddingLeft: 14,
+                paddingRight: 16,
+                paddingTop: 14,
+                paddingBottom: 14,
+                display: "flex" as never,
+                flexDirection: "row" as never,
+                alignItems: "center" as never,
                 minHeight: tokens.touchTarget.min,
-              }}
-            >
-              <Text style={{ fontSize: 24 }}>{system.emoji}</Text>
+              }}>
+              <Text style={{ fontSize: 24, marginRight: 12 }}>{system.emoji}</Text>
               <View style={{ flex: 1 }}>
                 <Text style={{
                   fontSize: tokens.typography.bodySize,
@@ -73,6 +76,7 @@ export default function SchoolSystemScreen() {
                     {system.helper}
                   </Text>
                 ) : null}
+              </View>
               </View>
             </Pressable>
           );

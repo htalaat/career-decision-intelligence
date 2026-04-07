@@ -15,7 +15,7 @@ interface SelectProps {
   error?: string;
 }
 
-/** Single-select option group — card style with radio indicator */
+/** Single-select option group — card style with radio indicator next to text */
 export function Select({ label, options, value, onSelect, error }: SelectProps) {
   const tokens = useTokens();
 
@@ -34,45 +34,48 @@ export function Select({ label, options, value, onSelect, error }: SelectProps) 
               accessibilityLabel={option.label}
               accessibilityRole="radio"
               accessibilityState={{ selected: isSelected }}
-              style={({ pressed }) => ({
+            >
+              <View style={{
                 minHeight: tokens.touchTarget.min,
                 borderRadius: 14,
                 borderWidth: 2,
-                paddingHorizontal: 16,
-                paddingVertical: 14,
-                flexDirection: "row" as const,
-                alignItems: "center" as const,
+                paddingLeft: 14,
+                paddingRight: 16,
+                paddingTop: 14,
+                paddingBottom: 14,
+                display: "flex" as never,
+                flexDirection: "row" as never,
+                alignItems: "center" as never,
                 borderColor: isSelected ? tokens.colors.accent.DEFAULT : tokens.colors.border.DEFAULT,
                 backgroundColor: isSelected ? tokens.colors.accent.muted : tokens.colors.surface.secondary,
-                opacity: pressed ? 0.9 : 1,
-              })}
-            >
-              {/* Radio indicator */}
-              <View style={{
-                width: 22,
-                height: 22,
-                borderRadius: 11,
-                marginRight: 12,
-                borderWidth: 2,
-                borderColor: isSelected ? tokens.colors.accent.DEFAULT : tokens.colors.border.DEFAULT,
-                backgroundColor: isSelected ? tokens.colors.accent.DEFAULT : "transparent",
-                alignItems: "center",
-                justifyContent: "center",
               }}>
-                {isSelected && (
-                  <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: tokens.colors.text.inverse }} />
-                )}
-              </View>
-              <Text
-                style={{
+                {/* Radio circle */}
+                <View style={{
+                  width: 22,
+                  height: 22,
+                  borderRadius: 11,
+                  borderWidth: 2,
+                  borderColor: isSelected ? tokens.colors.accent.DEFAULT : tokens.colors.border.DEFAULT,
+                  backgroundColor: isSelected ? tokens.colors.accent.DEFAULT : "transparent",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginRight: 12,
+                  flexShrink: 0,
+                }}>
+                  {isSelected && (
+                    <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: "#FFFFFF" }} />
+                  )}
+                </View>
+                {/* Label */}
+                <Text style={{
                   fontSize: tokens.typography.bodySize,
                   fontWeight: isSelected ? "600" : "400",
                   color: isSelected ? tokens.colors.accent.DEFAULT : tokens.colors.text.primary,
-                  flex: 1,
-                }}
-              >
-                {option.label}
-              </Text>
+                  flexShrink: 1,
+                }}>
+                  {option.label}
+                </Text>
+              </View>
             </Pressable>
           );
         })}
