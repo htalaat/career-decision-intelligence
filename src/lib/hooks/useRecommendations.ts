@@ -87,6 +87,8 @@ export function useRunRecommendations() {
         workstyle_fit: sp.breakdown.workstyleFit,
         goals_fit: sp.breakdown.goalsFit,
         feasibility_fit: sp.breakdown.feasibilityFit,
+        education_fit: sp.breakdown.educationFit,
+        country_fit: sp.breakdown.countryFit,
         penalties: sp.penalties as unknown as Record<string, unknown>,
         explanation: sp.explanation as unknown as Record<string, unknown>,
         rank: sp.rank,
@@ -115,7 +117,7 @@ export async function buildEngineProfile(userId: string): Promise<EngineProfile>
   // Get student profile
   const { data: sp } = await supabase
     .from("student_profiles")
-    .select("id, current_stage")
+    .select("id, current_stage, country, city_region, current_faculty, intended_field, relocation_willingness, decision_readiness")
     .eq("user_id", userId)
     .single();
 
@@ -165,8 +167,16 @@ export async function buildEngineProfile(userId: string): Promise<EngineProfile>
       family_expectation: constraints?.family_expectation ?? null,
       risk_tolerance: constraints?.risk_tolerance ?? null,
       max_study_years: constraints?.max_study_years ?? null,
+      location_constraint: constraints?.location_constraint ?? null,
     },
     current_stage: sp.current_stage,
+    country: sp.country ?? null,
+    city_region: sp.city_region ?? null,
+    current_faculty: sp.current_faculty ?? null,
+    intended_field: sp.intended_field ?? null,
+    relocation_willingness: sp.relocation_willingness ?? null,
+    decision_readiness: sp.decision_readiness ?? null,
+    study_country_preference: null, // captured in answers
   };
 }
 
@@ -177,6 +187,7 @@ export async function buildEngineProfile(userId: string): Promise<EngineProfile>
 export function buildEngineCareerPaths(
   paths: Array<Record<string, unknown>>,
   mappings: Array<Record<string, unknown>>,
+  studyDirections?: Array<Record<string, unknown>>,
 ): EngineCareerPath[] {
   return paths.map((p) => ({
     id: p.id as string,
@@ -194,6 +205,17 @@ export function buildEngineCareerPaths(
         trait_key: m.trait_key as string,
         weight: Number(m.weight),
         rationale: (m.rationale as string) ?? null,
+      })),
+    studyDirections: (studyDirections ?? [])
+      .filter((sd) => sd.career_path_id === p.id)
+      .map((sd) => ({
+        faculty_cluster: sd.faculty_cluster as string,
+        degree_type: sd.degree_type as string,
+        field_of_study: sd.field_of_study as string,
+        country_notes: (sd.country_notes as string) ?? null,
+        prerequisites: (sd.prerequisites as string) ?? null,
+        typical_duration_years: (sd.typical_duration_years as number) ?? null,
+        relevance_level: (sd.relevance_level as string) ?? "primary",
       })),
   }));
 }

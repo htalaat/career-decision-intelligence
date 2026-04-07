@@ -19,11 +19,19 @@ export interface EngineProfile {
     family_expectation: string | null;
     risk_tolerance: string | null;
     max_study_years: number | null;
+    location_constraint: string | null;
   };
   current_stage: string | null;
+  country: string | null;
+  city_region: string | null;
+  current_faculty: string | null;
+  intended_field: string | null;
+  relocation_willingness: string | null;
+  decision_readiness: string | null;
+  study_country_preference: string | null;
 }
 
-/** A career path with its trait mappings attached */
+/** A career path with its trait mappings and study directions attached */
 export interface EngineCareerPath {
   id: string;
   slug: string;
@@ -39,6 +47,15 @@ export interface EngineCareerPath {
     weight: number;
     rationale: string | null;
   }>;
+  studyDirections: Array<{
+    faculty_cluster: string;
+    degree_type: string;
+    field_of_study: string;
+    country_notes: string | null;
+    prerequisites: string | null;
+    typical_duration_years: number | null;
+    relevance_level: string;
+  }>;
 }
 
 /** Score breakdown for one career path */
@@ -49,6 +66,8 @@ export interface ScoreBreakdown {
   workstyleFit: number;
   goalsFit: number;
   feasibilityFit: number;
+  educationFit: number;
+  countryFit: number;
 }
 
 /** Penalty applied to a career path */
@@ -64,6 +83,12 @@ export interface Explanation {
   topNegatives: string[];
   missingInfo: string[];
   validationQuestions: string[];
+  studyDirection: string | null;
+  suggestedFaculty: string | null;
+  suggestedDegree: string | null;
+  countryConsiderations: string | null;
+  whatToStudy: string | null;
+  whatMayBlock: string[];
 }
 
 /** Complete scored result for one career path */

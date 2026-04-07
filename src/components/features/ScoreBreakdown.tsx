@@ -9,6 +9,8 @@ interface ScoreBreakdownProps {
   workstyleFit: number;
   goalsFit: number;
   feasibilityFit: number;
+  educationFit?: number;
+  countryFit?: number;
 }
 
 const DIMENSION_LABELS: Array<{ key: keyof ScoreBreakdownProps; label: string }> = [
@@ -18,9 +20,11 @@ const DIMENSION_LABELS: Array<{ key: keyof ScoreBreakdownProps; label: string }>
   { key: "workstyleFit", label: "Work-style fit" },
   { key: "goalsFit", label: "Goals alignment" },
   { key: "feasibilityFit", label: "Practical feasibility" },
+  { key: "educationFit", label: "Education path fit" },
+  { key: "countryFit", label: "Country/location fit" },
 ];
 
-/** Visual breakdown of the 6 scoring dimensions as horizontal bars */
+/** Visual breakdown of the 8 scoring dimensions as horizontal bars */
 export function ScoreBreakdown(props: ScoreBreakdownProps) {
   const tokens = useTokens();
 
@@ -30,7 +34,7 @@ export function ScoreBreakdown(props: ScoreBreakdownProps) {
         Score breakdown
       </Text>
       {DIMENSION_LABELS.map(({ key, label }) => {
-        const value = props[key];
+        const value = props[key] ?? 0;
         const barColor = value >= 70
           ? tokens.colors.success
           : value >= 50

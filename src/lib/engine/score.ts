@@ -18,6 +18,9 @@ export function computeScore(
   const goalsFit = computeGoalsFit(profile, career);
   const feasibilityFit = computeFeasibility(profile, career);
 
+  const educationFit = computeEducationFit(profile, career);
+  const countryFit = computeCountryFit(profile, career);
+
   return {
     interestFit: clamp(interestFit),
     strengthFit: clamp(strengthFit),
@@ -25,6 +28,8 @@ export function computeScore(
     workstyleFit: clamp(workstyleFit),
     goalsFit: clamp(goalsFit),
     feasibilityFit: clamp(feasibilityFit),
+    educationFit: clamp(educationFit),
+    countryFit: clamp(countryFit),
   };
 }
 
@@ -115,6 +120,60 @@ function computeFeasibility(profile: EngineProfile, career: EngineCareerPath): n
   if (profile.constraints.financial_level === "low" && career.typical_duration_years != null && career.typical_duration_years > 4) {
     score -= 15;
   }
+
+  return score;
+}
+
+/**
+ * Compute education path fit: does the student's current/intended field
+ * align with the career's required study directions?
+ */
+function computeEducationFit(profile: EngineProfile, career: EngineCareerPath): number {
+  if (career.studyDirections.length === 0) return 60; // no data = neutral
+
+  const studentField = profile.intended_field ?? profile.current_faculty;
+  if (!studentField || studentField === "undecided") return 55; // undecided = slight neutral
+
+  // Check if any study direction matches the student's field
+  const primaryMatch = career.studyDirections.some(
+    (sd) => sd.field_of_study.toLowerCase().includes(studentField.replace(/_/g, " ")) ||
+            studentField.includes(sd.faculty_cluster.replace(/_/g, " "))
+  );
+
+  if (primaryMatch) return 90;
+
+  // Check secondary matches via faculty cluster
+  const clusterMatch = career.studyDirections.some(
+    (sd) => sd.faculty_cluster === profile.current_faculty
+  );
+
+  if (clusterMatch) return 70;
+
+  return 40; // no match
+}
+
+/**
+ * Compute country/location fit based on relocation willingness
+ * and career domain availability.
+ */
+function computeCountryFit(profile: EngineProfile, career: EngineCareerPath): number {
+  if (!profile.country) return 60; // no country = neutral
+
+  let score = 70; // baseline
+
+  // Check if career has country-specific study direction notes
+  const hasCountryNotes = career.studyDirections.some((sd) => sd.country_notes);
+
+  // Relocation affects feasibility
+  if (profile.relocation_willingness === "no") {
+    // Some careers are harder to pursue locally in certain regions
+    const globalDomains = ["Technology", "Entrepreneurship"];
+    if (globalDomains.includes(career.domain)) score += 10;
+  } else if (profile.relocation_willingness === "international" || profile.relocation_willingness === "flexible") {
+    score += 15; // more options available
+  }
+
+  if (hasCountryNotes) score += 5;
 
   return score;
 }

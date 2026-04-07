@@ -39,5 +39,17 @@ export function computeConfidence(profile: EngineProfile): number {
   total++;
   if (profile.current_stage) filled++;
 
+  // Country
+  total++;
+  if (profile.country) filled++;
+
+  // Academic context (faculty or intended field)
+  total++;
+  if (profile.current_faculty || profile.intended_field) filled++;
+
+  // Decision readiness
+  total++;
+  if (profile.decision_readiness) filled++;
+
   return Math.round((filled / total) * 100) / 100;
 }
