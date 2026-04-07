@@ -10,16 +10,16 @@ export default function VerifyScreen() {
   return (
     <Screen padded>
       <View className="flex-1 justify-center items-center gap-6">
-        <Text className="text-text-primary font-bold text-center" style={{ fontSize: tokens.typography.headingSize }}>
+        <Text className="font-bold text-center" style={{ fontSize: tokens.typography.headingSize, color: tokens.colors.text.primary }}>
           Check your email
         </Text>
         <Text
-          className="text-text-secondary text-center"
-          style={{ fontSize: tokens.typography.bodySize, lineHeight: tokens.typography.bodySize * tokens.typography.lineHeightMultiplier }}
+          className="text-center"
+          style={{ fontSize: tokens.typography.bodySize, lineHeight: tokens.typography.bodySize * tokens.typography.lineHeightMultiplier, color: tokens.colors.text.secondary }}
         >
           We sent you a secure sign-in link.{"\n"}Click it to continue.
         </Text>
-        <Text className="text-text-muted text-center" style={{ fontSize: tokens.typography.captionSize }}>
+        <Text className="text-center" style={{ fontSize: tokens.typography.captionSize, color: tokens.colors.text.muted }}>
           Didn't get it? Check your spam folder.
         </Text>
       </View>

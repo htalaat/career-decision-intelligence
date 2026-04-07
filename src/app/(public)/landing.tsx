@@ -15,16 +15,17 @@ export default function LandingScreen() {
       <View className="flex-1 justify-center gap-8">
         <View className="gap-4">
           <Text
-            className="text-text-primary font-bold text-center"
-            style={{ fontSize: tokens.typography.headingSize }}
+            className="font-bold text-center"
+            style={{ fontSize: tokens.typography.headingSize, color: tokens.colors.text.primary }}
           >
             Career Decision Intelligence
           </Text>
           <Text
-            className="text-text-secondary text-center"
+            className="text-center"
             style={{
               fontSize: tokens.typography.bodySize,
               lineHeight: tokens.typography.bodySize * tokens.typography.lineHeightMultiplier,
+              color: tokens.colors.text.secondary,
             }}
           >
             Move from career uncertainty to a structured, defensible decision.{"\n"}

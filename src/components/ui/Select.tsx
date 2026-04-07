@@ -21,7 +21,7 @@ export function Select({ label, options, value, onSelect, error }: SelectProps) 
 
   return (
     <View className="gap-2">
-      <Text className="text-text-secondary font-medium" style={{ fontSize: tokens.typography.captionSize }}>{label}</Text>
+      <Text className="font-medium" style={{ fontSize: tokens.typography.captionSize, color: tokens.colors.text.secondary }}>{label}</Text>
       <View className="gap-2">
         {options.map((option) => (
           <Pressable
@@ -30,12 +30,12 @@ export function Select({ label, options, value, onSelect, error }: SelectProps) 
             accessibilityLabel={option.label}
             accessibilityRole="radio"
             accessibilityState={{ selected: value === option.value }}
-            className={`rounded-xl border px-4 py-3 ${value === option.value ? "bg-accent/10 border-accent" : "bg-surface-elevated border-border"}`}
-            style={{ minHeight: tokens.touchTarget.min }}
+            className={`rounded-xl border px-4 py-3 ${value === option.value ? "border-accent" : "border-border"}`}
+            style={{ minHeight: tokens.touchTarget.min, backgroundColor: value === option.value ? tokens.colors.accent.light : tokens.colors.surface.elevated }}
           >
             <Text
-              className={value === option.value ? "text-accent font-semibold" : "text-text-primary"}
-              style={{ fontSize: tokens.typography.bodySize }}
+              className={value === option.value ? "font-semibold" : undefined}
+              style={{ fontSize: tokens.typography.bodySize, color: value === option.value ? tokens.colors.accent.DEFAULT : tokens.colors.text.primary }}
             >
               {option.label}
             </Text>
@@ -43,7 +43,7 @@ export function Select({ label, options, value, onSelect, error }: SelectProps) 
         ))}
       </View>
       {error && (
-        <Text className="text-error" style={{ fontSize: tokens.typography.captionSize }}>{error}</Text>
+        <Text style={{ fontSize: tokens.typography.captionSize, color: tokens.colors.error }}>{error}</Text>
       )}
     </View>
   );

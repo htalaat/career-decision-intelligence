@@ -17,12 +17,12 @@ export function ProgressBar({ percent, label, showPercent = true }: ProgressBarP
     <View className="gap-1">
       {(label || showPercent) && (
         <View className="flex-row justify-between">
-          {label && <Text className="text-text-secondary" style={{ fontSize: tokens.typography.captionSize }}>{label}</Text>}
-          {showPercent && <Text className="text-text-muted" style={{ fontSize: tokens.typography.captionSize }}>{Math.round(clamped)}%</Text>}
+          {label && <Text style={{ fontSize: tokens.typography.captionSize, color: tokens.colors.text.secondary }}>{label}</Text>}
+          {showPercent && <Text style={{ fontSize: tokens.typography.captionSize, color: tokens.colors.text.muted }}>{Math.round(clamped)}%</Text>}
         </View>
       )}
-      <View className="h-2 bg-surface-elevated rounded-full overflow-hidden">
-        <View className="h-full bg-accent rounded-full" style={{ width: `${clamped}%` }} />
+      <View className="h-2 rounded-full overflow-hidden" style={{ backgroundColor: tokens.colors.surface.elevated }}>
+        <View className="h-full rounded-full" style={{ width: `${clamped}%`, backgroundColor: tokens.colors.accent.DEFAULT }} />
       </View>
     </View>
   );

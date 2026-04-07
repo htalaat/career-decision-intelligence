@@ -32,12 +32,12 @@ export function ChipGroup({ options, selected, onToggle, min = 0, max = Infinity
         ))}
       </View>
       {min > 0 && (
-        <Text className="text-text-muted" style={{ fontSize: tokens.typography.captionSize }}>
+        <Text style={{ fontSize: tokens.typography.captionSize, color: tokens.colors.text.muted }}>
           Select {min}–{max === Infinity ? "any number" : max}
         </Text>
       )}
       {error && (
-        <Text className="text-error" style={{ fontSize: tokens.typography.captionSize }}>{error}</Text>
+        <Text style={{ fontSize: tokens.typography.captionSize, color: tokens.colors.error }}>{error}</Text>
       )}
     </View>
   );

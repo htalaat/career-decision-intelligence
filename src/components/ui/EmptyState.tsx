@@ -16,8 +16,8 @@ export function EmptyState({ title, message, actionLabel, onAction }: EmptyState
 
   return (
     <View className="flex-1 items-center justify-center px-8 gap-4">
-      <Text className="text-text-primary font-semibold text-center" style={{ fontSize: tokens.typography.titleSize }}>{title}</Text>
-      <Text className="text-text-secondary text-center" style={{ fontSize: tokens.typography.bodySize }}>{message}</Text>
+      <Text className="font-semibold text-center" style={{ fontSize: tokens.typography.titleSize, color: tokens.colors.text.primary }}>{title}</Text>
+      <Text className="text-center" style={{ fontSize: tokens.typography.bodySize, color: tokens.colors.text.secondary }}>{message}</Text>
       {actionLabel && onAction && <Button label={actionLabel} onPress={onAction} />}
     </View>
   );

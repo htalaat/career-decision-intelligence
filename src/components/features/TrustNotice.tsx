@@ -10,20 +10,20 @@ export function TrustNotice() {
   return (
     <Card>
       <View className="gap-4">
-        <Text className="text-text-primary font-semibold" style={{ fontSize: tokens.typography.titleSize }}>
+        <Text className="font-semibold" style={{ fontSize: tokens.typography.titleSize, color: tokens.colors.text.primary }}>
           Your privacy matters
         </Text>
         <View className="gap-3">
-          <Text className="text-text-secondary" style={{ fontSize: tokens.typography.bodySize }}>
+          <Text style={{ fontSize: tokens.typography.bodySize, color: tokens.colors.text.secondary }}>
             We collect only what's needed to help you make a decision. Nothing more.
           </Text>
-          <Text className="text-text-secondary" style={{ fontSize: tokens.typography.bodySize }}>
+          <Text style={{ fontSize: tokens.typography.bodySize, color: tokens.colors.text.secondary }}>
             Your answers are private to you. We don't share them with employers, universities, or third parties.
           </Text>
-          <Text className="text-text-secondary" style={{ fontSize: tokens.typography.bodySize }}>
+          <Text style={{ fontSize: tokens.typography.bodySize, color: tokens.colors.text.secondary }}>
             You can export or delete your data at any time from account settings.
           </Text>
-          <Text className="text-text-secondary" style={{ fontSize: tokens.typography.bodySize }}>
+          <Text style={{ fontSize: tokens.typography.bodySize, color: tokens.colors.text.secondary }}>
             No hidden AI decisions. Every recommendation is based on transparent rules you can see.
           </Text>
         </View>

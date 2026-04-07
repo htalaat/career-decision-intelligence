@@ -22,7 +22,7 @@ export function ProfileSummaryCard({ items }: ProfileSummaryCardProps) {
       {items.map((item) => (
         <Card key={item.label}>
           <View className="gap-2">
-            <Text className="text-text-secondary font-medium" style={{ fontSize: tokens.typography.captionSize }}>
+            <Text className="font-medium" style={{ fontSize: tokens.typography.captionSize, color: tokens.colors.text.secondary }}>
               {item.label}
             </Text>
             <View className="flex-row flex-wrap gap-1.5">

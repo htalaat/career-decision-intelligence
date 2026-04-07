@@ -11,7 +11,7 @@ export function UserGreeting({ name }: UserGreetingProps) {
   const tokens = useTokens();
 
   return (
-    <Text className="text-text-primary font-bold" style={{ fontSize: tokens.typography.headingSize }}>
+    <Text className="font-bold" style={{ fontSize: tokens.typography.headingSize, color: tokens.colors.text.primary }}>
       Hi {name}
     </Text>
   );

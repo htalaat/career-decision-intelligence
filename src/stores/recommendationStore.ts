@@ -6,6 +6,7 @@ interface RecommendationState {
   setLatestRunId: (id: string) => void;
   toggleShortlist: (careerPathId: string) => void;
   setShortlist: (ids: string[]) => void;
+  reset: () => void;
 }
 
 /** Tracks latest recommendation run and shortlisted career paths */
@@ -23,4 +24,6 @@ export const useRecommendationStore = create<RecommendationState>((set) => ({
     })),
 
   setShortlist: (ids) => set({ shortlistedIds: ids }),
+
+  reset: () => set({ latestRunId: null, shortlistedIds: [] }),
 }));

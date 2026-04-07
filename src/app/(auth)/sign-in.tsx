@@ -41,10 +41,10 @@ export default function SignInScreen() {
     <Screen scroll padded>
       <View className="flex-1 justify-center gap-8 py-12">
         <View className="gap-2">
-          <Text className="text-text-primary font-bold" style={{ fontSize: tokens.typography.headingSize }}>
+          <Text className="font-bold" style={{ fontSize: tokens.typography.headingSize, color: tokens.colors.text.primary }}>
             Sign in
           </Text>
-          <Text className="text-text-secondary" style={{ fontSize: tokens.typography.bodySize }}>
+          <Text style={{ fontSize: tokens.typography.bodySize, color: tokens.colors.text.secondary }}>
             We'll send you a secure link. No password needed.
           </Text>
         </View>
