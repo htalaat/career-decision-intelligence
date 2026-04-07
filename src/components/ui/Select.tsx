@@ -40,7 +40,7 @@ export function Select({ label, options, value, onSelect, error }: SelectProps) 
                 paddingVertical: 12,
                 justifyContent: "center",
                 borderColor: isSelected ? tokens.colors.accent.DEFAULT : tokens.colors.border.DEFAULT,
-                backgroundColor: isSelected ? tokens.colors.accent.DEFAULT + "15" : tokens.colors.surface.elevated,
+                backgroundColor: isSelected ? tokens.colors.accent.muted : tokens.colors.surface.secondary,
               }}
             >
               <Text

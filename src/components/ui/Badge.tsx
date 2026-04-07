@@ -15,16 +15,16 @@ export function Badge({ label, variant = "default" }: BadgeProps) {
 
   const bgMap: Record<BadgeVariant, string> = {
     default: tokens.colors.surface.elevated,
-    success: tokens.colors.teal + "33",
+    success: tokens.colors.teal + "22",
     warning: tokens.colors.gold + "33",
-    error: tokens.colors.error + "33",
-    accent: tokens.colors.accent.DEFAULT + "33",
+    error: tokens.colors.error + "22",
+    accent: tokens.colors.accent.muted,
   };
 
   const textColorMap: Record<BadgeVariant, string> = {
-    default: tokens.colors.text.secondary,
-    success: tokens.colors.teal,
-    warning: tokens.colors.gold,
+    default: tokens.colors.text.primary,
+    success: "#00A8A4",
+    warning: "#9A7A00",
     error: tokens.colors.error,
     accent: tokens.colors.accent.DEFAULT,
   };

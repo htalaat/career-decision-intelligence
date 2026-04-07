@@ -19,15 +19,15 @@ export function Chip({ label, selected, onPress }: ChipProps) {
       accessibilityRole="checkbox"
       accessibilityState={{ checked: selected }}
       style={({ pressed }) => ({
-        minHeight: tokens.touchTarget.min,
-        borderRadius: tokens.borderRadius.full,
+        minHeight: 52,
+        borderRadius: 16,
         paddingHorizontal: 16,
         paddingVertical: 8,
-        borderWidth: 1,
+        borderWidth: selected ? 0 : 1,
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: selected ? tokens.colors.accent.DEFAULT : tokens.colors.surface.elevated,
-        borderColor: selected ? tokens.colors.accent.DEFAULT : tokens.colors.border.DEFAULT,
+        backgroundColor: selected ? tokens.colors.accent.DEFAULT : tokens.colors.surface.secondary,
+        borderColor: tokens.colors.border.DEFAULT,
         opacity: pressed ? 0.85 : 1,
         transform: [{ scale: pressed ? 0.97 : 1 }],
       })}
@@ -36,7 +36,7 @@ export function Chip({ label, selected, onPress }: ChipProps) {
         style={{
           fontSize: tokens.typography.bodySize,
           fontWeight: selected ? "600" : "400",
-          color: selected ? tokens.colors.text.primary : tokens.colors.text.secondary,
+          color: selected ? tokens.colors.text.inverse : tokens.colors.text.primary,
         }}
       >
         {label}

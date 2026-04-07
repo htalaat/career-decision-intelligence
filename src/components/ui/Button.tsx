@@ -19,16 +19,23 @@ export function Button({ label, onPress, variant = "primary", disabled = false, 
 
   const bgMap: Record<ButtonVariant, string> = {
     primary: tokens.colors.accent.DEFAULT,
-    secondary: tokens.colors.surface.elevated,
+    secondary: tokens.colors.surface.secondary,
     ghost: "transparent",
     destructive: tokens.colors.error,
   };
 
   const textColorMap: Record<ButtonVariant, string> = {
-    primary: tokens.colors.text.primary,
-    secondary: tokens.colors.text.primary,
+    primary: tokens.colors.text.inverse,
+    secondary: tokens.colors.accent.DEFAULT,
     ghost: tokens.colors.accent.DEFAULT,
-    destructive: tokens.colors.text.primary,
+    destructive: tokens.colors.text.inverse,
+  };
+
+  const borderMap: Record<ButtonVariant, string | undefined> = {
+    primary: undefined,
+    secondary: tokens.colors.border.DEFAULT,
+    ghost: undefined,
+    destructive: undefined,
   };
 
   return (
@@ -44,10 +51,12 @@ export function Button({ label, onPress, variant = "primary", disabled = false, 
         paddingVertical: 16,
         paddingHorizontal: 32,
         backgroundColor: bgMap[variant],
+        borderWidth: borderMap[variant] ? 1 : 0,
+        borderColor: borderMap[variant],
       }}
     >
       {loading ? (
-        <ActivityIndicator color={tokens.colors.text.primary} />
+        <ActivityIndicator color={variant === "primary" || variant === "destructive" ? tokens.colors.text.inverse : tokens.colors.accent.DEFAULT} />
       ) : (
         <Text style={{ fontSize: tokens.typography.bodySize, fontWeight: "700", color: textColorMap[variant] }}>
           {label}

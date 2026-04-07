@@ -33,7 +33,7 @@ export function OnboardingQuestion({
             {question}
           </Text>
           {hint && (
-            <Text style={{ fontSize: tokens.typography.captionSize, color: tokens.colors.text.muted }}>
+            <Text style={{ fontSize: tokens.typography.captionSize, color: tokens.colors.text.secondary }}>
               {hint}
             </Text>
           )}

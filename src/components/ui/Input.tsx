@@ -26,7 +26,7 @@ export function Input({ label, error, helper, ...inputProps }: InputProps) {
           borderColor: tokens.colors.border.DEFAULT,
           paddingHorizontal: 16,
           paddingVertical: 12,
-          backgroundColor: tokens.colors.surface.elevated,
+          backgroundColor: tokens.colors.surface.secondary,
           color: tokens.colors.text.primary,
         }}
         placeholderTextColor={tokens.colors.text.muted}

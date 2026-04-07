@@ -20,6 +20,11 @@ export function Card({ children, elevated = false, onPress, accessibilityLabel }
         borderWidth: 1,
         borderColor: tokens.colors.border.DEFAULT,
         backgroundColor: elevated ? tokens.colors.surface.elevated : tokens.colors.surface.secondary,
+        shadowColor: "#000",
+        shadowOpacity: 0.06,
+        shadowRadius: 8,
+        shadowOffset: { width: 0, height: 2 },
+        elevation: 2,
       }}
     >
       {children}
