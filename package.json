@@ -7,7 +7,8 @@
     "web": "expo start --web",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "build": "npx expo export --platform web",
+    "prebuild:css": "node -e \"require('fs').mkdirSync('node_modules/.cache/nativewind',{recursive:true})\" && npx tailwindcss -i ./src/global.css -o ./node_modules/.cache/nativewind/global.css.web.css --minify",
+    "build": "npm run prebuild:css && npx expo export --platform web",
     "type-check": "tsc --noEmit",
     "lint": "eslint src/ --ext .ts,.tsx"
   },
