@@ -11,7 +11,7 @@ export default function Index() {
   if (authLoading || (isAuthenticated && profileLoading)) {
     return (
       <View className="flex-1 items-center justify-center bg-surface">
-        <ActivityIndicator color="#4F8CFF" size="large" />
+        <ActivityIndicator color="#6C5CE7" size="large" />
       </View>
     );
   }

@@ -4,7 +4,7 @@
 
 /* Force dark background on all web views — fixes NativeWind not applying bg to root */
 html, body, #root, #main {
-  background-color: #0F1419 !important;
-  color: #F5F5F5;
+  background-color: #121826 !important;
+  color: #FFFFFF;
   min-height: 100%;
 }
