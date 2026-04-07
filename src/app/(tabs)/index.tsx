@@ -1,17 +1,18 @@
-import React from "react";
-import { View, Text, ScrollView, ActivityIndicator } from "react-native";
+import React, { useMemo } from "react";
+import { View, Text, ScrollView, ActivityIndicator, Pressable } from "react-native";
 import { useRouter } from "expo-router";
 import { Screen } from "../../components/ui/Screen";
-import { RecommendationCard } from "../../components/features/RecommendationCard";
 import { Button } from "../../components/ui/Button";
+import { Badge } from "../../components/ui/Badge";
 import { EmptyState } from "../../components/ui/EmptyState";
 import { ErrorState } from "../../components/ui/ErrorState";
 import { useTokens } from "../../lib/theme/PersonaProvider";
 import { useLatestRecommendation } from "../../lib/hooks/useRecommendations";
 import { useProfile } from "../../lib/hooks/useProfile";
 import { useCareerPaths } from "../../lib/hooks/useCareerPaths";
+import { DIRECTION_CLUSTERS } from "../../lib/utils/constants";
 
-/** Dashboard: shows top recommendations or prompts to generate them */
+/** Dashboard: cluster-first career exploration */
 export default function DashboardScreen() {
   const router = useRouter();
   const tokens = useTokens();
@@ -20,6 +21,34 @@ export default function DashboardScreen() {
   const { data: careerData } = useCareerPaths();
 
   const displayName = profileData?.profile?.preferred_name || profileData?.profile?.first_name || "there";
+  const items = recData?.items ?? [];
+
+  const pathMap = useMemo(() =>
+    new Map((careerData?.paths ?? []).map((p: Record<string, unknown>) => [p.id as string, p])),
+    [careerData],
+  );
+
+  // Group recommendations by cluster
+  const clusterGroups = useMemo(() => {
+    if (items.length === 0) return [];
+
+    return DIRECTION_CLUSTERS.map((cluster) => {
+      const clusterItems = items.filter((item: Record<string, unknown>) => {
+        const career = pathMap.get(item.career_path_id as string);
+        return career && (cluster.domains as readonly string[]).includes(career.domain as string);
+      }).sort((a: Record<string, unknown>, b: Record<string, unknown>) =>
+        Number(b.overall_score) - Number(a.overall_score),
+      );
+
+      return { ...cluster, items: clusterItems };
+    })
+      .filter((g) => g.items.length > 0)
+      .sort((a, b) => {
+        const aTop = Number(a.items[0]?.overall_score ?? 0);
+        const bTop = Number(b.items[0]?.overall_score ?? 0);
+        return bTop - aTop;
+      });
+  }, [items, pathMap]);
 
   if (isLoading) {
     return (
@@ -35,96 +64,136 @@ export default function DashboardScreen() {
     return (
       <Screen padded>
         <ErrorState
-          message="Failed to load your data. Please try again."
-          onRetry={() => {
-            void refetchProfile();
-            void refetchRec();
-          }}
+          message="Something went wrong loading your data."
+          onRetry={() => { refetchProfile(); refetchRec(); }}
         />
       </Screen>
     );
   }
 
-  const items = recData?.items ?? [];
-  const topItems = items.slice(0, 5);
-
-  // Build a map of career path ID → career title/domain for display
-  const pathMap = new Map(
-    (careerData?.paths ?? []).map((p: Record<string, unknown>) => [p.id as string, p]),
-  );
-
   return (
     <Screen scroll padded>
       <View style={{ gap: 24, paddingTop: 16 }}>
         {/* Greeting */}
-        <View style={{ gap: 4 }}>
-          <Text style={{ fontSize: tokens.typography.headingSize, fontWeight: "700", color: tokens.colors.text.primary }}>
-            Hi {displayName}
+        <View style={{ gap: 6 }}>
+          <Text style={{
+            fontSize: tokens.typography.headingSize,
+            fontWeight: tokens.typography.headingWeight,
+            color: tokens.colors.text.primary,
+          }}>
+            Hey {displayName} 👋
           </Text>
           <Text style={{ fontSize: tokens.typography.bodySize, color: tokens.colors.text.secondary }}>
             {items.length > 0
-              ? "Here are your top career recommendations."
-              : "Let's find career paths that fit you."}
+              ? "Here's what we found for you. Explore your directions."
+              : "Complete your profile to discover your directions."}
           </Text>
         </View>
 
-        {/* Recommendations or empty state */}
+        {/* No recommendations yet */}
         {items.length === 0 ? (
           <EmptyState
-            title="No recommendations yet"
-            message="Complete your profile to get personalized career recommendations."
-            actionLabel="Go to Explore"
-            onAction={() => router.push("/(tabs)/explore")}
+            title="No directions yet"
+            message="Finish your profile to see career directions that match you."
+            actionLabel="Get started"
+            onAction={() => router.push("/(onboarding)/splash" as never)}
           />
         ) : (
-          <View style={{ gap: 12 }}>
-            <Text style={{ fontSize: tokens.typography.titleSize, fontWeight: "600", color: tokens.colors.text.primary }}>
-              Top recommendations
-            </Text>
-            {topItems.map((item: Record<string, unknown>) => {
-              const career = pathMap.get(item.career_path_id as string);
-              const explanation = (item.explanation as Record<string, unknown>) ?? {};
-              return (
-                <RecommendationCard
-                  key={item.id as string}
-                  rank={item.rank as number}
-                  title={(career?.title as string) ?? "Unknown"}
-                  domain={(career?.domain as string) ?? ""}
-                  overallScore={Number(item.overall_score)}
-                  topPositives={((explanation.topPositives as string[]) ?? []).slice(0, 2)}
-                  topNegatives={((explanation.topNegatives as string[]) ?? []).slice(0, 1)}
-                  onPress={() => router.push(`/career/${item.career_path_id as string}`)}
-                />
-              );
-            })}
-            {items.length > 5 && (
-              <Button
-                label={`View all ${items.length} results`}
-                variant="secondary"
-                onPress={() => router.push(`/recommendation/${recData?.run?.id as string}`)}
-              />
-            )}
-          </View>
-        )}
+          <>
+            {/* Cluster groups */}
+            {clusterGroups.map((cluster) => (
+              <View key={cluster.key} style={{ gap: 12 }}>
+                {/* Cluster header */}
+                <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+                  <View style={{
+                    width: 40, height: 40, borderRadius: 12,
+                    backgroundColor: cluster.color + "20",
+                    alignItems: "center", justifyContent: "center",
+                  }}>
+                    <Text style={{ fontSize: 20 }}>{cluster.emoji}</Text>
+                  </View>
+                  <View style={{ flex: 1 }}>
+                    <Text style={{
+                      fontSize: tokens.typography.titleSize,
+                      fontWeight: tokens.typography.titleWeight,
+                      color: tokens.colors.text.primary,
+                    }}>
+                      {cluster.label}
+                    </Text>
+                    <Text style={{ fontSize: tokens.typography.captionSize, color: tokens.colors.text.muted }}>
+                      {cluster.items.length} career{cluster.items.length !== 1 ? "s" : ""} match
+                    </Text>
+                  </View>
+                </View>
 
-        {/* Profile actions */}
-        <View style={{ gap: 8, paddingTop: 8 }}>
-          <Button
-            label="Edit my profile"
-            variant="secondary"
-            onPress={() => router.push("/edit-profile" as never)}
-          />
-          {items.length > 0 && (
-            <Button
-              label="Re-run recommendations with current profile"
-              variant="ghost"
-              onPress={async () => {
-                // This would need to be wired with the re-run logic
-                router.push("/edit-profile" as never);
-              }}
-            />
-          )}
-        </View>
+                {/* Career cards in this cluster */}
+                {cluster.items.slice(0, 3).map((item: Record<string, unknown>) => {
+                  const career = pathMap.get(item.career_path_id as string);
+                  if (!career) return null;
+                  const score = Number(item.overall_score);
+                  const explanation = (item.explanation as Record<string, unknown>) ?? {};
+                  const topPositive = ((explanation.topPositives as string[]) ?? [])[0];
+
+                  return (
+                    <Pressable
+                      key={item.id as string}
+                      onPress={() => router.push(`/career/${item.career_path_id as string}` as never)}
+                      accessibilityLabel={`${career.title as string}, ${score}% fit`}
+                      accessibilityRole="button"
+                      style={{
+                        backgroundColor: tokens.colors.surface.secondary,
+                        borderRadius: tokens.borderRadius.lg,
+                        borderWidth: 1,
+                        borderColor: tokens.colors.border.DEFAULT,
+                        padding: 16,
+                        gap: 8,
+                        marginLeft: 50, // indent under cluster header
+                      }}
+                    >
+                      <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+                        <Text style={{
+                          fontSize: tokens.typography.bodySize,
+                          fontWeight: "600",
+                          color: tokens.colors.text.primary,
+                          flex: 1,
+                        }}>
+                          {career.title as string}
+                        </Text>
+                        <Badge
+                          label={`${score}%`}
+                          variant={score >= 70 ? "success" : score >= 50 ? "warning" : "error"}
+                        />
+                      </View>
+                      {topPositive && (
+                        <Text style={{
+                          fontSize: tokens.typography.captionSize,
+                          color: tokens.colors.text.secondary,
+                          lineHeight: tokens.typography.captionSize * 1.5,
+                        }}>
+                          {topPositive}
+                        </Text>
+                      )}
+                      {(explanation.suggestedFaculty as string) && (
+                        <Text style={{ fontSize: 12, color: tokens.colors.accent.light }}>
+                          📚 {explanation.suggestedFaculty as string}
+                        </Text>
+                      )}
+                    </Pressable>
+                  );
+                })}
+              </View>
+            ))}
+
+            {/* Actions */}
+            <View style={{ gap: 10, paddingTop: 8 }}>
+              <Button
+                label="Edit my profile"
+                variant="secondary"
+                onPress={() => router.push("/edit-profile" as never)}
+              />
+            </View>
+          </>
+        )}
       </View>
     </Screen>
   );

@@ -1,41 +1,94 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Text, Pressable } from "react-native";
 import { useRouter } from "expo-router";
 import { Screen } from "../../components/ui/Screen";
 import { Button } from "../../components/ui/Button";
 import { useTokens } from "../../lib/theme/PersonaProvider";
 
-/** Public landing / welcome page */
+/** Landing page — youth-facing, warm, inviting */
 export default function LandingScreen() {
   const router = useRouter();
   const tokens = useTokens();
 
   return (
     <Screen padded>
-      <View className="flex-1 justify-center gap-8">
-        <View className="gap-4">
-          <Text
-            className="font-bold text-center"
-            style={{ fontSize: tokens.typography.headingSize, color: tokens.colors.text.primary }}
-          >
-            Career Decision Intelligence
+      <View style={{ flex: 1, justifyContent: "center", gap: 40 }}>
+        {/* Hero */}
+        <View style={{ alignItems: "center", gap: 20 }}>
+          <Text style={{ fontSize: 56 }}>🧭</Text>
+          <Text style={{
+            fontSize: 36,
+            fontWeight: "800",
+            color: tokens.colors.text.primary,
+            textAlign: "center",
+            lineHeight: 44,
+          }}>
+            Figure out{"\n"}what fits you
           </Text>
-          <Text
-            className="text-center"
-            style={{
-              fontSize: tokens.typography.bodySize,
-              lineHeight: tokens.typography.bodySize * tokens.typography.lineHeightMultiplier,
-              color: tokens.colors.text.secondary,
-            }}
-          >
-            Move from career uncertainty to a structured, defensible decision.{"\n"}
-            No guesswork. No vague advice. Just clarity.
+          <Text style={{
+            fontSize: tokens.typography.bodySize,
+            color: tokens.colors.text.secondary,
+            textAlign: "center",
+            lineHeight: tokens.typography.bodySize * 1.6,
+            maxWidth: 320,
+          }}>
+            A few honest questions. No tests.{"\n"}
+            Your direction, on your terms.
           </Text>
         </View>
-        <View className="gap-3">
-          <Button label="Get started" onPress={() => router.push("/(auth)/sign-in")} />
-          <Button label="I already have an account" variant="ghost" onPress={() => router.push("/(auth)/sign-in")} />
+
+        {/* Feature pills */}
+        <View style={{ flexDirection: "row", flexWrap: "wrap", justifyContent: "center", gap: 8 }}>
+          {[
+            { emoji: "✨", label: "Discover your direction" },
+            { emoji: "📊", label: "Compare your options" },
+            { emoji: "🎯", label: "Make a decision" },
+            { emoji: "📋", label: "Get your action plan" },
+          ].map((item) => (
+            <View
+              key={item.label}
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                gap: 6,
+                paddingHorizontal: 14,
+                paddingVertical: 8,
+                borderRadius: tokens.borderRadius.full,
+                backgroundColor: tokens.colors.surface.elevated,
+              }}
+            >
+              <Text style={{ fontSize: 14 }}>{item.emoji}</Text>
+              <Text style={{ fontSize: tokens.typography.captionSize, color: tokens.colors.text.secondary }}>
+                {item.label}
+              </Text>
+            </View>
+          ))}
         </View>
+
+        {/* CTA */}
+        <View style={{ gap: 12 }}>
+          <Button
+            label="Let's go →"
+            onPress={() => router.push("/(auth)/sign-in" as never)}
+          />
+          <Pressable
+            onPress={() => router.push("/(auth)/sign-in" as never)}
+            accessibilityLabel="Sign in to existing account"
+            accessibilityRole="button"
+            style={{ alignItems: "center", paddingVertical: 12 }}
+          >
+            <Text style={{ fontSize: tokens.typography.bodySize, color: tokens.colors.accent.light }}>
+              I already have an account
+            </Text>
+          </Pressable>
+        </View>
+      </View>
+
+      {/* Trust footer */}
+      <View style={{ alignItems: "center", paddingBottom: 8 }}>
+        <Text style={{ fontSize: 12, color: tokens.colors.text.muted, textAlign: "center" }}>
+          🔒 Your data is private. No sharing. Delete anytime.
+        </Text>
       </View>
     </Screen>
   );
