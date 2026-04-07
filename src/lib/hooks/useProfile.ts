@@ -92,33 +92,40 @@ export function useSaveOnboarding() {
         }
       }
 
-      // Save constraints — now sourced from separate money/duration screens
+      // Save constraints — from separate money/duration screens
       const financialLevel = answers.financial_level as string | undefined;
       const familyExpectation = answers.family_expectation as string | undefined;
       const riskTolerance = answers.risk_tolerance as string | undefined;
-      if (financialLevel || familyExpectation || riskTolerance) {
-        await supabase.from("constraint_sets").upsert({
-          profile_id: profileId,
-          financial_level: financialLevel ?? null,
-          family_expectation: familyExpectation ?? null,
-          risk_tolerance: riskTolerance ?? null,
-        });
-      }
+      const maxStudyYears = answers.max_study_years as number | null | undefined;
 
-      // Save max study years from duration screen
-      if (answers.max_study_years !== undefined) {
-        await supabase
-          .from("student_profiles")
-          .update({ max_study_years: answers.max_study_years as number | null })
-          .eq("id", profileId);
+      if (financialLevel || familyExpectation || riskTolerance || maxStudyYears !== undefined) {
+        const { error: constraintError } = await supabase.from("constraint_sets").upsert(
+          {
+            profile_id: profileId,
+            financial_level: financialLevel ?? null,
+            family_expectation: familyExpectation ?? null,
+            risk_tolerance: riskTolerance ?? null,
+            max_study_years: maxStudyYears ?? null,
+          },
+          { onConflict: "profile_id" },
+        );
+        if (constraintError) {
+          console.error("Constraint save error:", constraintError);
+        }
       }
 
       // Save weights
       if (answers.weights) {
-        await supabase.from("preference_weights").upsert({
-          profile_id: profileId,
-          ...(answers.weights as Record<string, number>),
-        });
+        const { error: weightsError } = await supabase.from("preference_weights").upsert(
+          {
+            profile_id: profileId,
+            ...(answers.weights as Record<string, number>),
+          },
+          { onConflict: "profile_id" },
+        );
+        if (weightsError) {
+          console.error("Weights save error:", weightsError);
+        }
       }
     },
     onSuccess: () => {

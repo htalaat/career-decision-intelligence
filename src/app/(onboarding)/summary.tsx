@@ -129,8 +129,9 @@ export default function SummaryScreen() {
 
       showSuccessToast("Recommendations ready!");
       router.replace("/(tabs)" as never);
-    } catch {
-      showErrorToast("Something went wrong", "Please try again.");
+    } catch (err) {
+      console.error("Generate recommendations failed:", err);
+      showErrorToast("Something went wrong", String(err));
     } finally {
       setIsGenerating(false);
     }
