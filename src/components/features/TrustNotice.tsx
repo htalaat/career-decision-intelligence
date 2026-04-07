@@ -9,11 +9,11 @@ export function TrustNotice() {
 
   return (
     <Card>
-      <View className="gap-4">
-        <Text className="font-semibold" style={{ fontSize: tokens.typography.titleSize, color: tokens.colors.text.primary }}>
+      <View style={{ gap: 16 }}>
+        <Text style={{ fontSize: tokens.typography.titleSize, fontWeight: "600", color: tokens.colors.text.primary }}>
           Your privacy matters
         </Text>
-        <View className="gap-3">
+        <View style={{ gap: 12 }}>
           <Text style={{ fontSize: tokens.typography.bodySize, color: tokens.colors.text.secondary }}>
             We collect only what's needed to help you make a decision. Nothing more.
           </Text>

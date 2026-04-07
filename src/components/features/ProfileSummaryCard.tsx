@@ -18,14 +18,14 @@ export function ProfileSummaryCard({ items }: ProfileSummaryCardProps) {
   const tokens = useTokens();
 
   return (
-    <View className="gap-3">
+    <View style={{ gap: 12 }}>
       {items.map((item) => (
         <Card key={item.label}>
-          <View className="gap-2">
-            <Text className="font-medium" style={{ fontSize: tokens.typography.captionSize, color: tokens.colors.text.secondary }}>
+          <View style={{ gap: 8 }}>
+            <Text style={{ fontSize: tokens.typography.captionSize, fontWeight: "500", color: tokens.colors.text.secondary }}>
               {item.label}
             </Text>
-            <View className="flex-row flex-wrap gap-1.5">
+            <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6 }}>
               {item.values.map((v) => (
                 <Badge key={v} label={v} variant="accent" />
               ))}
