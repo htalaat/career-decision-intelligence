@@ -15,10 +15,15 @@ export default function OnboardingLayout() {
   return (
     <View style={{ flex: 1, backgroundColor: tokens.colors.surface.DEFAULT }}>
       <View style={{ paddingTop: 48, paddingHorizontal: 20, paddingBottom: 16 }}>
-        <Stepper currentStep={currentStep} totalSteps={10} stepLabel={stepLabel} />
+        <Stepper currentStep={currentStep} totalSteps={13} stepLabel={stepLabel} />
       </View>
       <View style={{ flex: 1, paddingHorizontal: 20, paddingBottom: 32 }}>
-        <Stack screenOptions={{ headerShown: false }} />
+        <Stack
+          screenOptions={{
+            headerShown: false,
+            contentStyle: { backgroundColor: tokens.colors.surface.DEFAULT },
+          }}
+        />
       </View>
     </View>
   );
