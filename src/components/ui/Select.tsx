@@ -21,26 +21,40 @@ export function Select({ label, options, value, onSelect, error }: SelectProps) 
 
   return (
     <View className="gap-2">
-      <Text className="font-medium" style={{ fontSize: tokens.typography.captionSize, color: tokens.colors.text.secondary }}>{label}</Text>
-      <View className="gap-2">
-        {options.map((option) => (
-          <Pressable
-            key={option.value}
-            onPress={() => onSelect(option.value)}
-            accessibilityLabel={option.label}
-            accessibilityRole="radio"
-            accessibilityState={{ selected: value === option.value }}
-            className={`rounded-xl border px-4 py-3 ${value === option.value ? "border-accent" : "border-border"}`}
-            style={{ minHeight: tokens.touchTarget.min, backgroundColor: value === option.value ? tokens.colors.accent.light : tokens.colors.surface.elevated }}
-          >
-            <Text
-              className={value === option.value ? "font-semibold" : undefined}
-              style={{ fontSize: tokens.typography.bodySize, color: value === option.value ? tokens.colors.accent.DEFAULT : tokens.colors.text.primary }}
+      <Text style={{ fontSize: tokens.typography.captionSize, fontWeight: "500", color: tokens.colors.text.secondary }}>{label}</Text>
+      <View style={{ gap: 8 }}>
+        {options.map((option) => {
+          const isSelected = value === option.value;
+          return (
+            <Pressable
+              key={option.value}
+              onPress={() => onSelect(option.value)}
+              accessibilityLabel={option.label}
+              accessibilityRole="radio"
+              accessibilityState={{ selected: isSelected }}
+              style={{
+                minHeight: tokens.touchTarget.min,
+                borderRadius: tokens.borderRadius.md,
+                borderWidth: 1,
+                paddingHorizontal: 16,
+                paddingVertical: 12,
+                justifyContent: "center",
+                borderColor: isSelected ? tokens.colors.accent.DEFAULT : tokens.colors.border.DEFAULT,
+                backgroundColor: isSelected ? tokens.colors.accent.DEFAULT + "15" : tokens.colors.surface.elevated,
+              }}
             >
-              {option.label}
-            </Text>
-          </Pressable>
-        ))}
+              <Text
+                style={{
+                  fontSize: tokens.typography.bodySize,
+                  fontWeight: isSelected ? "600" : "400",
+                  color: isSelected ? tokens.colors.accent.DEFAULT : tokens.colors.text.primary,
+                }}
+              >
+                {option.label}
+              </Text>
+            </Pressable>
+          );
+        })}
       </View>
       {error && (
         <Text style={{ fontSize: tokens.typography.captionSize, color: tokens.colors.error }}>{error}</Text>

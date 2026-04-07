@@ -37,7 +37,7 @@ export function ChipGroup({ options, selected, onToggle, min = 0, max = Infinity
         </Text>
       )}
       {error && (
-        <Text style={{ fontSize: tokens.typography.captionSize, color: tokens.colors.error }}>{error}</Text>
+        <Text style={{ fontSize: tokens.typography.captionSize, color: tokens.colors.error, fontWeight: "500" }}>{error}</Text>
       )}
     </View>
   );

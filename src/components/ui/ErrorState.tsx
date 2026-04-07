@@ -14,8 +14,8 @@ export function ErrorState({ message, onRetry }: ErrorStateProps) {
 
   return (
     <View className="flex-1 items-center justify-center px-8 gap-4">
-      <Text className="font-semibold text-center" style={{ fontSize: tokens.typography.titleSize, color: tokens.colors.error }}>Something went wrong</Text>
-      <Text className="text-center" style={{ fontSize: tokens.typography.bodySize, color: tokens.colors.text.secondary }}>{message}</Text>
+      <Text style={{ fontSize: tokens.typography.titleSize, fontWeight: tokens.typography.titleWeight, textAlign: "center", color: tokens.colors.error }}>Something went wrong</Text>
+      <Text style={{ fontSize: tokens.typography.bodySize, textAlign: "center", color: tokens.colors.text.secondary }}>{message}</Text>
       {onRetry && <Button label="Try again" onPress={onRetry} variant="secondary" />}
     </View>
   );

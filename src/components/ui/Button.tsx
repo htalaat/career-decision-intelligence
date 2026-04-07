@@ -18,17 +18,17 @@ export function Button({ label, onPress, variant = "primary", disabled = false, 
   const tokens = useTokens();
 
   const bgMap: Record<ButtonVariant, string> = {
-    primary: "bg-accent",
-    secondary: "bg-surface-elevated",
-    ghost: "bg-transparent",
-    destructive: "bg-error",
+    primary: tokens.colors.accent.DEFAULT,
+    secondary: tokens.colors.surface.elevated,
+    ghost: "transparent",
+    destructive: tokens.colors.error,
   };
 
-  const textMap: Record<ButtonVariant, string> = {
-    primary: "text-white",
-    secondary: "text-text-primary",
-    ghost: "text-accent",
-    destructive: "text-white",
+  const textColorMap: Record<ButtonVariant, string> = {
+    primary: tokens.colors.text.primary,
+    secondary: tokens.colors.text.primary,
+    ghost: tokens.colors.accent.DEFAULT,
+    destructive: tokens.colors.text.primary,
   };
 
   return (
@@ -37,13 +37,19 @@ export function Button({ label, onPress, variant = "primary", disabled = false, 
       disabled={disabled || loading}
       accessibilityLabel={accessibilityLabel ?? label}
       accessibilityRole="button"
-      className={`items-center justify-center rounded-xl py-4 px-6 ${bgMap[variant]} ${disabled ? "opacity-50" : "active:opacity-80"}`}
-      style={{ minHeight: tokens.touchTarget.min }}
+      className={`items-center justify-center ${disabled ? "opacity-50" : "active:opacity-80"}`}
+      style={{
+        minHeight: tokens.touchTarget.min,
+        borderRadius: tokens.borderRadius.md,
+        paddingVertical: 16,
+        paddingHorizontal: 32,
+        backgroundColor: bgMap[variant],
+      }}
     >
       {loading ? (
         <ActivityIndicator color={tokens.colors.text.primary} />
       ) : (
-        <Text className={`font-semibold ${textMap[variant]}`} style={{ fontSize: tokens.typography.bodySize }}>
+        <Text style={{ fontSize: tokens.typography.bodySize, fontWeight: "700", color: textColorMap[variant] }}>
           {label}
         </Text>
       )}

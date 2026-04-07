@@ -14,12 +14,21 @@ export function Input({ label, error, helper, ...inputProps }: InputProps) {
 
   return (
     <View className="gap-1.5">
-      <Text className="font-medium" style={{ fontSize: tokens.typography.captionSize, color: tokens.colors.text.secondary }}>
+      <Text style={{ fontSize: tokens.typography.captionSize, fontWeight: "500", color: tokens.colors.text.secondary }}>
         {label}
       </Text>
       <TextInput
-        className="border border-border rounded-xl px-4 py-3"
-        style={{ fontSize: tokens.typography.bodySize, minHeight: tokens.touchTarget.min, backgroundColor: tokens.colors.surface.elevated, color: tokens.colors.text.primary }}
+        style={{
+          fontSize: tokens.typography.bodySize,
+          minHeight: tokens.touchTarget.min,
+          borderRadius: tokens.borderRadius.md,
+          borderWidth: 1,
+          borderColor: tokens.colors.border.DEFAULT,
+          paddingHorizontal: 16,
+          paddingVertical: 12,
+          backgroundColor: tokens.colors.surface.elevated,
+          color: tokens.colors.text.primary,
+        }}
         placeholderTextColor={tokens.colors.text.muted}
         accessibilityLabel={label}
         {...inputProps}

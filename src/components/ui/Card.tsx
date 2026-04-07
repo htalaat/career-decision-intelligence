@@ -12,10 +12,16 @@ interface CardProps {
 /** Container card with persona-aware spacing */
 export function Card({ children, elevated = false, onPress, accessibilityLabel }: CardProps) {
   const tokens = useTokens();
-  const bg = elevated ? "bg-surface-elevated" : "bg-surface-secondary";
-
   const content = (
-    <View className={`${bg} rounded-2xl border border-border`} style={{ padding: tokens.spacing.md }}>
+    <View
+      style={{
+        padding: tokens.spacing.md,
+        borderRadius: tokens.borderRadius.lg,
+        borderWidth: 1,
+        borderColor: tokens.colors.border.DEFAULT,
+        backgroundColor: elevated ? tokens.colors.surface.elevated : tokens.colors.surface.secondary,
+      }}
+    >
       {children}
     </View>
   );

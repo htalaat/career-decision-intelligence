@@ -18,12 +18,24 @@ export function Chip({ label, selected, onPress }: ChipProps) {
       accessibilityLabel={`${label}, ${selected ? "selected" : "not selected"}`}
       accessibilityRole="checkbox"
       accessibilityState={{ checked: selected }}
-      className={`rounded-full px-4 py-2 border ${selected ? "bg-accent border-accent" : "bg-surface-elevated border-border"}`}
-      style={{ minHeight: tokens.touchTarget.min }}
+      style={{
+        minHeight: tokens.touchTarget.min,
+        borderRadius: tokens.borderRadius.full,
+        paddingHorizontal: 16,
+        paddingVertical: 8,
+        borderWidth: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: selected ? tokens.colors.accent.DEFAULT : tokens.colors.surface.elevated,
+        borderColor: selected ? tokens.colors.accent.DEFAULT : tokens.colors.border.DEFAULT,
+      }}
     >
       <Text
-        className={selected ? "text-white font-semibold" : "text-text-secondary"}
-        style={{ fontSize: tokens.typography.bodySize }}
+        style={{
+          fontSize: tokens.typography.bodySize,
+          fontWeight: selected ? "600" : "400",
+          color: selected ? tokens.colors.text.primary : tokens.colors.text.secondary,
+        }}
       >
         {label}
       </Text>

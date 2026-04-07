@@ -25,13 +25,13 @@ export function Stepper({ currentStep, totalSteps, stepLabel }: StepperProps) {
           </Text>
         )}
       </View>
-      <View style={{ height: 6, backgroundColor: tokens.colors.surface.elevated, borderRadius: 3, overflow: "hidden" }}>
+      <View style={{ height: 8, backgroundColor: tokens.colors.surface.elevated, borderRadius: tokens.borderRadius.full, overflow: "hidden" }}>
         <View
           style={{
             height: "100%",
             width: `${percent}%`,
             backgroundColor: tokens.colors.accent.DEFAULT,
-            borderRadius: 3,
+            borderRadius: tokens.borderRadius.full,
           }}
         />
       </View>
