@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ScrollView } from "react-native";
+import { View } from "react-native";
 import { useRouter } from "expo-router";
 import { OnboardingQuestion } from "../../components/features/OnboardingQuestion";
 import { Select } from "../../components/ui/Select";
@@ -42,7 +42,7 @@ export default function MoneyScreen() {
       onBack={() => { prevStep(); router.back(); }}
       nextDisabled={!budget}
     >
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ gap: 20 }}>
+      <View style={{ gap: 20 }}>
         <Select
           label="How's the budget situation?"
           options={[...BUDGET_OPTIONS]}
@@ -55,7 +55,7 @@ export default function MoneyScreen() {
           value={family}
           onSelect={setFamily}
         />
-      </ScrollView>
+      </View>
     </OnboardingQuestion>
   );
 }

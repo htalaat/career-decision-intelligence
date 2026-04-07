@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, ScrollView } from "react-native";
+import { View } from "react-native";
 import { useRouter } from "expo-router";
 import { OnboardingQuestion } from "../../components/features/OnboardingQuestion";
 import { SearchableSelect } from "../../components/ui/SearchableSelect";
@@ -34,7 +34,7 @@ export default function CountryScreen() {
       onBack={() => { prevStep(); router.back(); }}
       nextDisabled={!country}
     >
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ gap: 20 }}>
+      <View style={{ gap: 20 }}>
         <SearchableSelect
           label="Your country"
           options={countryOptions}
@@ -52,7 +52,7 @@ export default function CountryScreen() {
             onSelect={setRelocation}
           />
         )}
-      </ScrollView>
+      </View>
     </OnboardingQuestion>
   );
 }

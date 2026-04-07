@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ScrollView } from "react-native";
+import { View } from "react-native";
 import { useRouter } from "expo-router";
 import { OnboardingQuestion } from "../../components/features/OnboardingQuestion";
 import { Select } from "../../components/ui/Select";
@@ -36,7 +36,7 @@ export default function DurationScreen() {
       onBack={() => { prevStep(); router.back(); }}
       nextDisabled={!duration}
     >
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ gap: 20 }}>
+      <View style={{ gap: 20 }}>
         <Select
           label="How long are you willing to study?"
           options={[...STUDY_DURATION_OPTIONS]}
@@ -49,7 +49,7 @@ export default function DurationScreen() {
           value={risk}
           onSelect={setRisk}
         />
-      </ScrollView>
+      </View>
     </OnboardingQuestion>
   );
 }

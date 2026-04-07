@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, ScrollView, Pressable } from "react-native";
+import { View, Text, Pressable } from "react-native";
 import { useRouter } from "expo-router";
 import { OnboardingQuestion } from "../../components/features/OnboardingQuestion";
 import { ClusterPreview } from "../../components/features/ClusterPreview";
@@ -54,7 +54,7 @@ export default function SubjectFeelingsScreen() {
       onBack={() => { prevStep(); router.back(); }}
       nextDisabled={ratedCount < 2}
     >
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ gap: 16 }}>
+      <View style={{ gap: 16 }}>
         {subjects.map((subject) => {
           const current = feelings[subject] ?? null;
           return (
@@ -123,7 +123,7 @@ export default function SubjectFeelingsScreen() {
             }}
           />
         )}
-      </ScrollView>
+      </View>
     </OnboardingQuestion>
   );
 }

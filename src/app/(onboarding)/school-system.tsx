@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, ScrollView, Pressable } from "react-native";
+import { View, Text, Pressable } from "react-native";
 import { useRouter } from "expo-router";
 import { OnboardingQuestion } from "../../components/features/OnboardingQuestion";
 import { useOnboardingStore } from "../../stores/onboardingStore";
@@ -37,7 +37,7 @@ export default function SchoolSystemScreen() {
       onBack={() => { prevStep(); router.back(); }}
       nextDisabled={!selected}
     >
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ gap: 10 }}>
+      <View style={{ gap: 10 }}>
         {SCHOOL_SYSTEMS.map((system) => {
           const isSelected = selected === system.value;
           return (
@@ -77,7 +77,7 @@ export default function SchoolSystemScreen() {
             </Pressable>
           );
         })}
-      </ScrollView>
+      </View>
     </OnboardingQuestion>
   );
 }

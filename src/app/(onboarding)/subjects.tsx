@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, ScrollView, Pressable } from "react-native";
+import { View, Text, Pressable } from "react-native";
 import { useRouter } from "expo-router";
 import { OnboardingQuestion } from "../../components/features/OnboardingQuestion";
 import { useOnboardingStore } from "../../stores/onboardingStore";
@@ -33,7 +33,7 @@ export default function SubjectsScreen() {
       onBack={() => { prevStep(); router.back(); }}
       nextDisabled={selected.length < 2}
     >
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ gap: 28 }}>
+      <View style={{ gap: 28 }}>
         {SUBJECT_CATEGORIES.map((category) => (
           <View key={category.category} style={{ gap: 12 }}>
             <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
@@ -106,7 +106,7 @@ export default function SubjectsScreen() {
         }}>
           {selected.length} subject{selected.length !== 1 ? "s" : ""} selected
         </Text>
-      </ScrollView>
+      </View>
     </OnboardingQuestion>
   );
 }
