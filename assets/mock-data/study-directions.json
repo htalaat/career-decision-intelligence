@@ -1,0 +1,869 @@
+{
+  "meta": {
+    "description": "Study direction mappings for all 30 career paths. Mirror of supabase/seed/seed_study_directions.sql for offline/demo use.",
+    "total_directions": 74,
+    "total_careers": 30,
+    "generated": "2026-04-05",
+    "faculty_clusters": [
+      "engineering_technology",
+      "computer_science_it",
+      "business_management",
+      "finance_economics",
+      "medicine_health",
+      "law_political_science",
+      "natural_sciences",
+      "social_sciences",
+      "arts_design",
+      "media_communications",
+      "education",
+      "humanities_languages",
+      "environmental_agriculture"
+    ],
+    "degree_types": ["bachelor", "master", "doctorate", "diploma", "certificate", "bootcamp"],
+    "relevance_levels": ["primary", "secondary", "alternative"]
+  },
+  "study_directions": [
+    {
+      "career_path_slug": "software-engineer",
+      "faculty_cluster": "computer_science_it",
+      "degree_type": "bachelor",
+      "field_of_study": "Computer Science",
+      "country_notes": "Strong programs in US, UK, Germany, and Canada. Egypt: Cairo University, AUC, GUC offer respected CS degrees. Gulf: KAUST (SA), AUS (UAE) for strong placements.",
+      "prerequisites": "Mathematics, logical thinking, problem-solving aptitude",
+      "typical_duration_years": 4,
+      "relevance_level": "primary"
+    },
+    {
+      "career_path_slug": "software-engineer",
+      "faculty_cluster": "computer_science_it",
+      "degree_type": "bachelor",
+      "field_of_study": "Software Engineering",
+      "country_notes": "Dedicated SE programs available in Egypt (Ain Shams, MSA), UAE (Khalifa University), and widely across the US and UK. Focuses more on process and systems than pure CS.",
+      "prerequisites": "Mathematics, physics, interest in systems design",
+      "typical_duration_years": 4,
+      "relevance_level": "secondary"
+    },
+    {
+      "career_path_slug": "software-engineer",
+      "faculty_cluster": "computer_science_it",
+      "degree_type": "bootcamp",
+      "field_of_study": "Full-Stack Web Development",
+      "country_notes": "Coding bootcamps widely accepted in the US, UK, and increasingly in the UAE. Egypt has local bootcamps (e.g., Re:Coded, ITI intensive programs). 3–12 month intensive programs.",
+      "prerequisites": "Basic computer literacy, strong motivation, portfolio mindset",
+      "typical_duration_years": 1,
+      "relevance_level": "alternative"
+    },
+    {
+      "career_path_slug": "data-scientist",
+      "faculty_cluster": "computer_science_it",
+      "degree_type": "bachelor",
+      "field_of_study": "Data Science",
+      "country_notes": "Dedicated BS Data Science programs growing fast in the US (UC Berkeley, MIT), UK (Edinburgh, Warwick), and Germany (TU Munich). Egypt: limited standalone programs; Statistics + CS combination common at Cairo University.",
+      "prerequisites": "Strong mathematics, statistics, programming (Python/R preferred)",
+      "typical_duration_years": 4,
+      "relevance_level": "primary"
+    },
+    {
+      "career_path_slug": "data-scientist",
+      "faculty_cluster": "natural_sciences",
+      "degree_type": "bachelor",
+      "field_of_study": "Statistics and Mathematics",
+      "country_notes": "Strong quantitative foundation available in Egypt (Cairo University Faculty of Science), Saudi Arabia (KFUPM), UK (Oxford, Cambridge). Often combined with CS electives.",
+      "prerequisites": "High school mathematics excellence, analytical mindset",
+      "typical_duration_years": 4,
+      "relevance_level": "secondary"
+    },
+    {
+      "career_path_slug": "data-scientist",
+      "faculty_cluster": "computer_science_it",
+      "degree_type": "master",
+      "field_of_study": "Machine Learning and Data Science",
+      "country_notes": "Top MSc programs: US (Stanford, CMU), UK (Imperial, UCL), Canada (U of T, UBC), Germany (TU Munich — fully funded options). UAE: Mohamed Bin Zayed University of AI (MBZUAI) is fully funded.",
+      "prerequisites": "Bachelor's in a quantitative field, programming skills, linear algebra",
+      "typical_duration_years": 2,
+      "relevance_level": "alternative"
+    },
+    {
+      "career_path_slug": "cybersecurity-analyst",
+      "faculty_cluster": "computer_science_it",
+      "degree_type": "bachelor",
+      "field_of_study": "Cybersecurity",
+      "country_notes": "Specialist cybersecurity degrees growing in the US (Purdue, Carnegie Mellon), UK (Royal Holloway), and UAE (Khalifa University). Egypt: Information Security programs at MET and military-affiliated institutions.",
+      "prerequisites": "Computer fundamentals, networking basics, attention to detail",
+      "typical_duration_years": 4,
+      "relevance_level": "primary"
+    },
+    {
+      "career_path_slug": "cybersecurity-analyst",
+      "faculty_cluster": "computer_science_it",
+      "degree_type": "bachelor",
+      "field_of_study": "Computer Science with Networking Specialisation",
+      "country_notes": "Mainstream CS degree widely available. Egypt: GUC, AUC; Gulf: AUS, UAEU; US/UK: any accredited CS program. Supplement with CompTIA Security+, CEH, or OSCP certifications.",
+      "prerequisites": "Mathematics, logical reasoning, curiosity about systems",
+      "typical_duration_years": 4,
+      "relevance_level": "secondary"
+    },
+    {
+      "career_path_slug": "cybersecurity-analyst",
+      "faculty_cluster": "computer_science_it",
+      "degree_type": "certificate",
+      "field_of_study": "CompTIA Security+ / CEH / OSCP Certification Path",
+      "country_notes": "Globally recognized certifications with no country restriction. Cost-effective entry path especially popular in Egypt and Gulf where employer demand for certified professionals is rising without requiring a formal degree.",
+      "prerequisites": "Basic IT literacy, networking fundamentals (CompTIA Network+), self-study discipline",
+      "typical_duration_years": 1,
+      "relevance_level": "alternative"
+    },
+    {
+      "career_path_slug": "financial-analyst",
+      "faculty_cluster": "finance_economics",
+      "degree_type": "bachelor",
+      "field_of_study": "Finance",
+      "country_notes": "Core finance degree offered across all major destinations. Egypt: AUC, BUE, Faculty of Commerce (Cairo University). Gulf: AUS, UAEU, KAU (Saudi Arabia). US: Wharton, NYU Stern. UK: LSE, Warwick.",
+      "prerequisites": "Mathematics, economics, interest in capital markets",
+      "typical_duration_years": 4,
+      "relevance_level": "primary"
+    },
+    {
+      "career_path_slug": "financial-analyst",
+      "faculty_cluster": "finance_economics",
+      "degree_type": "bachelor",
+      "field_of_study": "Economics",
+      "country_notes": "Strong economics programs at Cairo University, American University of Beirut, LSE (UK), University of Toronto (Canada). Provides analytical and macro-level foundation complemented by finance electives.",
+      "prerequisites": "Mathematics, analytical thinking, interest in markets and policy",
+      "typical_duration_years": 4,
+      "relevance_level": "secondary"
+    },
+    {
+      "career_path_slug": "financial-analyst",
+      "faculty_cluster": "finance_economics",
+      "degree_type": "certificate",
+      "field_of_study": "CFA (Chartered Financial Analyst) Program",
+      "country_notes": "Global credential, no geographic restriction. CFA Institute recognized in Egypt, UAE, Saudi Arabia, US, UK, and Canada. Typically pursued alongside or after a bachelor's degree.",
+      "prerequisites": "Bachelor's degree in any field, strong quantitative skills",
+      "typical_duration_years": 3,
+      "relevance_level": "alternative"
+    },
+    {
+      "career_path_slug": "accountant",
+      "faculty_cluster": "finance_economics",
+      "degree_type": "bachelor",
+      "field_of_study": "Accounting",
+      "country_notes": "Accounting degrees widely available. Egypt: Faculty of Commerce programs at Cairo, Alexandria, and Ain Shams universities. Gulf: ACCA-accredited programs at AUS, Zayed University. UK: ICAEW pathway universities.",
+      "prerequisites": "Mathematics, attention to detail, organizational skills",
+      "typical_duration_years": 4,
+      "relevance_level": "primary"
+    },
+    {
+      "career_path_slug": "accountant",
+      "faculty_cluster": "business_management",
+      "degree_type": "bachelor",
+      "field_of_study": "Business Administration (Accounting Track)",
+      "country_notes": "BBA with accounting concentration available in Egypt (ESLSCA, Future University), UAE (Abu Dhabi University), Saudi Arabia (KFUPM School of Business), and globally.",
+      "prerequisites": "Mathematics, business awareness, analytical aptitude",
+      "typical_duration_years": 4,
+      "relevance_level": "secondary"
+    },
+    {
+      "career_path_slug": "accountant",
+      "faculty_cluster": "finance_economics",
+      "degree_type": "certificate",
+      "field_of_study": "ACCA / CPA Professional Qualification",
+      "country_notes": "ACCA recognized in 180+ countries and highly valued in Egypt, UAE, Saudi Arabia, and UK. CPA is the US/Canada standard. Both can be pursued part-time alongside work.",
+      "prerequisites": "Bachelor's degree in accounting or finance; or exemptions via recognized degree",
+      "typical_duration_years": 3,
+      "relevance_level": "alternative"
+    },
+    {
+      "career_path_slug": "fintech-product-manager",
+      "faculty_cluster": "computer_science_it",
+      "degree_type": "bachelor",
+      "field_of_study": "Computer Science or Information Systems",
+      "country_notes": "Strong technical foundation critical. Egypt: GUC, AUC, MTI. UAE: AUS, Heriot-Watt Dubai. UK: King's College, Manchester. US: any strong CS program. Product management skills layered on top.",
+      "prerequisites": "Programming aptitude, systems thinking, interest in financial products",
+      "typical_duration_years": 4,
+      "relevance_level": "primary"
+    },
+    {
+      "career_path_slug": "fintech-product-manager",
+      "faculty_cluster": "finance_economics",
+      "degree_type": "bachelor",
+      "field_of_study": "Finance with Technology Minor",
+      "country_notes": "Finance programs with fintech or IS electives available at American University Cairo, UAE University, and global business schools. Growing demand in Gulf states as fintech hubs expand (DIFC, Riyadh FinTech hub).",
+      "prerequisites": "Finance literacy, curiosity about technology, analytical thinking",
+      "typical_duration_years": 4,
+      "relevance_level": "secondary"
+    },
+    {
+      "career_path_slug": "fintech-product-manager",
+      "faculty_cluster": "business_management",
+      "degree_type": "master",
+      "field_of_study": "MBA with Fintech or Digital Innovation Specialisation",
+      "country_notes": "MBA programs with fintech tracks available at LBS (UK), INSEAD (France), UT Austin (US), and KAUST (Saudi Arabia). Dubai and Abu Dhabi also host satellite campuses of global MBA programs.",
+      "prerequisites": "Bachelor's degree (any field), 2+ years work experience, GMAT/GRE score",
+      "typical_duration_years": 2,
+      "relevance_level": "alternative"
+    },
+    {
+      "career_path_slug": "physician",
+      "faculty_cluster": "medicine_health",
+      "degree_type": "bachelor",
+      "field_of_study": "Medicine (MBBCh / MBBS / MD)",
+      "country_notes": "Egypt: 6-year MBBCh programs at Cairo, Ain Shams, Alexandria universities. Gulf: MBBS at KSAU-HS (Saudi Arabia), UAE University College of Medicine. UK: MBBS, 5–6 years. US: 4-year MD after undergraduate; more expensive and competitive.",
+      "prerequisites": "Biology, chemistry, physics at high school level; high academic achievement; empathy and resilience",
+      "typical_duration_years": 6,
+      "relevance_level": "primary"
+    },
+    {
+      "career_path_slug": "physician",
+      "faculty_cluster": "medicine_health",
+      "degree_type": "bachelor",
+      "field_of_study": "Biomedical Sciences",
+      "country_notes": "Undergraduate path before graduate-entry medicine. Common in UK (King's College, Edinburgh), Australia, and Canada. Also offered in Egypt (AUC pre-med track) and UAE (Khalifa University).",
+      "prerequisites": "Biology, chemistry, high academic standing",
+      "typical_duration_years": 4,
+      "relevance_level": "secondary"
+    },
+    {
+      "career_path_slug": "nurse-practitioner",
+      "faculty_cluster": "medicine_health",
+      "degree_type": "bachelor",
+      "field_of_study": "Nursing (BSN)",
+      "country_notes": "BSN programs available in Egypt (Ain Shams, Cairo University Faculty of Nursing). Gulf: KSAU-HS (Saudi Arabia), UAE University. US, UK, Canada, and Australia have strong nursing programs. Saudi Arabia and UAE actively recruit internationally trained nurses.",
+      "prerequisites": "Biology, chemistry, empathy, physical fitness",
+      "typical_duration_years": 4,
+      "relevance_level": "primary"
+    },
+    {
+      "career_path_slug": "nurse-practitioner",
+      "faculty_cluster": "medicine_health",
+      "degree_type": "master",
+      "field_of_study": "Master of Science in Nursing (MSN) — NP Track",
+      "country_notes": "MSN-NP programs predominantly a US/Canada model. UK has advanced practice nursing. Gulf states recognize US/UK NP qualifications for international roles. Egypt: limited MSN programs, postgraduate study often abroad.",
+      "prerequisites": "BSN degree, active RN license, 1–2 years clinical experience",
+      "typical_duration_years": 2,
+      "relevance_level": "secondary"
+    },
+    {
+      "career_path_slug": "health-informatics-specialist",
+      "faculty_cluster": "medicine_health",
+      "degree_type": "bachelor",
+      "field_of_study": "Health Informatics",
+      "country_notes": "Specialist degrees in Egypt (Modern Sciences and Arts University), US (Indiana University, UIC), UK (University of Manchester). Saudi Arabia and UAE increasingly investing in digital health — HIMSS Middle East active.",
+      "prerequisites": "Computer literacy, interest in healthcare systems, basic data skills",
+      "typical_duration_years": 4,
+      "relevance_level": "primary"
+    },
+    {
+      "career_path_slug": "health-informatics-specialist",
+      "faculty_cluster": "computer_science_it",
+      "degree_type": "bachelor",
+      "field_of_study": "Information Systems",
+      "country_notes": "IS degree with healthcare electives widely available. Egypt: Cairo University, BUE; UAE: Abu Dhabi University; US: George Mason, Arizona State. Versatile foundation applicable to many sectors.",
+      "prerequisites": "Analytical thinking, interest in organizational systems",
+      "typical_duration_years": 4,
+      "relevance_level": "secondary"
+    },
+    {
+      "career_path_slug": "health-informatics-specialist",
+      "faculty_cluster": "medicine_health",
+      "degree_type": "master",
+      "field_of_study": "Master of Health Informatics (MHI)",
+      "country_notes": "Graduate-entry programs well established in Canada (U of T, UBC), US (Johns Hopkins, Harvard), and UK (UCL). Growing demand in Saudi Vision 2030 and UAE digital health initiatives.",
+      "prerequisites": "Bachelor's in a health or IT field, basic data analysis skills",
+      "typical_duration_years": 2,
+      "relevance_level": "alternative"
+    },
+    {
+      "career_path_slug": "ux-designer",
+      "faculty_cluster": "arts_design",
+      "degree_type": "bachelor",
+      "field_of_study": "Human-Computer Interaction (HCI) / Interaction Design",
+      "country_notes": "Specialist HCI programs in US (Carnegie Mellon, Michigan), UK (RCA, UCL), and Germany (HCI programs at technical universities). Egypt: limited specialist programs — Design at AASTMT or GUC is closest. UAE: Dubai Institute of Design and Innovation (DIDI).",
+      "prerequisites": "Creative thinking, empathy for users, basic digital skills, portfolio willingness",
+      "typical_duration_years": 4,
+      "relevance_level": "primary"
+    },
+    {
+      "career_path_slug": "ux-designer",
+      "faculty_cluster": "arts_design",
+      "degree_type": "bachelor",
+      "field_of_study": "Graphic Design or Visual Communication",
+      "country_notes": "Widely available in Egypt (Faculty of Fine Arts, MSA, AUC), UAE (University of Sharjah, AUD), Saudi Arabia (Prince Sultan University). Strong portfolio and UX tool skills (Figma) supplement the degree.",
+      "prerequisites": "Artistic aptitude, visual thinking, creativity",
+      "typical_duration_years": 4,
+      "relevance_level": "secondary"
+    },
+    {
+      "career_path_slug": "ux-designer",
+      "faculty_cluster": "arts_design",
+      "degree_type": "bootcamp",
+      "field_of_study": "UX Design Bootcamp",
+      "country_notes": "Portfolio-focused bootcamps accepted by major tech companies globally. Options include General Assembly (US/UK), CareerFoundry (online), and local providers in Cairo and Dubai. Cost-effective path to entry-level roles.",
+      "prerequisites": "Basic computer skills, empathy, willingness to build a portfolio",
+      "typical_duration_years": 1,
+      "relevance_level": "alternative"
+    },
+    {
+      "career_path_slug": "product-designer",
+      "faculty_cluster": "arts_design",
+      "degree_type": "bachelor",
+      "field_of_study": "Product Design / Industrial Design",
+      "country_notes": "US: RISD, Pratt, Georgia Tech. UK: Royal College of Art, Central Saint Martins. Germany: HfG Ulm tradition continues at various design schools. Egypt: Faculty of Applied Arts (Helwan) is the most respected program. UAE: DIDI.",
+      "prerequisites": "Artistic and spatial thinking, sketching, curiosity about how things work",
+      "typical_duration_years": 4,
+      "relevance_level": "primary"
+    },
+    {
+      "career_path_slug": "product-designer",
+      "faculty_cluster": "arts_design",
+      "degree_type": "bachelor",
+      "field_of_study": "Interaction Design / UX Design",
+      "country_notes": "Closely related to product design for digital products. Strong programs in UK (Goldsmiths, RCA), US (CMU, SVA), and UAE (DIDI, AUD). Egypt: GUC Media Engineering and Technology has relevant tracks.",
+      "prerequisites": "Visual thinking, empathy, basic digital prototyping interest",
+      "typical_duration_years": 4,
+      "relevance_level": "secondary"
+    },
+    {
+      "career_path_slug": "brand-strategist",
+      "faculty_cluster": "media_communications",
+      "degree_type": "bachelor",
+      "field_of_study": "Marketing and Brand Management",
+      "country_notes": "Core marketing degrees available in Egypt (AUC, BUE, MSA), Saudi Arabia (KAU, IAU), UAE (AUS, HCT), UK (Warwick, Lancaster), and US (Kellogg undergraduate programs). Focus on consumer behavior and brand theory.",
+      "prerequisites": "Communication skills, creativity, interest in consumer psychology",
+      "typical_duration_years": 4,
+      "relevance_level": "primary"
+    },
+    {
+      "career_path_slug": "brand-strategist",
+      "faculty_cluster": "arts_design",
+      "degree_type": "bachelor",
+      "field_of_study": "Visual Communication and Graphic Design",
+      "country_notes": "Design programs with strong brand communication focus. Egypt: Faculty of Applied Arts (Helwan), AUC design courses. UAE: University of Sharjah, AUD. UK: Central Saint Martins, Falmouth.",
+      "prerequisites": "Visual thinking, typographic sensibility, creative portfolio",
+      "typical_duration_years": 4,
+      "relevance_level": "secondary"
+    },
+    {
+      "career_path_slug": "management-consultant",
+      "faculty_cluster": "business_management",
+      "degree_type": "bachelor",
+      "field_of_study": "Business Administration",
+      "country_notes": "BBA programs widely available. Egypt: AUC (target school for McKinsey/BCG Egypt), GUC, BUE. Gulf: AUS, KFUPM, KAUST. UK: LBS undergraduate, Warwick. US: Target schools include Wharton, Booth, and Dartmouth Tuck.",
+      "prerequisites": "Strong academics, analytical aptitude, communication skills, leadership experience",
+      "typical_duration_years": 4,
+      "relevance_level": "primary"
+    },
+    {
+      "career_path_slug": "management-consultant",
+      "faculty_cluster": "finance_economics",
+      "degree_type": "bachelor",
+      "field_of_study": "Economics",
+      "country_notes": "Economics degree is a well-trodden path into consulting. LSE (UK) feeds MBB directly. Egypt: AUC Economics, Cairo University. Gulf: economics programs at major regional universities feed regional consulting offices.",
+      "prerequisites": "Quantitative aptitude, analytical thinking, strong GPA",
+      "typical_duration_years": 4,
+      "relevance_level": "secondary"
+    },
+    {
+      "career_path_slug": "management-consultant",
+      "faculty_cluster": "business_management",
+      "degree_type": "master",
+      "field_of_study": "MBA",
+      "country_notes": "Post-experience MBA is the primary route into senior consulting. Top targets: LBS (UK), INSEAD, Wharton (US), Harvard (US), IESE (Spain). Regional: KAUST, AUB Suliman Olayan. Costs vary widely — scholarships available.",
+      "prerequisites": "Bachelor's degree, 3–5 years work experience, GMAT score 680+",
+      "typical_duration_years": 2,
+      "relevance_level": "alternative"
+    },
+    {
+      "career_path_slug": "operations-manager",
+      "faculty_cluster": "business_management",
+      "degree_type": "bachelor",
+      "field_of_study": "Business Administration / Operations Management",
+      "country_notes": "Operations tracks within BBA programs available in Egypt (Future University, MSA), UAE (Zayed University, HCT), Saudi Arabia (KFUPM), UK (Bath, Lancaster), and US (Michigan Ross, Ohio State Fisher).",
+      "prerequisites": "Organizational thinking, leadership potential, quantitative aptitude",
+      "typical_duration_years": 4,
+      "relevance_level": "primary"
+    },
+    {
+      "career_path_slug": "operations-manager",
+      "faculty_cluster": "engineering_technology",
+      "degree_type": "bachelor",
+      "field_of_study": "Industrial Engineering",
+      "country_notes": "Strong operations foundation. Egypt: Faculty of Engineering programs at Cairo, Ain Shams. UAE: Khalifa University, AUS. US: Georgia Tech (top ranked). UK: Warwick Engineering, Nottingham.",
+      "prerequisites": "Mathematics, physics, systems thinking",
+      "typical_duration_years": 4,
+      "relevance_level": "secondary"
+    },
+    {
+      "career_path_slug": "entrepreneur",
+      "faculty_cluster": "business_management",
+      "degree_type": "bachelor",
+      "field_of_study": "Business Administration with Entrepreneurship Track",
+      "country_notes": "Entrepreneurship programs with ecosystem access matter more than rankings. Egypt: AUC has Venture Lab, GUC has entrepreneurship programs. UAE: AUS, Zayed University, NYU Abu Dhabi. US: Babson College (top-ranked), Stanford. UK: UCL, Cambridge Judge.",
+      "prerequisites": "Drive, resilience, creativity; academic requirements less strict than other business paths",
+      "typical_duration_years": 4,
+      "relevance_level": "primary"
+    },
+    {
+      "career_path_slug": "entrepreneur",
+      "faculty_cluster": "computer_science_it",
+      "degree_type": "bachelor",
+      "field_of_study": "Computer Science",
+      "country_notes": "Technical founders often have CS backgrounds. Egypt, UAE, US, UK, and Germany all have strong CS programs. Tech entrepreneurship is globally competitive — technical skills are a significant advantage.",
+      "prerequisites": "Programming interest, mathematical aptitude, problem-solving mindset",
+      "typical_duration_years": 4,
+      "relevance_level": "secondary"
+    },
+    {
+      "career_path_slug": "entrepreneur",
+      "faculty_cluster": "business_management",
+      "degree_type": "master",
+      "field_of_study": "MBA with Entrepreneurship Specialisation",
+      "country_notes": "MBA for second-time or more experienced founders. Babson MBA (US), INSEAD, LBS. Regional: AUB, KAUST. Often provides network and investor access more than knowledge. Many successful founders skip the MBA entirely.",
+      "prerequisites": "Bachelor's degree, ideally 2+ years work or startup experience",
+      "typical_duration_years": 2,
+      "relevance_level": "alternative"
+    },
+    {
+      "career_path_slug": "corporate-lawyer",
+      "faculty_cluster": "law_political_science",
+      "degree_type": "bachelor",
+      "field_of_study": "Law (LLB)",
+      "country_notes": "Egypt: 4-year LLB at Cairo University Faculty of Law, Ain Shams, Alexandria. Gulf: LLB at UAE University, Qatar University, Saudi Arabia (KAU, Imam Abdulrahman). UK: LLB at Oxford, Cambridge, LSE, UCL. Note: Egyptian law practice requires Egyptian LLB.",
+      "prerequisites": "Strong academics, reading comprehension, argumentation skills, Arabic fluency for Egyptian/Gulf practice",
+      "typical_duration_years": 4,
+      "relevance_level": "primary"
+    },
+    {
+      "career_path_slug": "corporate-lawyer",
+      "faculty_cluster": "law_political_science",
+      "degree_type": "master",
+      "field_of_study": "Master of Laws (LLM) — Corporate or Commercial Law",
+      "country_notes": "Post-LLB specialization. Top programs: US (NYU, Harvard, Columbia), UK (LSE, UCL, Oxford). Popular path for Egyptian and Gulf lawyers seeking international firm roles. Dubai International Financial Centre (DIFC) creates demand for English law expertise.",
+      "prerequisites": "LLB or equivalent law degree, strong academic record",
+      "typical_duration_years": 1,
+      "relevance_level": "secondary"
+    },
+    {
+      "career_path_slug": "policy-analyst",
+      "faculty_cluster": "law_political_science",
+      "degree_type": "bachelor",
+      "field_of_study": "Political Science / Public Policy",
+      "country_notes": "Egypt: Cairo University Faculty of Economics and Political Science, AUC Political Science. Gulf: UAE University, Qatar University. UK: Oxford, LSE, King's College. US: Georgetown, GWU, Princeton Woodrow Wilson School.",
+      "prerequisites": "Writing, research skills, interest in governance and social issues",
+      "typical_duration_years": 4,
+      "relevance_level": "primary"
+    },
+    {
+      "career_path_slug": "policy-analyst",
+      "faculty_cluster": "law_political_science",
+      "degree_type": "master",
+      "field_of_study": "Master in Public Policy (MPP) or Public Administration (MPA)",
+      "country_notes": "Graduate-level policy programs at LSE (UK), Harvard Kennedy School (US), Sciences Po (France), and Lee Kuan Yew School (Singapore). Regional: AUB, OU (Qatar Foundation). Many offer scholarships for MENA applicants.",
+      "prerequisites": "Bachelor's degree (any field), strong writing and analytical record, ideally some public sector experience",
+      "typical_duration_years": 2,
+      "relevance_level": "secondary"
+    },
+    {
+      "career_path_slug": "compliance-officer",
+      "faculty_cluster": "law_political_science",
+      "degree_type": "bachelor",
+      "field_of_study": "Law",
+      "country_notes": "LLB as foundation for compliance work. Egypt: Cairo University Faculty of Law strongly respected for Egyptian regulatory context. Gulf: UAE University Law, UAEU. UK: any qualifying law degree. Compliance roles in banking and fintech especially prominent in Dubai (DIFC/ADGM) and Riyadh.",
+      "prerequisites": "Attention to detail, analytical thinking, reading regulations",
+      "typical_duration_years": 4,
+      "relevance_level": "primary"
+    },
+    {
+      "career_path_slug": "compliance-officer",
+      "faculty_cluster": "business_management",
+      "degree_type": "bachelor",
+      "field_of_study": "Business Administration (Finance or Risk Track)",
+      "country_notes": "BBA with risk management or financial regulation electives. Egypt: AUC, BUE. Gulf: AUS, KFUPM. UK: Warwick, Bath. US: NYU Stern, University of Maryland.",
+      "prerequisites": "Organizational skills, quantitative aptitude, interest in regulatory frameworks",
+      "typical_duration_years": 4,
+      "relevance_level": "secondary"
+    },
+    {
+      "career_path_slug": "compliance-officer",
+      "faculty_cluster": "law_political_science",
+      "degree_type": "certificate",
+      "field_of_study": "CCEP (Certified Compliance and Ethics Professional)",
+      "country_notes": "Globally recognized by SCCE. Widely valued in Egypt (banking sector), UAE (DIFC/ADGM regulated firms), Saudi Arabia, US, and UK. Can be pursued alongside a non-law career. Demonstrates commitment without requiring a law degree.",
+      "prerequisites": "Some relevant work experience in compliance, risk, or governance preferred",
+      "typical_duration_years": 1,
+      "relevance_level": "alternative"
+    },
+    {
+      "career_path_slug": "teacher",
+      "faculty_cluster": "education",
+      "degree_type": "bachelor",
+      "field_of_study": "Education (BEd)",
+      "country_notes": "Egypt: Faculties of Education at Cairo, Ain Shams, and Mansoura. Gulf: UAE University College of Education, Zayed University, Princess Nora University (Saudi Arabia). UK: BEd or PGCE route. US: BSEd programs at all major state universities.",
+      "prerequisites": "Communication, patience, interest in child development, subject-area knowledge",
+      "typical_duration_years": 4,
+      "relevance_level": "primary"
+    },
+    {
+      "career_path_slug": "teacher",
+      "faculty_cluster": "education",
+      "degree_type": "diploma",
+      "field_of_study": "PGCE (Postgraduate Certificate in Education)",
+      "country_notes": "UK standard route for subject graduates. Internationally recognized — valued in UAE and Gulf international schools. Egypt: limited PGCE programs but UK qualification opens international school doors in Cairo (e.g., BISC, CAC, BCA).",
+      "prerequisites": "Bachelor's degree in a relevant subject; UK requires subject degree to enter PGCE",
+      "typical_duration_years": 1,
+      "relevance_level": "secondary"
+    },
+    {
+      "career_path_slug": "edtech-developer",
+      "faculty_cluster": "computer_science_it",
+      "degree_type": "bachelor",
+      "field_of_study": "Computer Science or Software Engineering",
+      "country_notes": "Core technical degree needed. Egypt: GUC, AUC, MTI. UAE: AUS, Abu Dhabi University. US: Any strong CS program. UK: Edinburgh, Manchester. Supplement with instructional design or learning science coursework.",
+      "prerequisites": "Programming aptitude, interest in learning and education systems",
+      "typical_duration_years": 4,
+      "relevance_level": "primary"
+    },
+    {
+      "career_path_slug": "edtech-developer",
+      "faculty_cluster": "education",
+      "degree_type": "bachelor",
+      "field_of_study": "Instructional Design and Educational Technology",
+      "country_notes": "Specialist programs in US (Indiana University, Florida State). UK: limited at undergraduate level. Egypt: Education Faculties with technology streams. UAE: UAE University offers educational technology programs. Growing demand as MENA edtech sector expands.",
+      "prerequisites": "Interest in both technology and teaching, communication skills",
+      "typical_duration_years": 4,
+      "relevance_level": "secondary"
+    },
+    {
+      "career_path_slug": "academic-researcher",
+      "faculty_cluster": "natural_sciences",
+      "degree_type": "master",
+      "field_of_study": "Master's in Research Discipline (MSc/MA)",
+      "country_notes": "Master's as prerequisite for doctoral studies. Egypt: research-track master's at Cairo University, AUC. Gulf: KAUST (Saudi Arabia) offers fully funded MS/PhD programs globally competitive. UK: one-year standalone MSc at Oxford, Cambridge, UCL.",
+      "prerequisites": "Strong undergraduate GPA, research aptitude, writing skills",
+      "typical_duration_years": 2,
+      "relevance_level": "primary"
+    },
+    {
+      "career_path_slug": "academic-researcher",
+      "faculty_cluster": "natural_sciences",
+      "degree_type": "doctorate",
+      "field_of_study": "PhD in Research Discipline",
+      "country_notes": "Doctoral programs: Egypt (limited funding, most researchers pursue PhDs abroad). KAUST (Saudi Arabia) — fully funded, internationally ranked. UK: Oxford, Cambridge, Imperial, UCL — strong PhD culture with competitive stipends. US: well-funded PhD programs common. Germany: TU Munich, LMU — often free tuition.",
+      "prerequisites": "Bachelor's and/or Master's in relevant discipline, strong publications or research record",
+      "typical_duration_years": 5,
+      "relevance_level": "secondary"
+    },
+    {
+      "career_path_slug": "journalist",
+      "faculty_cluster": "media_communications",
+      "degree_type": "bachelor",
+      "field_of_study": "Journalism and Mass Communication",
+      "country_notes": "Egypt: Faculty of Mass Communication at Cairo University (highly respected), AUC Journalism and Mass Communication. Gulf: UAE University Media, CUNY Journalism partnership in Qatar. UK: City, University of London; Sheffield. US: Columbia, Northwestern Medill.",
+      "prerequisites": "Strong writing, curiosity, research skills, Arabic and English fluency for regional journalism",
+      "typical_duration_years": 4,
+      "relevance_level": "primary"
+    },
+    {
+      "career_path_slug": "journalist",
+      "faculty_cluster": "humanities_languages",
+      "degree_type": "bachelor",
+      "field_of_study": "English Language and Literature",
+      "country_notes": "Strong writing foundation applicable to journalism. Egypt: Faculty of Arts (Cairo, Alexandria). Gulf: English programs at AUS, University of Sharjah. UK: most universities. Supplement with internships and student journalism.",
+      "prerequisites": "Writing excellence, reading breadth, analytical thinking",
+      "typical_duration_years": 4,
+      "relevance_level": "secondary"
+    },
+    {
+      "career_path_slug": "content-strategist",
+      "faculty_cluster": "media_communications",
+      "degree_type": "bachelor",
+      "field_of_study": "Communications and Digital Media",
+      "country_notes": "Egypt: AUC Rhetoric and Composition, Cairo University Mass Communication. Gulf: AUS Mass Communication, Zayed University. UK: Bournemouth, Sheffield. US: Michigan, Northwestern. Digital media and SEO skills increasingly required.",
+      "prerequisites": "Writing, digital literacy, analytical curiosity about audiences",
+      "typical_duration_years": 4,
+      "relevance_level": "primary"
+    },
+    {
+      "career_path_slug": "content-strategist",
+      "faculty_cluster": "business_management",
+      "degree_type": "bachelor",
+      "field_of_study": "Marketing",
+      "country_notes": "Marketing degree with content and digital focus. Egypt: AUC, BUE, MSA Marketing programs. Gulf: AUS, KAU (Saudi Arabia). UK: Warwick, Lancaster, Leeds. Strong content strategy roles overlap with performance marketing.",
+      "prerequisites": "Communication skills, analytical thinking, creativity",
+      "typical_duration_years": 4,
+      "relevance_level": "secondary"
+    },
+    {
+      "career_path_slug": "pr-manager",
+      "faculty_cluster": "media_communications",
+      "degree_type": "bachelor",
+      "field_of_study": "Public Relations and Communications",
+      "country_notes": "Egypt: AUC Communications, Cairo University PR programs. Gulf: AUS Mass Communication, UAE University. UK: Leeds, Bournemouth (top-ranked PR programs). US: Syracuse (Newhouse), Penn State. Middle East PR sector growing with Vision 2030 mega-projects.",
+      "prerequisites": "Communication skills, networking aptitude, writing, interest in media and public affairs",
+      "typical_duration_years": 4,
+      "relevance_level": "primary"
+    },
+    {
+      "career_path_slug": "pr-manager",
+      "faculty_cluster": "business_management",
+      "degree_type": "bachelor",
+      "field_of_study": "Marketing and Business Communication",
+      "country_notes": "Business-oriented path into PR. Egypt: MSA, Future University. Gulf: HCT, AUS. UK: various BBA programs with marketing. Strong overlap between brand management and PR at the senior level.",
+      "prerequisites": "Communication skills, leadership potential, strategic thinking",
+      "typical_duration_years": 4,
+      "relevance_level": "secondary"
+    },
+    {
+      "career_path_slug": "startup-founder",
+      "faculty_cluster": "computer_science_it",
+      "degree_type": "bachelor",
+      "field_of_study": "Computer Science",
+      "country_notes": "Most tech startup founders have CS backgrounds. Egypt: GUC, AUC tech programs feed Egypt's growing startup ecosystem (Vezeeta, Swvl, Instabug founders background). UAE: ecosystem centered in Dubai Internet City. US: Stanford and MIT feed Silicon Valley.",
+      "prerequisites": "Programming skills, systems thinking, high tolerance for ambiguity",
+      "typical_duration_years": 4,
+      "relevance_level": "primary"
+    },
+    {
+      "career_path_slug": "startup-founder",
+      "faculty_cluster": "business_management",
+      "degree_type": "bachelor",
+      "field_of_study": "Business Administration with Entrepreneurship",
+      "country_notes": "Business-track founders benefit from operations and finance literacy. Egypt: AUC Venture Lab, GUC. UAE: AUS, Dubai startup ecosystem. UK: UCL, Cambridge Judge. US: Babson College, Stanford GSB pathways.",
+      "prerequisites": "Leadership potential, resilience, market awareness",
+      "typical_duration_years": 4,
+      "relevance_level": "secondary"
+    },
+    {
+      "career_path_slug": "startup-founder",
+      "faculty_cluster": "business_management",
+      "degree_type": "diploma",
+      "field_of_study": "Startup Accelerator Program (Y Combinator, Flat6Labs, Algebra Ventures)",
+      "country_notes": "Non-degree path: accelerators provide funding, mentorship, and network. Egypt: Flat6Labs (Cairo/Abu Dhabi), A15, Algebra Ventures. UAE: in5, DIFC FinTech Hive. Saudi Arabia: Misk Innovation, SVC. US: Y Combinator, Techstars. Often worth more than a degree for early-stage founders.",
+      "prerequisites": "Working prototype or validated idea, coachability, team or solo founder track record",
+      "typical_duration_years": 1,
+      "relevance_level": "alternative"
+    },
+    {
+      "career_path_slug": "venture-capital-analyst",
+      "faculty_cluster": "finance_economics",
+      "degree_type": "bachelor",
+      "field_of_study": "Finance or Economics",
+      "country_notes": "Strong quantitative foundation critical for VC due diligence. Egypt: AUC, Faculty of Commerce (Cairo University). Gulf: AUS, KFUPM. UK: LSE, Imperial. US: Wharton, Columbia. VC roles in MENA are limited — Algebra Ventures, Sawari Ventures, STV in Saudi Arabia recruit from top regional schools.",
+      "prerequisites": "Financial modeling, analytical thinking, startup ecosystem awareness",
+      "typical_duration_years": 4,
+      "relevance_level": "primary"
+    },
+    {
+      "career_path_slug": "venture-capital-analyst",
+      "faculty_cluster": "computer_science_it",
+      "degree_type": "bachelor",
+      "field_of_study": "Computer Science or Engineering",
+      "country_notes": "Technical background highly valued for evaluating deep tech, SaaS, or hardware startups. Egypt, UAE, US, UK, Germany all have strong programs. Many VC analysts enter from product or engineering roles.",
+      "prerequisites": "Technical depth in a domain, interest in investment and business models",
+      "typical_duration_years": 4,
+      "relevance_level": "secondary"
+    },
+    {
+      "career_path_slug": "venture-capital-analyst",
+      "faculty_cluster": "business_management",
+      "degree_type": "master",
+      "field_of_study": "MBA",
+      "country_notes": "Post-experience MBA is a common route into VC, especially at larger funds. Top programs: Wharton (US), HBS (US), LBS (UK), INSEAD. MENA: AUB, KAUST. Often more impactful than undergraduate path alone.",
+      "prerequisites": "Bachelor's degree, 3+ years work experience in finance, consulting, or startups",
+      "typical_duration_years": 2,
+      "relevance_level": "alternative"
+    },
+    {
+      "career_path_slug": "franchise-operator",
+      "faculty_cluster": "business_management",
+      "degree_type": "bachelor",
+      "field_of_study": "Business Administration",
+      "country_notes": "General business degree provides useful foundation. Egypt: BUE, MSA, Future University. Gulf: HCT (UAE), Gulf University (Saudi Arabia). Franchise market growing strongly in Gulf states (F&B, retail, education). Egypt has active IFA-affiliated franchise associations.",
+      "prerequisites": "Leadership, financial literacy, organizational skills",
+      "typical_duration_years": 4,
+      "relevance_level": "primary"
+    },
+    {
+      "career_path_slug": "franchise-operator",
+      "faculty_cluster": "business_management",
+      "degree_type": "diploma",
+      "field_of_study": "Franchise Management Diploma / Certificate",
+      "country_notes": "Short programs offered by IFA (International Franchise Association) and regional chambers of commerce. UAE: Dubai Chamber offers relevant programs. Saudi Arabia: MCIT-linked business programs. Egypt: CIPE-affiliated programs. Practical and cost-effective for those with capital ready to invest.",
+      "prerequisites": "Business awareness, some capital to invest, operational mindset",
+      "typical_duration_years": 1,
+      "relevance_level": "secondary"
+    },
+    {
+      "career_path_slug": "civil-engineer",
+      "faculty_cluster": "engineering_technology",
+      "degree_type": "bachelor",
+      "field_of_study": "Civil Engineering",
+      "country_notes": "Egypt: Faculty of Engineering programs at Cairo, Ain Shams, Alexandria — large graduate output supplying Gulf construction boom. Gulf: Khalifa University (UAE), KFUPM (Saudi Arabia). UK: Imperial, Southampton, Manchester. US: MIT, Georgia Tech, UC Berkeley.",
+      "prerequisites": "Mathematics, physics, spatial reasoning, interest in infrastructure",
+      "typical_duration_years": 4,
+      "relevance_level": "primary"
+    },
+    {
+      "career_path_slug": "civil-engineer",
+      "faculty_cluster": "engineering_technology",
+      "degree_type": "master",
+      "field_of_study": "MSc Structural or Geotechnical Engineering",
+      "country_notes": "Specialisation after BEng. KAUST (Saudi Arabia) offers fully funded graduate programs. UK: Imperial, Cambridge, Sheffield. US: MIT, Stanford, Cornell. Demand high in UAE for specialized structural engineers on mega-projects.",
+      "prerequisites": "BEng Civil Engineering, strong mathematics",
+      "typical_duration_years": 2,
+      "relevance_level": "secondary"
+    },
+    {
+      "career_path_slug": "mechanical-engineer",
+      "faculty_cluster": "engineering_technology",
+      "degree_type": "bachelor",
+      "field_of_study": "Mechanical Engineering",
+      "country_notes": "Egypt: Cairo, Ain Shams, Alexandria engineering faculties produce large volumes of mechanical engineers, many employed in Gulf energy sector. Gulf: KFUPM (Saudi Arabia), Khalifa University (UAE) — strong oil and gas focus. UK: Imperial, Manchester, Bath. US: MIT, Stanford, Georgia Tech.",
+      "prerequisites": "Mathematics, physics, interest in machines and systems",
+      "typical_duration_years": 4,
+      "relevance_level": "primary"
+    },
+    {
+      "career_path_slug": "mechanical-engineer",
+      "faculty_cluster": "engineering_technology",
+      "degree_type": "master",
+      "field_of_study": "MSc Mechatronics or Aerospace Engineering",
+      "country_notes": "Advanced specialization adding electronics and control systems. Germany: TU Munich, RWTH Aachen (strong mechatronics traditions). UK: Bath, Cranfield (aerospace). US: MIT, University of Michigan. UAE: Khalifa University aerospace programs growing.",
+      "prerequisites": "BEng Mechanical Engineering, electronics knowledge",
+      "typical_duration_years": 2,
+      "relevance_level": "secondary"
+    },
+    {
+      "career_path_slug": "environmental-engineer",
+      "faculty_cluster": "engineering_technology",
+      "degree_type": "bachelor",
+      "field_of_study": "Environmental Engineering",
+      "country_notes": "Egypt: Environmental Engineering at Cairo University, Ain Shams. Gulf: Khalifa University (UAE) has environmental engineering track; KFUPM (Saudi Arabia). UK: Imperial, Leeds, Newcastle. US: Stanford, UC Berkeley, Johns Hopkins. Growing demand in Gulf due to desalination and sustainability mandates.",
+      "prerequisites": "Chemistry, biology, mathematics, interest in environmental systems",
+      "typical_duration_years": 4,
+      "relevance_level": "primary"
+    },
+    {
+      "career_path_slug": "environmental-engineer",
+      "faculty_cluster": "natural_sciences",
+      "degree_type": "bachelor",
+      "field_of_study": "Environmental Science",
+      "country_notes": "Science-based alternative to engineering path. Egypt: Faculty of Science programs (Cairo, Alexandria). UAE: UAE University Environmental Science. UK: Lancaster, East Anglia. US: UC Santa Barbara, Yale. Less technical but broader ecological perspective. PE licensure requires additional engineering courses.",
+      "prerequisites": "Biology, chemistry, geography, environmental awareness",
+      "typical_duration_years": 4,
+      "relevance_level": "secondary"
+    },
+    {
+      "career_path_slug": "environmental-engineer",
+      "faculty_cluster": "engineering_technology",
+      "degree_type": "master",
+      "field_of_study": "MSc Environmental Engineering or Sustainability",
+      "country_notes": "Graduate specialization increasingly valuable. KAUST (Saudi Arabia) — fully funded and regionally relevant for water and energy research. UK: Imperial, Surrey. Germany: TU Berlin. US: MIT, Johns Hopkins. UAE: Masdar Institute (now Khalifa University) focuses on clean energy.",
+      "prerequisites": "BEng in Engineering or BSc in Environmental/Natural Sciences",
+      "typical_duration_years": 2,
+      "relevance_level": "alternative"
+    }
+  ],
+  "country_study_context": [
+    {
+      "country_code": "EG",
+      "country_name": "Egypt",
+      "education_system_notes": "Egypt has a large public university system (25+ public universities) alongside private universities. Cairo University, Ain Shams, and Alexandria are the most prestigious public institutions. Private universities (AUC, GUC, BUE, MSA, MTI) offer internationally-aligned curricula, often in English. Bachelor programs are typically 4–5 years; Medicine is 6 years + house officer year. The Supreme Council of Universities accredits all degrees. Egyptian degrees are recognized across Arab League states. Many top students pursue postgraduate studies abroad. STEM and Engineering faculties are highly regarded regionally.",
+      "typical_bachelor_years": 5,
+      "typical_master_years": 2,
+      "cost_level": "low",
+      "language_of_instruction": "Arabic (English at private universities)",
+      "visa_complexity": "none"
+    },
+    {
+      "country_code": "SA",
+      "country_name": "Saudi Arabia",
+      "education_system_notes": "Saudi Arabia has undergone significant higher education expansion under Vision 2030. KAUST (King Abdullah University of Science and Technology) is a graduate-only research university with full scholarships — internationally competitive. KFUPM (King Fahd University of Petroleum and Minerals) is highly respected for engineering and science. Female participation has expanded dramatically since 2017. Many Saudi students receive government scholarships (KASP) to study abroad in the US, UK, Canada, and Australia. Public university tuition is free for Saudi nationals. International students require student visa; enrollment at private institutions increasingly open.",
+      "typical_bachelor_years": 4,
+      "typical_master_years": 2,
+      "cost_level": "low",
+      "language_of_instruction": "Arabic (English at KAUST and many graduate programs)",
+      "visa_complexity": "moderate"
+    },
+    {
+      "country_code": "AE",
+      "country_name": "United Arab Emirates",
+      "education_system_notes": "The UAE hosts 70+ universities across Dubai, Abu Dhabi, and other emirates — a mix of local institutions and branch campuses of global universities (NYU Abu Dhabi, Sorbonne Abu Dhabi, Heriot-Watt, Middlesex, Birmingham City). Higher Colleges of Technology (HCT) is the largest applied education network. UAE University (Al Ain) and Zayed University are the main federal institutions. Programs are largely in English. The KHDA and CAA regulate quality. International students are common; student visa process is well-established. Costs vary widely — public universities subsidized for UAE nationals, private institutions charge international rates.",
+      "typical_bachelor_years": 4,
+      "typical_master_years": 2,
+      "cost_level": "high",
+      "language_of_instruction": "English (Arabic at federal institutions)",
+      "visa_complexity": "easy"
+    },
+    {
+      "country_code": "US",
+      "country_name": "United States",
+      "education_system_notes": "The US higher education system is the most internationally prestigious, with 4,000+ accredited institutions. Regional accreditation by bodies such as HLC, SACSCOC, and WASC assures quality. The 4-year bachelor's model is standard. Graduate programs (master's 1–2 years, PhD 4–6 years) are globally sought. Top research universities (MIT, Stanford, Harvard, Caltech) compete for global talent. Community colleges (2 years) offer affordable pathways and transfer options. Costs are very high — average $30,000–$60,000/year at private universities. Financial aid and merit scholarships are available but competitive. F-1 student visa required for international students; OPT allows 1–3 years work post-graduation.",
+      "typical_bachelor_years": 4,
+      "typical_master_years": 2,
+      "cost_level": "very_high",
+      "language_of_instruction": "English",
+      "visa_complexity": "moderate"
+    },
+    {
+      "country_code": "GB",
+      "country_name": "United Kingdom",
+      "education_system_notes": "The UK system features 3-year honours bachelor's degrees in England, Wales, and Northern Ireland (4 years in Scotland). Universities are ranked globally; Oxbridge, Imperial, LSE, UCL, and Edinburgh are top institutions. The QAA oversees quality. Master's degrees are typically 1 year (taught) or 1–2 years (research). PhD programs are 3–4 years. Tuition for international students has risen significantly — typically £15,000–£35,000/year. The Graduate Route visa allows 2 years of post-study work (3 for PhD graduates), making the UK attractive for career transitions. IELTS or equivalent required for admission. UK qualifications are highly respected across the MENA region.",
+      "typical_bachelor_years": 3,
+      "typical_master_years": 1,
+      "cost_level": "high",
+      "language_of_instruction": "English",
+      "visa_complexity": "moderate"
+    },
+    {
+      "country_code": "CA",
+      "country_name": "Canada",
+      "education_system_notes": "Canada offers high-quality education at relatively lower cost than the US or UK. Bachelor programs are 4 years; master's 1–2 years; PhDs 4–5 years. University of Toronto, McGill, UBC, and Waterloo are globally ranked. French-language institutions (Université de Montréal, Laval) serve Quebec. Community colleges offer diplomas and certificates (2–3 years) with strong employer linkages. Post-Graduation Work Permit (PGWP) allows up to 3 years of work, with pathways to permanent residency — making Canada highly attractive for international graduates. Tuition for international students: CAD $20,000–$40,000/year. Student visa (study permit) process is well-established.",
+      "typical_bachelor_years": 4,
+      "typical_master_years": 2,
+      "cost_level": "high",
+      "language_of_instruction": "English (French in Quebec)",
+      "visa_complexity": "easy"
+    },
+    {
+      "country_code": "DE",
+      "country_name": "Germany",
+      "education_system_notes": "Germany offers tuition-free or very low-cost education at public universities (even for international students at most states — Baden-Württemberg charges ~€1,500/semester). The system follows the Bologna framework: 3-year bachelor, 2-year master. Technical Universities of Excellence (TU Munich, RWTH Aachen, KIT) are globally ranked for engineering and technology. Many master's programs taught fully in English. DAAD scholarships support international students. Recognition of foreign qualifications handled by anabin database. Language requirements: German for undergraduate programs; English for many master's. Blocked account (~€11,208) required for student visa. Strong student work permit (20 hours/week) and post-study 18-month job-seeker visa.",
+      "typical_bachelor_years": 3,
+      "typical_master_years": 2,
+      "cost_level": "low",
+      "language_of_instruction": "German (English for many Master's programs)",
+      "visa_complexity": "moderate"
+    },
+    {
+      "country_code": "AU",
+      "country_name": "Australia",
+      "education_system_notes": "Australia has a strong globally-ranked university system — Group of Eight (Go8) universities include U of Melbourne, ANU, U of Sydney, UNSW, Monash, UQ, UWA, and Adelaide. Bachelor programs are 3 years (some 4). Master's 1.5–2 years. TEQSA regulates quality. International student fees: AUD $25,000–$45,000/year. Australia's Temporary Graduate visa (subclass 485) offers 2–4 years post-study work rights, with recent extensions for regional study and high-demand occupations. IELTS or PTE required. Australia is a top destination for students from Egypt, Gulf states, and South/Southeast Asia. Scholarship programs: Australia Awards (funded by DFAT for developing countries).",
+      "typical_bachelor_years": 3,
+      "typical_master_years": 2,
+      "cost_level": "high",
+      "language_of_instruction": "English",
+      "visa_complexity": "easy"
+    },
+    {
+      "country_code": "MY",
+      "country_name": "Malaysia",
+      "education_system_notes": "Malaysia offers very affordable, internationally recognized education. Public universities (Universiti Malaya, UTM, UKM) charge low fees (~MYR 5,000–15,000/year for international students). Private universities (Monash Malaysia, Taylor's, HELP) offer Australian and UK twinning programs at reduced cost — allowing students to complete 1–2 years locally before transferring abroad. Programs largely in English. Education quality regulated by MQA. Malaysia is a popular study destination for students from Egypt, Saudi Arabia, and other Muslim-majority countries due to cultural affinity, halal food availability, and affordability. Student pass process is straightforward for most nationalities.",
+      "typical_bachelor_years": 3,
+      "typical_master_years": 2,
+      "cost_level": "low",
+      "language_of_instruction": "English (Malay at public universities)",
+      "visa_complexity": "easy"
+    },
+    {
+      "country_code": "TR",
+      "country_name": "Turkey",
+      "education_system_notes": "Turkey has significantly expanded its higher education system — 200+ universities including prestigious state universities (Bogazici, METU, Istanbul Technical University) and well-resourced private universities (Bilkent, Koc, Sabanci). Tuition at state universities is heavily subsidized for Turkish students; international students pay moderate fees (~$500–$3,000/year at state universities, $5,000–$15,000 at private). YTB (Türkiye Scholarships) fund approximately 5,000 international students annually including full tuition, accommodation, and stipend — very popular with Arab students. Many programs available in English. Turkey is increasingly popular with Egyptian, Syrian, and Gulf students due to affordability, cultural proximity, and geographic convenience. Residence permit required for study; generally straightforward.",
+      "typical_bachelor_years": 4,
+      "typical_master_years": 2,
+      "cost_level": "low",
+      "language_of_instruction": "Turkish (English at private universities)",
+      "visa_complexity": "easy"
+    }
+  ]
+}
