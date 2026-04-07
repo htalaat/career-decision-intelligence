@@ -19,8 +19,8 @@ export function Chip({ label, selected, onPress }: ChipProps) {
       accessibilityRole="checkbox"
       accessibilityState={{ checked: selected }}
       style={({ pressed }) => ({
-        minHeight: 52,
-        borderRadius: tokens.borderRadius.full,
+        minHeight: 48,
+        borderRadius: 24,
         paddingHorizontal: 20,
         paddingVertical: 12,
         borderWidth: 2,

@@ -58,7 +58,7 @@ export default function SubjectsScreen() {
                     style={({ pressed }) => ({
                       paddingHorizontal: 18,
                       paddingVertical: 12,
-                      borderRadius: tokens.borderRadius.full,
+                      borderRadius: 22,
                       backgroundColor: isSelected ? tokens.colors.accent.muted : tokens.colors.surface.secondary,
                       borderWidth: 2,
                       borderColor: isSelected ? tokens.colors.accent.DEFAULT : tokens.colors.border.DEFAULT,
