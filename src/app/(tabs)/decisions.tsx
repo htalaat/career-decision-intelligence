@@ -227,8 +227,7 @@ export default function DecisionsScreen() {
                       {/* Action plan link */}
                       {!isRejected && (
                         <Button
-                          label="View action plan"
-                          variant="ghost"
+                          label="View action plan →"
                           onPress={() => router.push(`/action-plan/${d.id as string}` as never)}
                         />
                       )}

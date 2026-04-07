@@ -2,6 +2,7 @@ import React, { useState, useMemo } from "react";
 import { View, Text, ScrollView, ActivityIndicator } from "react-native";
 import { useRouter } from "expo-router";
 import { Screen } from "../../components/ui/Screen";
+import { Button } from "../../components/ui/Button";
 import { CareerCard } from "../../components/features/CareerCard";
 import { FilterBar } from "../../components/features/FilterBar";
 import { ErrorState } from "../../components/ui/ErrorState";
@@ -103,6 +104,24 @@ export default function ExploreScreen() {
               onToggleShortlist={() => handleToggleShortlist(career.id as string)}
             />
           ))}
+
+          {shortlistedIds.length >= 2 && (
+            <View style={{
+              backgroundColor: tokens.colors.accent.muted,
+              borderRadius: tokens.borderRadius.lg,
+              padding: 16,
+              gap: 8,
+              marginTop: 8,
+            }}>
+              <Text style={{ fontSize: tokens.typography.bodySize, fontWeight: "600", color: tokens.colors.accent.DEFAULT }}>
+                You've shortlisted {shortlistedIds.length} careers
+              </Text>
+              <Button
+                label="Compare them →"
+                onPress={() => router.push("/(tabs)/compare" as never)}
+              />
+            </View>
+          )}
         </ScrollView>
       </View>
     </Screen>

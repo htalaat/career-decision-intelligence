@@ -124,6 +124,7 @@ export default function EditProfileScreen() {
   };
 
   const sections = [
+    { key: "school", label: "School & Subjects" },
     { key: "stage", label: "Life Stage & Academic" },
     { key: "location", label: "Country & Location" },
     { key: "traits", label: "Interests, Strengths, Values" },
@@ -180,6 +181,23 @@ export default function EditProfileScreen() {
 
             {activeSection === section.key && (
               <View style={{ padding: tokens.spacing.md, paddingTop: 0, gap: 16 }}>
+                {section.key === "school" && (
+                  <View style={{ gap: 12 }}>
+                    <Text style={{ fontSize: tokens.typography.captionSize, color: tokens.colors.text.secondary }}>
+                      School system and subjects are set during onboarding. To change them, you can redo your profile from the beginning.
+                    </Text>
+                    {((answerData?.answers?.current_subjects as string[] | undefined)?.length ?? 0) > 0 && (
+                      <View style={{ gap: 4 }}>
+                        <Text style={{ fontSize: tokens.typography.captionSize, fontWeight: "600", color: tokens.colors.text.primary }}>
+                          Current subjects
+                        </Text>
+                        <Text style={{ fontSize: tokens.typography.captionSize, color: tokens.colors.text.secondary }}>
+                          {((answerData?.answers?.current_subjects as string[]) ?? []).map((s: string) => s.replace(/_/g, " ")).join(", ")}
+                        </Text>
+                      </View>
+                    )}
+                  </View>
+                )}
                 {section.key === "stage" && (
                   <>
                     <Select label="Life stage" options={[...STAGE_OPTIONS]} value={stage} onSelect={setStage} />

@@ -258,6 +258,12 @@ export default function CompareScreen() {
           onPress={handleSave}
           loading={saveScenario.isPending}
         />
+
+        <Button
+          label="Ready to decide? →"
+          variant="ghost"
+          onPress={() => router.push("/(tabs)/decisions" as never)}
+        />
       </View>
     </Screen>
   );

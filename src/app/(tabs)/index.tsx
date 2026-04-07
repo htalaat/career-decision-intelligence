@@ -197,6 +197,53 @@ export default function DashboardScreen() {
                 onPress={() => router.push("/edit-profile" as never)}
               />
             </View>
+
+            {/* Next steps guide */}
+            {items.length > 0 && (
+              <View style={{
+                backgroundColor: tokens.colors.surface.secondary,
+                borderRadius: tokens.borderRadius.lg,
+                borderWidth: 1,
+                borderColor: tokens.colors.accent.DEFAULT + "40",
+                padding: 20,
+                gap: 14,
+              }}>
+                <Text style={{
+                  fontSize: tokens.typography.titleSize,
+                  fontWeight: tokens.typography.titleWeight,
+                  color: tokens.colors.text.primary,
+                }}>
+                  What to do next
+                </Text>
+                <Pressable
+                  onPress={() => router.push("/(tabs)/explore" as never)}
+                  style={{ flexDirection: "row", alignItems: "center", gap: 10, paddingVertical: 6 }}
+                >
+                  <Text style={{ fontSize: 20 }}>🔍</Text>
+                  <Text style={{ fontSize: tokens.typography.bodySize, color: tokens.colors.accent.DEFAULT, fontWeight: "500" }}>
+                    Explore all careers and shortlist your favorites
+                  </Text>
+                </Pressable>
+                <Pressable
+                  onPress={() => router.push("/(tabs)/compare" as never)}
+                  style={{ flexDirection: "row", alignItems: "center", gap: 10, paddingVertical: 6 }}
+                >
+                  <Text style={{ fontSize: 20 }}>📊</Text>
+                  <Text style={{ fontSize: tokens.typography.bodySize, color: tokens.colors.accent.DEFAULT, fontWeight: "500" }}>
+                    Compare your top picks side by side
+                  </Text>
+                </Pressable>
+                <Pressable
+                  onPress={() => router.push("/(tabs)/decisions" as never)}
+                  style={{ flexDirection: "row", alignItems: "center", gap: 10, paddingVertical: 6 }}
+                >
+                  <Text style={{ fontSize: 20 }}>🎯</Text>
+                  <Text style={{ fontSize: tokens.typography.bodySize, color: tokens.colors.accent.DEFAULT, fontWeight: "500" }}>
+                    Make a decision and get your action plan
+                  </Text>
+                </Pressable>
+              </View>
+            )}
           </>
         )}
       </View>
