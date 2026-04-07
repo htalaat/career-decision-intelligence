@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { View, Text, ScrollView, Pressable } from "react-native";
 import { useRouter } from "expo-router";
 import { OnboardingQuestion } from "../../components/features/OnboardingQuestion";
+import { ClusterPreview } from "../../components/features/ClusterPreview";
 import { useOnboardingStore } from "../../stores/onboardingStore";
 import { useTokens } from "../../lib/theme/PersonaProvider";
 
@@ -111,6 +112,17 @@ export default function SubjectFeelingsScreen() {
             </View>
           );
         })}
+
+        {ratedCount >= 2 && (
+          <ClusterPreview
+            partialProfile={{
+              subjectsEnjoyed: Object.entries(feelings).filter(([, f]) => f === "enjoy").map(([k]) => k),
+              subjectsGoodAt: Object.entries(feelings).filter(([, f]) => f === "good_at").map(([k]) => k),
+              subjectsDisliked: Object.entries(feelings).filter(([, f]) => f === "dislike").map(([k]) => k),
+              currentSubjects: subjects,
+            }}
+          />
+        )}
       </ScrollView>
     </OnboardingQuestion>
   );
