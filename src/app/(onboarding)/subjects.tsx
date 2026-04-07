@@ -46,7 +46,7 @@ export default function SubjectsScreen() {
                 {category.category}
               </Text>
             </View>
-            <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 10 }}>
+            <View style={{ gap: 6 }}>
               {category.subjects.map((subject) => {
                 const isSelected = selected.includes(subject.key);
                 return (
@@ -56,20 +56,37 @@ export default function SubjectsScreen() {
                     accessibilityLabel={`${subject.label}, ${isSelected ? "selected" : "not selected"}`}
                     accessibilityRole="checkbox"
                     style={({ pressed }) => ({
-                      paddingHorizontal: 18,
-                      paddingVertical: 12,
-                      borderRadius: 22,
+                      paddingHorizontal: 16,
+                      paddingVertical: 14,
+                      borderRadius: 14,
                       backgroundColor: isSelected ? tokens.colors.accent.muted : tokens.colors.surface.secondary,
                       borderWidth: 2,
                       borderColor: isSelected ? tokens.colors.accent.DEFAULT : tokens.colors.border.DEFAULT,
-                      opacity: pressed ? 0.85 : 1,
-                      transform: [{ scale: pressed ? 0.97 : 1 }],
-                      minHeight: 44,
+                      opacity: pressed ? 0.9 : 1,
+                      transform: [{ scale: pressed ? 0.98 : 1 }],
+                      minHeight: 48,
+                      flexDirection: "row",
+                      alignItems: "center",
+                      gap: 12,
                     })}
                   >
+                    <View style={{
+                      width: 22,
+                      height: 22,
+                      borderRadius: 11,
+                      borderWidth: 2,
+                      borderColor: isSelected ? tokens.colors.accent.DEFAULT : tokens.colors.border.DEFAULT,
+                      backgroundColor: isSelected ? tokens.colors.accent.DEFAULT : "transparent",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}>
+                      {isSelected && (
+                        <Text style={{ color: tokens.colors.text.inverse, fontSize: 12, fontWeight: "700" }}>✓</Text>
+                      )}
+                    </View>
                     <Text style={{
-                      fontSize: tokens.typography.captionSize,
-                      fontWeight: isSelected ? "700" : "400",
+                      fontSize: tokens.typography.bodySize,
+                      fontWeight: isSelected ? "600" : "400",
                       color: isSelected ? tokens.colors.accent.DEFAULT : tokens.colors.text.primary,
                     }}>
                       {subject.label}

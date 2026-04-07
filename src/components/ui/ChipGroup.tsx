@@ -26,7 +26,7 @@ export function ChipGroup({ options, selected, onToggle, min = 0, max = Infinity
 
   return (
     <View style={{ gap: 12 }}>
-      <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 10 }}>
+      <View style={{ gap: 8 }}>
         {options.map((option) => (
           <Chip key={option.key} label={option.label} selected={selected.includes(option.key)} onPress={() => handleToggle(option.key)} />
         ))}

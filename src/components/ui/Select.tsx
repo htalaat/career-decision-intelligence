@@ -15,13 +15,15 @@ interface SelectProps {
   error?: string;
 }
 
-/** Single-select option group rendered as tappable cards */
+/** Single-select option group — card style with radio indicator */
 export function Select({ label, options, value, onSelect, error }: SelectProps) {
   const tokens = useTokens();
 
   return (
-    <View className="gap-2">
-      <Text style={{ fontSize: tokens.typography.captionSize, fontWeight: "500", color: tokens.colors.text.secondary }}>{label}</Text>
+    <View style={{ gap: 10 }}>
+      <Text style={{ fontSize: tokens.typography.captionSize, fontWeight: "500", color: tokens.colors.text.secondary }}>
+        {label}
+      </Text>
       <View style={{ gap: 8 }}>
         {options.map((option) => {
           const isSelected = value === option.value;
@@ -32,22 +34,41 @@ export function Select({ label, options, value, onSelect, error }: SelectProps) 
               accessibilityLabel={option.label}
               accessibilityRole="radio"
               accessibilityState={{ selected: isSelected }}
-              style={{
+              style={({ pressed }) => ({
                 minHeight: tokens.touchTarget.min,
-                borderRadius: tokens.borderRadius.md,
-                borderWidth: 1,
+                borderRadius: 14,
+                borderWidth: 2,
                 paddingHorizontal: 16,
-                paddingVertical: 12,
-                justifyContent: "center",
+                paddingVertical: 14,
+                flexDirection: "row",
+                alignItems: "center",
+                gap: 12,
                 borderColor: isSelected ? tokens.colors.accent.DEFAULT : tokens.colors.border.DEFAULT,
                 backgroundColor: isSelected ? tokens.colors.accent.muted : tokens.colors.surface.secondary,
-              }}
+                opacity: pressed ? 0.9 : 1,
+              })}
             >
+              {/* Radio indicator */}
+              <View style={{
+                width: 22,
+                height: 22,
+                borderRadius: 11,
+                borderWidth: 2,
+                borderColor: isSelected ? tokens.colors.accent.DEFAULT : tokens.colors.border.DEFAULT,
+                backgroundColor: isSelected ? tokens.colors.accent.DEFAULT : "transparent",
+                alignItems: "center",
+                justifyContent: "center",
+              }}>
+                {isSelected && (
+                  <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: tokens.colors.text.inverse }} />
+                )}
+              </View>
               <Text
                 style={{
                   fontSize: tokens.typography.bodySize,
                   fontWeight: isSelected ? "600" : "400",
                   color: isSelected ? tokens.colors.accent.DEFAULT : tokens.colors.text.primary,
+                  flex: 1,
                 }}
               >
                 {option.label}
@@ -57,7 +78,9 @@ export function Select({ label, options, value, onSelect, error }: SelectProps) 
         })}
       </View>
       {error && (
-        <Text style={{ fontSize: tokens.typography.captionSize, color: tokens.colors.error }}>{error}</Text>
+        <Text style={{ fontSize: tokens.typography.captionSize, color: tokens.colors.error, fontWeight: "500" }}>
+          {error}
+        </Text>
       )}
     </View>
   );
