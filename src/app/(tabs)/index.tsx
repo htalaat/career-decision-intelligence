@@ -91,6 +91,25 @@ export default function DashboardScreen() {
             )}
           </View>
         )}
+
+        {/* Profile actions */}
+        <View style={{ gap: 8, paddingTop: 8 }}>
+          <Button
+            label="Edit my profile"
+            variant="secondary"
+            onPress={() => router.push("/edit-profile" as never)}
+          />
+          {items.length > 0 && (
+            <Button
+              label="Re-run recommendations with current profile"
+              variant="ghost"
+              onPress={async () => {
+                // This would need to be wired with the re-run logic
+                router.push("/edit-profile" as never);
+              }}
+            />
+          )}
+        </View>
       </View>
     </Screen>
   );

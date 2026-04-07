@@ -111,3 +111,131 @@ export function useSaveOnboarding() {
     },
   });
 }
+
+/** Fetch the current user's profile answers, weights, and constraints */
+export function useProfileAnswers() {
+  const userId = useAuthStore((s) => s.user?.id);
+
+  return useQuery({
+    queryKey: ["profile-answers", userId],
+    queryFn: async () => {
+      if (!userId) throw new Error("Not authenticated");
+
+      const { data: sp } = await supabase
+        .from("student_profiles")
+        .select("id")
+        .eq("user_id", userId)
+        .single();
+      if (!sp) throw new Error("Student profile not found");
+
+      const { data: answers } = await supabase
+        .from("profile_answers")
+        .select("*")
+        .eq("profile_id", sp.id)
+        .order("version", { ascending: false });
+
+      const { data: weights } = await supabase
+        .from("preference_weights")
+        .select("*")
+        .eq("profile_id", sp.id)
+        .single();
+
+      const { data: constraints } = await supabase
+        .from("constraint_sets")
+        .select("*")
+        .eq("profile_id", sp.id)
+        .single();
+
+      // Build latest answer map (highest version per question_key)
+      const latestAnswers = new Map<string, unknown>();
+      for (const a of answers ?? []) {
+        if (!latestAnswers.has(a.question_key as string)) {
+          latestAnswers.set(a.question_key as string, a.answer_value);
+        }
+      }
+
+      return {
+        profileId: sp.id as string,
+        answers: Object.fromEntries(latestAnswers),
+        weights,
+        constraints,
+        answerHistory: answers ?? [],
+      };
+    },
+    enabled: !!userId,
+  });
+}
+
+/** Update profile answers with version increment. Preserves old answers. */
+export function useUpdateProfile() {
+  const userId = useAuthStore((s) => s.user?.id);
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (params: {
+      profileId: string;
+      updates: Record<string, unknown>;
+      studentProfileUpdates?: Record<string, unknown>;
+      constraintUpdates?: Record<string, unknown>;
+      weightUpdates?: Record<string, number>;
+    }) => {
+      if (!userId) throw new Error("Not authenticated");
+
+      // Get current max version
+      const { data: versionData } = await supabase
+        .from("profile_answers")
+        .select("version")
+        .eq("profile_id", params.profileId)
+        .order("version", { ascending: false })
+        .limit(1)
+        .single();
+
+      const nextVersion = ((versionData?.version as number) ?? 0) + 1;
+
+      // Insert new answer versions (preserves old ones)
+      const answerKeys = ["interests", "strengths", "values", "workstyle"];
+      for (const key of answerKeys) {
+        if (params.updates[key] !== undefined) {
+          await supabase.from("profile_answers").insert({
+            profile_id: params.profileId,
+            question_key: key,
+            answer_value: params.updates[key],
+            version: nextVersion,
+          });
+        }
+      }
+
+      // Update student profile fields
+      if (params.studentProfileUpdates) {
+        await supabase
+          .from("student_profiles")
+          .update({
+            ...params.studentProfileUpdates,
+            latest_version: nextVersion,
+            updated_at: new Date().toISOString(),
+          })
+          .eq("id", params.profileId);
+      }
+
+      // Upsert constraints
+      if (params.constraintUpdates) {
+        await supabase.from("constraint_sets").upsert({
+          profile_id: params.profileId,
+          ...params.constraintUpdates,
+        });
+      }
+
+      // Upsert weights
+      if (params.weightUpdates) {
+        await supabase.from("preference_weights").upsert({
+          profile_id: params.profileId,
+          ...params.weightUpdates,
+        });
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["profile"] });
+      queryClient.invalidateQueries({ queryKey: ["profile-answers"] });
+    },
+  });
+}
