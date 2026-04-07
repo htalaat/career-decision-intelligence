@@ -75,8 +75,13 @@ export function useSaveOnboarding() {
         })
         .eq("id", profileId);
 
-      // Save answers (interests, strengths, values, workstyle)
-      const answerKeys = ["interests", "strengths", "values", "workstyle"];
+      // Save answers (interests, strengths, values, workstyle + high-school fields)
+      const answerKeys = [
+        "interests", "strengths", "values", "workstyle",
+        "school_system", "curriculum_level", "curriculum_country",
+        "current_subjects", "subjects_enjoyed", "subjects_good_at", "subjects_disliked",
+        "cluster_reactions",
+      ];
       for (const key of answerKeys) {
         if (answers[key]) {
           await supabase.from("profile_answers").insert({
@@ -203,7 +208,12 @@ export function useUpdateProfile() {
       const nextVersion = ((versionData?.version as number) ?? 0) + 1;
 
       // Insert new answer versions (preserves old ones)
-      const answerKeys = ["interests", "strengths", "values", "workstyle"];
+      const answerKeys = [
+        "interests", "strengths", "values", "workstyle",
+        "school_system", "curriculum_level", "curriculum_country",
+        "current_subjects", "subjects_enjoyed", "subjects_good_at", "subjects_disliked",
+        "cluster_reactions",
+      ];
       for (const key of answerKeys) {
         if (params.updates[key] !== undefined) {
           await supabase.from("profile_answers").insert({

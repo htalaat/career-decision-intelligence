@@ -178,7 +178,7 @@ export default function DashboardScreen() {
                         </Text>
                       )}
                       {(explanation.suggestedFaculty as string) && (
-                        <Text style={{ fontSize: 12, color: tokens.colors.accent.light }}>
+                        <Text style={{ fontSize: 12, color: tokens.colors.accent.DEFAULT }}>
                           📚 {explanation.suggestedFaculty as string}
                         </Text>
                       )}

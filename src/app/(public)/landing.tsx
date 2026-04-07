@@ -58,7 +58,9 @@ export default function LandingScreen() {
                   paddingHorizontal: 14,
                   paddingVertical: 8,
                   borderRadius: tokens.borderRadius.full,
-                  backgroundColor: tokens.colors.surface.elevated,
+                  backgroundColor: tokens.colors.surface.secondary,
+                  borderWidth: 1,
+                  borderColor: tokens.colors.border.DEFAULT,
                 }}
               >
                 <Text style={{ fontSize: 14 }}>{item.emoji}</Text>
@@ -83,7 +85,7 @@ export default function LandingScreen() {
               accessibilityRole="button"
               style={{ alignItems: "center", paddingVertical: 12 }}
             >
-              <Text style={{ fontSize: tokens.typography.bodySize, color: tokens.colors.accent.light }}>
+              <Text style={{ fontSize: tokens.typography.bodySize, color: tokens.colors.accent.DEFAULT }}>
                 I already have an account
               </Text>
             </Pressable>

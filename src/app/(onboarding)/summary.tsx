@@ -14,6 +14,7 @@ import { useTokens } from "../../lib/theme/PersonaProvider";
 import {
   INTEREST_TRAITS, STRENGTH_TRAITS, VALUE_OPTIONS, WORKSTYLE_OPTIONS,
   COUNTRIES, RELOCATION_OPTIONS, READINESS_OPTIONS, STAGE_OPTIONS,
+  SCHOOL_SYSTEMS, CURRICULUM_LEVELS, SUBJECT_CATEGORIES,
 } from "../../lib/utils/constants";
 
 function lookupLabels(keys: string[], options: ReadonlyArray<{ key: string; label: string }>) {
@@ -28,6 +29,23 @@ function lookupValue(value: string | null, options: ReadonlyArray<{ value: strin
 function lookupCountry(code: string | null): string {
   if (!code) return "—";
   return COUNTRIES.find((c) => c.code === code)?.name ?? code;
+}
+
+/** Resolve subject keys to labels from SUBJECT_CATEGORIES flat list */
+function lookupSubjectLabels(keys: string[]): string[] {
+  const flat = SUBJECT_CATEGORIES.flatMap((cat) => [...cat.subjects]);
+  return keys.map((k) => flat.find((s) => s.key === k)?.label ?? k);
+}
+
+/** Resolve curriculum level value to label — checks all system arrays */
+function lookupCurriculumLevel(level: string | null): string {
+  if (!level) return "—";
+  const allLevels = [
+    ...CURRICULUM_LEVELS.british,
+    ...CURRICULUM_LEVELS.ib,
+    ...CURRICULUM_LEVELS.american,
+  ] as ReadonlyArray<{ value: string; label: string }>;
+  return allLevels.find((l) => l.value === level)?.label ?? level;
 }
 
 /** Step 13: Full profile summary — shows ALL captured data, then generates recommendations */
@@ -55,6 +73,30 @@ export default function SummaryScreen() {
     { label: "Strengths", values: lookupLabels(strengths, [...STRENGTH_TRAITS]) },
     { label: "Values", values: lookupLabels(values, [...VALUE_OPTIONS]) },
     { label: "Work vibes", values: lookupLabels(workstyle, [...WORKSTYLE_OPTIONS]) },
+    // High school — school system & curriculum
+    ...(answers.school_system ? [{
+      label: "School system",
+      values: [SCHOOL_SYSTEMS.find((s) => s.value === (answers.school_system as string))?.label ?? (answers.school_system as string)],
+    }] : []),
+    ...(answers.curriculum_level ? [{ label: "Curriculum level", values: [lookupCurriculumLevel(answers.curriculum_level as string)] }] : []),
+    ...(answers.curriculum_country ? [{ label: "Curriculum country", values: [lookupCountry(answers.curriculum_country as string)] }] : []),
+    // Subjects
+    ...((answers.current_subjects as string[] | undefined)?.length ? [{
+      label: "Subjects taken",
+      values: lookupSubjectLabels(answers.current_subjects as string[]),
+    }] : []),
+    ...((answers.subjects_enjoyed as string[] | undefined)?.length ? [{
+      label: "Subjects enjoyed",
+      values: lookupSubjectLabels(answers.subjects_enjoyed as string[]),
+    }] : []),
+    ...((answers.subjects_good_at as string[] | undefined)?.length ? [{
+      label: "Subjects I'm good at",
+      values: lookupSubjectLabels(answers.subjects_good_at as string[]),
+    }] : []),
+    ...((answers.subjects_disliked as string[] | undefined)?.length ? [{
+      label: "Subjects disliked",
+      values: lookupSubjectLabels(answers.subjects_disliked as string[]),
+    }] : []),
     // Readiness
     ...(answers.decision_readiness ? [{ label: "Decision readiness", values: [lookupValue(answers.decision_readiness as string, [...READINESS_OPTIONS])] }] : []),
     // Practical — from separate screens
