@@ -14,8 +14,7 @@ export default function ReadinessScreen() {
   const handleNext = () => {
     setAnswer("decision_readiness", readiness);
     nextStep();
-    // Skip clusters (Batch 3) — route to country for now
-    router.push("/(onboarding)/country" as never);
+    router.push("/(onboarding)/clusters" as never);
   };
 
   return (

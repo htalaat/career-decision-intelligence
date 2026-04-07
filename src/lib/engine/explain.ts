@@ -1,4 +1,5 @@
 import type { EngineProfile, EngineCareerPath, ScoreBreakdown, Penalty, Explanation } from "./types";
+import { DIRECTION_CLUSTERS } from "../utils/constants";
 
 /**
  * Generate a human-readable explanation for why a career path scored the way it did.
@@ -49,6 +50,34 @@ export function generateExplanation(
   }
   if (breakdown.countryFit >= 80) {
     topPositives.push("Good fit for your location and mobility preferences");
+  }
+
+  // --- Cluster reaction signals ---
+  if (profile.clusterReactions) {
+    const domainToCluster: Record<string, string[]> = {
+      "Technology": ["tech_solving", "science_research"],
+      "Business": ["business_money", "startup_create"],
+      "Finance": ["business_money"],
+      "Design": ["design_create"],
+      "Healthcare": ["health_care", "science_research"],
+      "Law/Policy": ["law_justice"],
+      "Media/Comms": ["media_stories"],
+      "Engineering": ["engineering_build", "science_research"],
+      "Education": ["science_research"],
+      "Entrepreneurship": ["startup_create", "business_money"],
+    };
+    const relevantClusters = domainToCluster[career.domain] ?? [];
+    for (const clusterKey of relevantClusters) {
+      const reaction = profile.clusterReactions[clusterKey];
+      if (!reaction) continue;
+      const clusterDef = DIRECTION_CLUSTERS.find((c) => c.key === clusterKey);
+      const clusterLabel = clusterDef?.label ?? clusterKey;
+      if (reaction === "feels_like_me") {
+        topPositives.push(`You said '${clusterLabel}' feels like you — this career is at the heart of that direction`);
+      } else if (reaction === "not_for_me") {
+        topNegatives.push(`You said '${clusterLabel}' wasn't for you, but your profile suggests some fit — worth a second look?`);
+      }
+    }
   }
 
   // --- Negatives ---

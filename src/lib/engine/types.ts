@@ -29,6 +29,7 @@ export interface EngineProfile {
   relocation_willingness: string | null;
   decision_readiness: string | null;
   study_country_preference: string | null;
+  clusterReactions: Record<string, string> | null;
 }
 
 /** A career path with its trait mappings and study directions attached */
@@ -68,6 +69,7 @@ export interface ScoreBreakdown {
   feasibilityFit: number;
   educationFit: number;
   countryFit: number;
+  clusterReactionFit: number;
 }
 
 /** Penalty applied to a career path */

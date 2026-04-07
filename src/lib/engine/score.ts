@@ -20,6 +20,7 @@ export function computeScore(
 
   const educationFit = computeEducationFit(profile, career);
   const countryFit = computeCountryFit(profile, career);
+  const clusterReactionFit = computeClusterReactionFit(profile, career);
 
   return {
     interestFit: clamp(interestFit),
@@ -30,6 +31,7 @@ export function computeScore(
     feasibilityFit: clamp(feasibilityFit),
     educationFit: clamp(educationFit),
     countryFit: clamp(countryFit),
+    clusterReactionFit: clamp(clusterReactionFit),
   };
 }
 
@@ -176,6 +178,51 @@ function computeCountryFit(profile: EngineProfile, career: EngineCareerPath): nu
   if (hasCountryNotes) score += 5;
 
   return score;
+}
+
+/**
+ * Compute how the student's cluster reactions affect this career's score.
+ * Cluster reactions are first-person signals that trait overlap can't capture.
+ */
+function computeClusterReactionFit(profile: EngineProfile, career: EngineCareerPath): number {
+  if (!profile.clusterReactions) return 60; // no reactions = neutral
+
+  // Map career domains to relevant direction clusters
+  const domainToCluster: Record<string, string[]> = {
+    "Technology": ["tech_solving", "science_research"],
+    "Business": ["business_money", "startup_create"],
+    "Finance": ["business_money"],
+    "Design": ["design_create"],
+    "Healthcare": ["health_care", "science_research"],
+    "Law/Policy": ["law_justice"],
+    "Media/Comms": ["media_stories"],
+    "Engineering": ["engineering_build", "science_research"],
+    "Education": ["science_research"],
+    "Entrepreneurship": ["startup_create", "business_money"],
+  };
+
+  const relevantClusters = domainToCluster[career.domain] ?? [];
+  let bestScore = 60;
+
+  for (const clusterKey of relevantClusters) {
+    const reaction = profile.clusterReactions[clusterKey];
+    if (!reaction) continue;
+
+    let score = 60;
+    switch (reaction) {
+      case "feels_like_me": score = 90; break;
+      case "explore": score = 72; break;
+      case "surprised": score = 76; break;
+      case "not_for_me": score = 35; break;
+      case "not_sure": score = 58; break;
+    }
+
+    if (score > bestScore) {
+      bestScore = score;
+    }
+  }
+
+  return bestScore;
 }
 
 // --- Helper mappers ---

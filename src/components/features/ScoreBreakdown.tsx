@@ -11,6 +11,7 @@ interface ScoreBreakdownProps {
   feasibilityFit: number;
   educationFit?: number;
   countryFit?: number;
+  clusterReactionFit?: number;
 }
 
 const DIMENSION_LABELS: Array<{ key: keyof ScoreBreakdownProps; label: string }> = [
@@ -22,6 +23,7 @@ const DIMENSION_LABELS: Array<{ key: keyof ScoreBreakdownProps; label: string }>
   { key: "feasibilityFit", label: "Practical feasibility" },
   { key: "educationFit", label: "Education path fit" },
   { key: "countryFit", label: "Country/location fit" },
+  { key: "clusterReactionFit", label: "Your reaction fit" },
 ];
 
 /** Visual breakdown of the 8 scoring dimensions as horizontal bars */

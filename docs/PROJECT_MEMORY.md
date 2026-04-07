@@ -2,7 +2,20 @@
 
 ## Last Session
 Date: 2026-04-05
-Status: Batch 3 product-alignment correction complete — seed data + JSON mirror
+Status: Batch 3 direction cluster system — engine scoring, cluster reveal screen, reaction-driven ranking
+
+## Batch 3 Cluster System (2026-04-05)
+- src/lib/engine/types.ts — added clusterReactions to EngineProfile, clusterReactionFit to ScoreBreakdown
+- src/lib/engine/score.ts — added computeClusterReactionFit (domain-to-cluster mapping, 5 reaction types)
+- src/lib/engine/rank.ts — added clusterReactionFit to DIMENSION_WEIGHTS (0.15), redistributed weights across 9 dimensions
+- src/lib/engine/explain.ts — cluster reaction references in topPositives/topNegatives
+- src/lib/hooks/useRecommendations.ts — clusterReactions populated from answer map
+- src/components/features/ScoreBreakdown.tsx — added "Your reaction fit" dimension bar
+- src/app/(onboarding)/clusters.tsx — NEW: direction cluster reveal screen (top 6 clusters, 5 reaction options per cluster, min 3 required)
+- src/app/(onboarding)/readiness.tsx — updated routing: readiness -> clusters -> country
+- TypeScript check: PASS (0 errors)
+
+## Previous Session
 
 ## Batch 3 (2026-04-05) — Study Direction Seed Corrections
 - supabase/seed/seed_study_directions.sql — 74 INSERT statements covering all 30 careers (1–3 directions each); correct slugs matched to seed_career_paths.sql (fintech-product-manager, health-informatics-specialist, venture-capital-analyst)

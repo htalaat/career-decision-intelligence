@@ -179,6 +179,7 @@ export async function buildEngineProfile(userId: string): Promise<EngineProfile>
     relocation_willingness: sp.relocation_willingness ?? null,
     decision_readiness: sp.decision_readiness ?? null,
     study_country_preference: null, // captured in answers
+    clusterReactions: (answerMap.get("cluster_reactions") as Record<string, string>) ?? null,
   };
 }
 
