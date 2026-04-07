@@ -1,8 +1,11 @@
-/** Onboarding step definitions in display order — 13 steps, discovery first then practical */
+/** Onboarding step definitions in display order — 15 steps, high-school-only flow */
 export const ONBOARDING_STEPS = [
   { key: "splash", label: "Intro", path: "/(onboarding)/splash" },
   { key: "welcome", label: "Name", path: "/(onboarding)/welcome" },
-  { key: "stage", label: "Stage", path: "/(onboarding)/stage" },
+  { key: "school_system", label: "School", path: "/(onboarding)/school-system" },
+  { key: "curriculum", label: "Level", path: "/(onboarding)/curriculum" },
+  { key: "subjects", label: "Subjects", path: "/(onboarding)/subjects" },
+  { key: "subject_feelings", label: "Feelings", path: "/(onboarding)/subject-feelings" },
   { key: "interests", label: "Interests", path: "/(onboarding)/interests" },
   { key: "strengths", label: "Strengths", path: "/(onboarding)/strengths" },
   { key: "values", label: "Values", path: "/(onboarding)/values" },
@@ -11,7 +14,6 @@ export const ONBOARDING_STEPS = [
   { key: "clusters", label: "Directions", path: "/(onboarding)/clusters" },
   { key: "country", label: "Location", path: "/(onboarding)/country" },
   { key: "money", label: "Budget", path: "/(onboarding)/money" },
-  { key: "duration", label: "Timeline", path: "/(onboarding)/duration" },
   { key: "summary", label: "Summary", path: "/(onboarding)/summary" },
 ] as const;
 
@@ -237,4 +239,100 @@ export const STUDY_COUNTRY_PREFERENCE = [
   { value: "nearby", label: "I'd consider nearby countries" },
   { value: "international", label: "I'm open to studying internationally" },
   { value: "specific", label: "I have a specific country in mind" },
+] as const;
+
+/** School system options for high-school users */
+export const SCHOOL_SYSTEMS = [
+  { value: "british", label: "British / Cambridge", emoji: "🇬🇧", helper: "IGCSE, AS Level, A Level" },
+  { value: "ib", label: "IB (International Baccalaureate)", emoji: "🌍", helper: "MYP or Diploma Programme" },
+  { value: "american", label: "American", emoji: "🇺🇸", helper: "High school, AP, Honors" },
+  { value: "national", label: "National curriculum", emoji: "📚", helper: "Your country's school system" },
+  { value: "other", label: "Other / homeschool", emoji: "🏠", helper: "" },
+  { value: "not_sure", label: "I'm not sure", emoji: "🤷", helper: "That's okay — we'll figure it out" },
+] as const;
+
+/** Curriculum level options — shown based on school system selection */
+export const CURRICULUM_LEVELS = {
+  british: [
+    { value: "gcse", label: "GCSE / IGCSE", helper: "Usually ages 14-16" },
+    { value: "as_level", label: "AS Level", helper: "Usually age 17" },
+    { value: "a_level", label: "A Level", helper: "Usually age 17-18" },
+  ],
+  ib: [
+    { value: "myp", label: "MYP (Middle Years Programme)", helper: "Usually ages 11-16" },
+    { value: "dp", label: "Diploma Programme (DP)", helper: "Usually ages 16-19" },
+  ],
+  american: [
+    { value: "regular", label: "Regular classes", helper: "Standard high school courses" },
+    { value: "honors", label: "Honors classes", helper: "Advanced but not AP" },
+    { value: "ap", label: "AP (Advanced Placement)", helper: "College-level courses" },
+  ],
+} as const;
+
+/** Subject options grouped by category — for high school students */
+export const SUBJECT_CATEGORIES = [
+  {
+    category: "Sciences",
+    emoji: "🔬",
+    subjects: [
+      { key: "physics", label: "Physics" },
+      { key: "chemistry", label: "Chemistry" },
+      { key: "biology", label: "Biology" },
+      { key: "environmental_science", label: "Environmental Science" },
+      { key: "computer_science", label: "Computer Science" },
+    ],
+  },
+  {
+    category: "Mathematics",
+    emoji: "📐",
+    subjects: [
+      { key: "math", label: "Mathematics" },
+      { key: "further_math", label: "Further / Advanced Math" },
+      { key: "statistics", label: "Statistics" },
+    ],
+  },
+  {
+    category: "Languages & Literature",
+    emoji: "📖",
+    subjects: [
+      { key: "english", label: "English" },
+      { key: "arabic", label: "Arabic" },
+      { key: "french", label: "French" },
+      { key: "spanish", label: "Spanish" },
+      { key: "german", label: "German" },
+      { key: "other_language", label: "Other language" },
+    ],
+  },
+  {
+    category: "Humanities & Social Sciences",
+    emoji: "🌍",
+    subjects: [
+      { key: "history", label: "History" },
+      { key: "geography", label: "Geography" },
+      { key: "economics", label: "Economics" },
+      { key: "psychology", label: "Psychology" },
+      { key: "sociology", label: "Sociology" },
+      { key: "political_science", label: "Politics / Government" },
+      { key: "philosophy", label: "Philosophy" },
+    ],
+  },
+  {
+    category: "Business & Finance",
+    emoji: "💼",
+    subjects: [
+      { key: "business_studies", label: "Business Studies" },
+      { key: "accounting", label: "Accounting" },
+    ],
+  },
+  {
+    category: "Arts & Design",
+    emoji: "🎨",
+    subjects: [
+      { key: "art", label: "Art & Design" },
+      { key: "music", label: "Music" },
+      { key: "drama", label: "Drama / Theatre" },
+      { key: "design_tech", label: "Design & Technology" },
+      { key: "media_studies", label: "Media Studies" },
+    ],
+  },
 ] as const;

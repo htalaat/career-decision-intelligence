@@ -18,7 +18,7 @@ export default function WelcomeScreen() {
       setAnswer("preferred_name", preferredName.trim());
     }
     nextStep();
-    router.push("/(onboarding)/stage" as never);
+    router.push("/(onboarding)/school-system" as never);
   };
 
   return (

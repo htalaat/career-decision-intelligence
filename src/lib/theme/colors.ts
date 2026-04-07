@@ -1,34 +1,34 @@
 /**
- * Career Decision Intelligence — Youth-facing warm dark color system
- * With vibrant cluster-colored energy accents
+ * Career Decision Intelligence — Bright, clean, youth-facing color system
+ * Light backgrounds with vibrant accent colors
  */
 export const colors = {
-  background: "#121826",
+  background: "#F7F8FC",
   surface: {
-    DEFAULT: "#121826",
-    secondary: "#1E2640",
-    elevated: "#2A3352",
+    DEFAULT: "#F7F8FC",
+    secondary: "#FFFFFF",
+    elevated: "#F0F1F8",
   },
   accent: {
     DEFAULT: "#6C5CE7",
     light: "#A29BFE",
-    muted: "#4834D4",
+    muted: "#EDE9FE",
   },
   teal: "#00CEC9",
   pink: "#FD79A8",
   gold: "#FDCB6E",
   text: {
-    primary: "#FFFFFF",
-    secondary: "#B2BEC3",
-    muted: "#636E72",
-    inverse: "#121826",
+    primary: "#1A1A2E",
+    secondary: "#636E72",
+    muted: "#B2BEC3",
+    inverse: "#FFFFFF",
   },
   success: "#00CEC9",
   warning: "#FDCB6E",
   error: "#FF6B6B",
   border: {
-    DEFAULT: "#2D3652",
-    light: "#3D4670",
+    DEFAULT: "#E8EAF0",
+    light: "#F0F1F8",
   },
   /** Each direction cluster gets its own accent color */
   clusters: {
@@ -37,7 +37,7 @@ export const colors = {
     design_create: "#FD79A8",
     health_care: "#00CEC9",
     law_justice: "#E17055",
-    media_stories: "#FDCB6E",
+    media_stories: "#F9A825",
     engineering_build: "#00B894",
     science_research: "#A29BFE",
     startup_create: "#FF6348",
