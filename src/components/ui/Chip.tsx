@@ -18,7 +18,7 @@ export function Chip({ label, selected, onPress }: ChipProps) {
       accessibilityLabel={`${label}, ${selected ? "selected" : "not selected"}`}
       accessibilityRole="checkbox"
       accessibilityState={{ checked: selected }}
-      style={{
+      style={({ pressed }) => ({
         minHeight: tokens.touchTarget.min,
         borderRadius: tokens.borderRadius.full,
         paddingHorizontal: 16,
@@ -28,7 +28,9 @@ export function Chip({ label, selected, onPress }: ChipProps) {
         justifyContent: "center",
         backgroundColor: selected ? tokens.colors.accent.DEFAULT : tokens.colors.surface.elevated,
         borderColor: selected ? tokens.colors.accent.DEFAULT : tokens.colors.border.DEFAULT,
-      }}
+        opacity: pressed ? 0.85 : 1,
+        transform: [{ scale: pressed ? 0.97 : 1 }],
+      })}
     >
       <Text
         style={{

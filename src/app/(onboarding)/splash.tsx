@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text } from "react-native";
 import { useRouter } from "expo-router";
 import { Button } from "../../components/ui/Button";
+import { FadeIn } from "../../components/ui/FadeIn";
 import { useTokens } from "../../lib/theme/PersonaProvider";
 import { useOnboardingStore } from "../../stores/onboardingStore";
 
@@ -14,31 +15,39 @@ export default function SplashScreen() {
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center", paddingHorizontal: 32 }}>
       <View style={{ gap: 24, alignItems: "center" }}>
-        <Text style={{ fontSize: 48 }}>{"\ud83e\udded"}</Text>
-        <Text style={{
-          fontSize: tokens.typography.headingSize,
-          fontWeight: tokens.typography.headingWeight,
-          color: tokens.colors.text.primary,
-          textAlign: "center",
-        }}>
-          {"Let's figure out"}{"\n"}what fits you
-        </Text>
-        <Text style={{
-          fontSize: tokens.typography.bodySize,
-          color: tokens.colors.text.secondary,
-          textAlign: "center",
-          lineHeight: tokens.typography.bodySize * 1.6,
-        }}>
-          No tests. No pressure. No wrong answers.{"\n"}
-          Just honest questions to help you{"\n"}find your direction.
-        </Text>
+        <FadeIn>
+          <View style={{ alignItems: "center", gap: 16 }}>
+            <Text style={{ fontSize: 48 }}>{"\ud83e\udded"}</Text>
+            <Text style={{
+              fontSize: tokens.typography.headingSize,
+              fontWeight: tokens.typography.headingWeight,
+              color: tokens.colors.text.primary,
+              textAlign: "center",
+            }}>
+              {"Let's figure out"}{"\n"}what fits you
+            </Text>
+          </View>
+        </FadeIn>
+        <FadeIn delay={200}>
+          <Text style={{
+            fontSize: tokens.typography.bodySize,
+            color: tokens.colors.text.secondary,
+            textAlign: "center",
+            lineHeight: tokens.typography.bodySize * 1.6,
+          }}>
+            No tests. No pressure. No wrong answers.{"\n"}
+            Just honest questions to help you{"\n"}find your direction.
+          </Text>
+        </FadeIn>
       </View>
-      <View style={{ width: "100%", paddingTop: 48 }}>
-        <Button
-          label="Let's go \u2192"
-          onPress={() => { nextStep(); router.push("/(onboarding)/welcome" as never); }}
-        />
-      </View>
+      <FadeIn delay={400}>
+        <View style={{ width: "100%", paddingTop: 48 }}>
+          <Button
+            label="Let's go \u2192"
+            onPress={() => { nextStep(); router.push("/(onboarding)/welcome" as never); }}
+          />
+        </View>
+      </FadeIn>
     </View>
   );
 }

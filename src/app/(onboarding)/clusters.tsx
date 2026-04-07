@@ -2,6 +2,7 @@ import React, { useState, useMemo } from "react";
 import { View, Text, ScrollView, Pressable, ActivityIndicator } from "react-native";
 import { useRouter } from "expo-router";
 import { Button } from "../../components/ui/Button";
+import { FadeIn } from "../../components/ui/FadeIn";
 import { useTokens } from "../../lib/theme/PersonaProvider";
 import { useOnboardingStore } from "../../stores/onboardingStore";
 import { useCareerPaths } from "../../lib/hooks/useCareerPaths";
@@ -96,30 +97,32 @@ export default function ClustersScreen() {
   return (
     <View style={{ flex: 1, justifyContent: "space-between" }}>
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ gap: 20 }}>
-        <View style={{ gap: 8 }}>
-          <Text style={{
-            fontSize: tokens.typography.headingSize,
-            fontWeight: tokens.typography.headingWeight,
-            color: tokens.colors.text.primary,
-          }}>
-            Here's what we see
-          </Text>
-          <Text style={{
-            fontSize: tokens.typography.bodySize,
-            color: tokens.colors.text.secondary,
-            lineHeight: tokens.typography.bodySize * 1.5,
-          }}>
-            Based on what you told us, these directions might fit you.
-            Tell us how each one feels.
-          </Text>
-        </View>
+        <FadeIn>
+          <View style={{ gap: 8 }}>
+            <Text style={{
+              fontSize: tokens.typography.headingSize,
+              fontWeight: tokens.typography.headingWeight,
+              color: tokens.colors.text.primary,
+            }}>
+              Here's what we see
+            </Text>
+            <Text style={{
+              fontSize: tokens.typography.bodySize,
+              color: tokens.colors.text.secondary,
+              lineHeight: tokens.typography.bodySize * 1.5,
+            }}>
+              Based on what you told us, these directions might fit you.
+              Tell us how each one feels.
+            </Text>
+          </View>
+        </FadeIn>
 
         {/* Cluster cards */}
-        {clusterScores.map((cluster) => {
+        {clusterScores.map((cluster, index) => {
           const currentReaction = reactions[cluster.key];
           return (
+            <FadeIn key={cluster.key} delay={index * 150}>
             <View
-              key={cluster.key}
               style={{
                 backgroundColor: tokens.colors.surface.secondary,
                 borderRadius: tokens.borderRadius.xl,
@@ -187,6 +190,7 @@ export default function ClustersScreen() {
                 })}
               </View>
             </View>
+            </FadeIn>
           );
         })}
       </ScrollView>

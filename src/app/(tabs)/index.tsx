@@ -6,6 +6,7 @@ import { Button } from "../../components/ui/Button";
 import { Badge } from "../../components/ui/Badge";
 import { EmptyState } from "../../components/ui/EmptyState";
 import { ErrorState } from "../../components/ui/ErrorState";
+import { FadeIn } from "../../components/ui/FadeIn";
 import { useTokens } from "../../lib/theme/PersonaProvider";
 import { useLatestRecommendation } from "../../lib/hooks/useRecommendations";
 import { useProfile } from "../../lib/hooks/useProfile";
@@ -75,20 +76,22 @@ export default function DashboardScreen() {
     <Screen scroll padded>
       <View style={{ gap: 24, paddingTop: 16 }}>
         {/* Greeting */}
-        <View style={{ gap: 6 }}>
-          <Text style={{
-            fontSize: tokens.typography.headingSize,
-            fontWeight: tokens.typography.headingWeight,
-            color: tokens.colors.text.primary,
-          }}>
-            Hey {displayName} 👋
-          </Text>
-          <Text style={{ fontSize: tokens.typography.bodySize, color: tokens.colors.text.secondary }}>
-            {items.length > 0
-              ? "Here's what we found for you. Explore your directions."
-              : "Complete your profile to discover your directions."}
-          </Text>
-        </View>
+        <FadeIn>
+          <View style={{ gap: 6 }}>
+            <Text style={{
+              fontSize: tokens.typography.headingSize,
+              fontWeight: tokens.typography.headingWeight,
+              color: tokens.colors.text.primary,
+            }}>
+              Hey {displayName} 👋
+            </Text>
+            <Text style={{ fontSize: tokens.typography.bodySize, color: tokens.colors.text.secondary }}>
+              {items.length > 0
+                ? "Here's what we found for you. Explore your directions."
+                : "Complete your profile to discover your directions."}
+            </Text>
+          </View>
+        </FadeIn>
 
         {/* No recommendations yet */}
         {items.length === 0 ? (
@@ -101,8 +104,9 @@ export default function DashboardScreen() {
         ) : (
           <>
             {/* Cluster groups */}
-            {clusterGroups.map((cluster) => (
-              <View key={cluster.key} style={{ gap: 12 }}>
+            {clusterGroups.map((cluster, index) => (
+              <FadeIn key={cluster.key} delay={index * 100}>
+              <View style={{ gap: 12 }}>
                 {/* Cluster header */}
                 <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
                   <View style={{
@@ -182,6 +186,7 @@ export default function DashboardScreen() {
                   );
                 })}
               </View>
+              </FadeIn>
             ))}
 
             {/* Actions */}
