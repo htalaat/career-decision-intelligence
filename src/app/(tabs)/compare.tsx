@@ -1,12 +1,11 @@
 import React, { useState, useMemo, useCallback } from "react";
-import { View, Text, ScrollView, ActivityIndicator, Pressable } from "react-native";
+import { View, Text, ActivityIndicator, Pressable } from "react-native";
 import { useRouter } from "expo-router";
 import { Screen } from "../../components/ui/Screen";
 import { Button } from "../../components/ui/Button";
-import { Badge } from "../../components/ui/Badge";
-import { Card } from "../../components/ui/Card";
 import { EmptyState } from "../../components/ui/EmptyState";
 import { WeightAdjuster } from "../../components/features/WeightAdjuster";
+import { CompareTable } from "../../components/features/CompareTable";
 import { useTokens } from "../../lib/theme/PersonaProvider";
 import { useCareerPaths } from "../../lib/hooks/useCareerPaths";
 import { useLatestRecommendation, buildEngineCareerPaths } from "../../lib/hooks/useRecommendations";
@@ -50,7 +49,7 @@ export default function CompareScreen() {
       weights: currentWeights as EngineProfile["weights"],
     };
 
-    const enginePaths = buildEngineCareerPaths(paths, mappings)
+    const enginePaths = buildEngineCareerPaths(paths, mappings, careerData?.studyDirections ?? [])
       .filter((p) => selectedPathIds.includes(p.id));
 
     const result = generateRecommendations(profileWithWeights, enginePaths);
@@ -178,7 +177,7 @@ export default function CompareScreen() {
     );
   }
 
-  // Comparison phase: side-by-side view
+  // Comparison phase: true side-by-side table
   return (
     <Screen scroll padded>
       <View style={{ gap: 20, paddingTop: 16 }}>
@@ -189,64 +188,13 @@ export default function CompareScreen() {
           <Button label="New" variant="ghost" onPress={clearSelection} />
         </View>
 
-        {/* Ranked comparison cards */}
-        {compareResults && (
-          <View style={{ gap: 10 }}>
-            {compareResults.map((result, index) => (
-              <Pressable
-                key={result.careerPathId}
-                onPress={() => router.push(`/career/${result.careerPathId}`)}
-                style={{
-                  backgroundColor: tokens.colors.surface.secondary,
-                  borderRadius: 12,
-                  borderWidth: 1,
-                  borderColor: index === 0 ? tokens.colors.accent.DEFAULT + "60" : tokens.colors.border.DEFAULT,
-                  padding: tokens.spacing.md,
-                  gap: 8,
-                }}
-              >
-                <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-                  <View style={{ flexDirection: "row", alignItems: "center", gap: 8, flex: 1 }}>
-                    <View style={{
-                      width: 28, height: 28, borderRadius: 14,
-                      backgroundColor: index === 0 ? tokens.colors.accent.DEFAULT : tokens.colors.surface.elevated,
-                      alignItems: "center", justifyContent: "center",
-                    }}>
-                      <Text style={{ fontSize: 13, fontWeight: "700", color: index === 0 ? "#FFFFFF" : tokens.colors.text.muted }}>
-                        {index + 1}
-                      </Text>
-                    </View>
-                    <View style={{ flex: 1 }}>
-                      <Text style={{ fontSize: tokens.typography.bodySize, fontWeight: "600", color: tokens.colors.text.primary }}>
-                        {result.title}
-                      </Text>
-                      <Text style={{ fontSize: tokens.typography.captionSize, color: tokens.colors.text.muted }}>
-                        {result.domain}
-                      </Text>
-                    </View>
-                  </View>
-                  <Badge
-                    label={`${result.overallScore}%`}
-                    variant={result.overallScore >= 70 ? "success" : result.overallScore >= 50 ? "warning" : "error"}
-                  />
-                </View>
+        <Text style={{ fontSize: tokens.typography.captionSize, color: tokens.colors.text.muted }}>
+          Comparing {compareResults?.length ?? 0} paths side by side. Scroll right to see all columns.
+        </Text>
 
-                {/* Mini breakdown */}
-                <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6, paddingLeft: 36 }}>
-                  {[
-                    { label: "Interest", value: result.breakdown.interestFit },
-                    { label: "Strength", value: result.breakdown.strengthFit },
-                    { label: "Values", value: result.breakdown.valuesFit },
-                    { label: "Goals", value: result.breakdown.goalsFit },
-                  ].map((d) => (
-                    <Text key={d.label} style={{ fontSize: 11, color: tokens.colors.text.muted }}>
-                      {d.label}: {d.value}%
-                    </Text>
-                  ))}
-                </View>
-              </Pressable>
-            ))}
-          </View>
+        {/* Side-by-side comparison table */}
+        {compareResults && compareResults.length > 0 && (
+          <CompareTable paths={compareResults} />
         )}
 
         {/* Weight adjuster toggle */}
