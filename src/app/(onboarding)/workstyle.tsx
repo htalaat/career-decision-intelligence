@@ -5,7 +5,7 @@ import { ChipGroup } from "../../components/ui/ChipGroup";
 import { useOnboardingStore } from "../../stores/onboardingStore";
 import { WORKSTYLE_OPTIONS } from "../../lib/utils/constants";
 
-/** Step 7: Work-style preferences */
+/** Step 7: Pick the work vibes that feel right */
 export default function WorkstyleScreen() {
   const router = useRouter();
   const { setAnswer, nextStep, prevStep } = useOnboardingStore();
@@ -17,9 +17,9 @@ export default function WorkstyleScreen() {
 
   return (
     <OnboardingQuestion
-      question="How do you prefer to work?"
-      hint="Think about your ideal work environment and style."
-      onNext={() => { setAnswer("workstyle", selected); nextStep(); router.push("/(onboarding)/constraints"); }}
+      question="Pick the work vibes that feel right"
+      hint="Think about how you'd actually want to spend your days."
+      onNext={() => { setAnswer("workstyle", selected); nextStep(); router.push("/(onboarding)/readiness" as never); }}
       onBack={() => { prevStep(); router.back(); }}
       nextDisabled={selected.length < 2}
     >

@@ -5,7 +5,7 @@ import { ChipGroup } from "../../components/ui/ChipGroup";
 import { useOnboardingStore } from "../../stores/onboardingStore";
 import { INTEREST_TRAITS } from "../../lib/utils/constants";
 
-/** Step 4: Interest selection */
+/** Step 4: What lights you up? */
 export default function InterestsScreen() {
   const router = useRouter();
   const { setAnswer, nextStep, prevStep } = useOnboardingStore();
@@ -17,9 +17,9 @@ export default function InterestsScreen() {
 
   return (
     <OnboardingQuestion
-      question="What do you enjoy doing?"
-      hint="Pick the activities that genuinely interest you."
-      onNext={() => { setAnswer("interests", selected); nextStep(); router.push("/(onboarding)/strengths"); }}
+      question="What lights you up?"
+      hint="Pick the things that genuinely excite you. No wrong answers."
+      onNext={() => { setAnswer("interests", selected); nextStep(); router.push("/(onboarding)/strengths" as never); }}
       onBack={() => { prevStep(); router.back(); }}
       nextDisabled={selected.length < 3}
     >

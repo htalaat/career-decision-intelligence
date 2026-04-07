@@ -5,7 +5,7 @@ import { Select } from "../../components/ui/Select";
 import { useOnboardingStore } from "../../stores/onboardingStore";
 import { STAGE_OPTIONS } from "../../lib/utils/constants";
 
-/** Step 3: Current life stage */
+/** Step 3: What describes you right now? */
 export default function StageScreen() {
   const router = useRouter();
   const { setAnswer, nextStep, prevStep } = useOnboardingStore();
@@ -13,9 +13,9 @@ export default function StageScreen() {
 
   return (
     <OnboardingQuestion
-      question="Where are you right now?"
+      question="What describes you right now?"
       hint="This helps us tailor the paths we suggest."
-      onNext={() => { if (stage) { setAnswer("current_stage", stage); nextStep(); router.push("/(onboarding)/academic" as never); } }}
+      onNext={() => { if (stage) { setAnswer("current_stage", stage); nextStep(); router.push("/(onboarding)/interests" as never); } }}
       onBack={() => { prevStep(); router.back(); }}
       nextDisabled={!stage}
     >

@@ -1,17 +1,17 @@
-/** Onboarding step definitions in display order — expanded to 13 steps */
+/** Onboarding step definitions in display order — 13 steps, discovery first then practical */
 export const ONBOARDING_STEPS = [
-  { key: "welcome", label: "Welcome", path: "/(onboarding)/welcome" },
-  { key: "trust", label: "Privacy", path: "/(onboarding)/trust" },
+  { key: "splash", label: "Intro", path: "/(onboarding)/splash" },
+  { key: "welcome", label: "Name", path: "/(onboarding)/welcome" },
   { key: "stage", label: "Stage", path: "/(onboarding)/stage" },
-  { key: "academic", label: "Academic", path: "/(onboarding)/academic" },
-  { key: "location", label: "Location", path: "/(onboarding)/location" },
   { key: "interests", label: "Interests", path: "/(onboarding)/interests" },
   { key: "strengths", label: "Strengths", path: "/(onboarding)/strengths" },
   { key: "values", label: "Values", path: "/(onboarding)/values" },
-  { key: "workstyle", label: "Work style", path: "/(onboarding)/workstyle" },
-  { key: "constraints", label: "Constraints", path: "/(onboarding)/constraints" },
-  { key: "goals", label: "Priorities", path: "/(onboarding)/goals" },
-  { key: "readiness", label: "Readiness", path: "/(onboarding)/readiness" },
+  { key: "workstyle", label: "Vibes", path: "/(onboarding)/workstyle" },
+  { key: "readiness", label: "Ready?", path: "/(onboarding)/readiness" },
+  { key: "clusters", label: "Directions", path: "/(onboarding)/clusters" },
+  { key: "country", label: "Location", path: "/(onboarding)/country" },
+  { key: "money", label: "Budget", path: "/(onboarding)/money" },
+  { key: "duration", label: "Timeline", path: "/(onboarding)/duration" },
   { key: "summary", label: "Summary", path: "/(onboarding)/summary" },
 ] as const;
 
@@ -19,13 +19,116 @@ export const TOTAL_ONBOARDING_STEPS = ONBOARDING_STEPS.length;
 
 /** Life stage options */
 export const STAGE_OPTIONS = [
-  { value: "high_school", label: "High school student" },
-  { value: "university", label: "University / college student" },
-  { value: "recent_graduate", label: "Recent graduate" },
-  { value: "career_changer", label: "Considering a career change" },
+  { value: "high_school", label: "I'm in high school" },
+  { value: "university", label: "I'm at university or college" },
+  { value: "recent_graduate", label: "I just graduated" },
+  { value: "career_changer", label: "I'm thinking about changing direction" },
 ] as const;
 
-/** Faculty cluster options — broad academic groupings */
+/** Interest trait options for onboarding — teen-friendly language */
+export const INTEREST_TRAITS = [
+  { key: "analytical", label: "Figuring out what numbers and data mean" },
+  { key: "creative", label: "Making things look and feel amazing" },
+  { key: "social", label: "Being around people and helping them" },
+  { key: "technical", label: "Building apps, websites, or tech stuff" },
+  { key: "leadership", label: "Taking charge and organizing people" },
+  { key: "research", label: "Digging deep to find out how things work" },
+  { key: "hands_on", label: "Working with your hands or building real things" },
+  { key: "strategic", label: "Thinking about the big picture and making plans" },
+  { key: "writing", label: "Expressing ideas through writing or speaking" },
+  { key: "teaching", label: "Helping others learn and grow" },
+  { key: "problem_solving", label: "Working through tough problems step by step" },
+  { key: "entrepreneurial", label: "Coming up with ideas and making them real" },
+  { key: "scientific", label: "Running experiments and testing ideas" },
+  { key: "artistic", label: "Creating art, music, or visual content" },
+  { key: "organizational", label: "Keeping things running smoothly" },
+  { key: "advocacy", label: "Standing up for causes you believe in" },
+] as const;
+
+/** Strength trait options for onboarding — teen-friendly language */
+export const STRENGTH_TRAITS = [
+  { key: "problem_solving", label: "Finding solutions when things get stuck" },
+  { key: "communication", label: "Explaining things so people actually get it" },
+  { key: "quantitative", label: "Being comfortable with math and numbers" },
+  { key: "writing", label: "Writing clearly and persuasively" },
+  { key: "teamwork", label: "Working well in groups" },
+  { key: "attention_to_detail", label: "Catching the small stuff others miss" },
+  { key: "adaptability", label: "Rolling with changes easily" },
+  { key: "technical_skill", label: "Picking up tech and tools quickly" },
+  { key: "creativity", label: "Coming up with ideas others don't think of" },
+  { key: "leadership", label: "Getting people to follow your lead" },
+  { key: "time_management", label: "Getting things done on time" },
+  { key: "critical_thinking", label: "Questioning things and thinking independently" },
+  { key: "empathy", label: "Understanding how others feel" },
+  { key: "negotiation", label: "Getting people to agree or compromise" },
+  { key: "public_speaking", label: "Speaking confidently in front of others" },
+  { key: "resilience", label: "Bouncing back when things don't work out" },
+] as const;
+
+/** Value options for onboarding — teen-friendly language */
+export const VALUE_OPTIONS = [
+  { key: "autonomy", label: "Freedom to do things my own way" },
+  { key: "stability", label: "Knowing my job is safe and steady" },
+  { key: "helping_others", label: "Making a real difference in people's lives" },
+  { key: "innovation", label: "Working on things that haven't been done before" },
+  { key: "recognition", label: "Being respected for what I do" },
+  { key: "work_life_balance", label: "Having time for life outside of work" },
+  { key: "financial_reward", label: "Earning good money" },
+  { key: "intellectual_challenge", label: "Always learning and growing" },
+  { key: "community", label: "Being part of a team or community" },
+  { key: "growth", label: "Becoming a better version of myself" },
+  { key: "legacy", label: "Building something that lasts" },
+  { key: "variety", label: "Every day being different" },
+] as const;
+
+/** Work-style options for onboarding — teen-friendly language */
+export const WORKSTYLE_OPTIONS = [
+  { key: "remote", label: "Working from anywhere I want" },
+  { key: "office", label: "Going to an office with a team" },
+  { key: "hybrid", label: "Mix of home and office" },
+  { key: "solo", label: "Working mostly on my own" },
+  { key: "collaborative", label: "Brainstorming and building with others" },
+  { key: "structured", label: "Knowing exactly what to expect each day" },
+  { key: "dynamic", label: "Fast-paced with lots going on" },
+  { key: "outdoor", label: "Being outside, not stuck at a desk" },
+  { key: "travel", label: "Traveling to different places for work" },
+  { key: "flexible_hours", label: "Setting my own schedule" },
+] as const;
+
+/** Decision readiness options */
+export const READINESS_OPTIONS = [
+  { value: "exploring", label: "Just exploring \u2014 I have no idea yet \ud83e\udd37" },
+  { value: "narrowing", label: "I have some ideas but need to narrow down \ud83e\udd14" },
+  { value: "validating", label: "I think I know but want to make sure \u2705" },
+  { value: "ready_to_decide", label: "I'm ready to decide, just need structure \ud83c\udfaf" },
+] as const;
+
+/** Direction clusters \u2014 broad groupings shown before specific careers */
+export const DIRECTION_CLUSTERS = [
+  { key: "tech_solving", label: "Technology & Problem Solving", emoji: "\ud83d\udcbb", color: "#6C5CE7", domains: ["Technology"] },
+  { key: "business_money", label: "Business, Finance & Strategy", emoji: "\ud83d\udcca", color: "#0984E3", domains: ["Business", "Finance"] },
+  { key: "design_create", label: "Design & Creative Work", emoji: "\ud83c\udfa8", color: "#FD79A8", domains: ["Design"] },
+  { key: "health_care", label: "Health & Helping People", emoji: "\ud83c\udfe5", color: "#00CEC9", domains: ["Healthcare"] },
+  { key: "law_justice", label: "Law, Justice & Public Policy", emoji: "\u2696\ufe0f", color: "#E17055", domains: ["Law/Policy"] },
+  { key: "media_stories", label: "Media, Content & Communication", emoji: "\ud83d\udcf1", color: "#FDCB6E", domains: ["Media/Comms"] },
+  { key: "engineering_build", label: "Engineering & Building Systems", emoji: "\ud83d\udd27", color: "#00B894", domains: ["Engineering"] },
+  { key: "science_research", label: "Science & Research", emoji: "\ud83d\udd2c", color: "#A29BFE", domains: ["Healthcare", "Engineering", "Education", "Technology"] },
+  { key: "startup_create", label: "Starting & Growing Businesses", emoji: "\ud83d\ude80", color: "#FF6348", domains: ["Entrepreneurship", "Business"] },
+] as const;
+
+/** Cluster reaction options */
+export const CLUSTER_REACTIONS = [
+  { value: "feels_like_me", label: "This feels like me", emoji: "\ud83d\udcaa" },
+  { value: "explore", label: "I want to explore this", emoji: "\ud83d\udd0d" },
+  { value: "surprised", label: "This surprised me", emoji: "\ud83d\ude2e" },
+  { value: "not_for_me", label: "Not for me", emoji: "\ud83d\udc4b" },
+  { value: "not_sure", label: "I'm not sure yet", emoji: "\ud83e\udd37" },
+] as const;
+
+/** "Not sure" options that can be added to chip groups */
+export const UNCERTAINTY_CHIP = { key: "not_sure_yet", label: "I'm not sure yet \ud83e\udd37" } as const;
+
+/** Faculty cluster options \u2014 broad academic groupings */
 export const FACULTY_CLUSTERS = [
   { key: "engineering_technology", label: "Engineering & Technology" },
   { key: "computer_science_it", label: "Computer Science & IT" },
@@ -43,7 +146,7 @@ export const FACULTY_CLUSTERS = [
   { key: "undecided", label: "Haven't decided yet" },
 ] as const;
 
-/** Intended field options — more specific than faculty clusters */
+/** Intended field options \u2014 more specific than faculty clusters */
 export const INTENDED_FIELDS = [
   { key: "software_engineering", label: "Software Engineering" },
   { key: "data_science_ai", label: "Data Science / AI" },
@@ -77,7 +180,7 @@ export const INTENDED_FIELDS = [
   { key: "undecided", label: "Haven't decided yet" },
 ] as const;
 
-/** Country options — focused set for prototype */
+/** Country options \u2014 focused set for prototype */
 export const COUNTRIES = [
   { code: "EG", name: "Egypt" },
   { code: "SA", name: "Saudi Arabia" },
@@ -113,7 +216,7 @@ export const RELOCATION_OPTIONS = [
   { value: "no", label: "I want to stay where I am" },
   { value: "within_country", label: "I'd move within my country" },
   { value: "international", label: "I'm open to studying or working abroad" },
-  { value: "flexible", label: "Fully flexible — wherever the best opportunity is" },
+  { value: "flexible", label: "Fully flexible \u2014 wherever the best opportunity is" },
 ] as const;
 
 /** Study duration tolerance options */
@@ -128,88 +231,10 @@ export const STUDY_DURATION_OPTIONS = [
   { value: "flexible", label: "Duration doesn't matter to me" },
 ] as const;
 
-/** Decision readiness options */
-export const READINESS_OPTIONS = [
-  { value: "exploring", label: "Just exploring — I have no idea what I want" },
-  { value: "narrowing", label: "I have some ideas but need to narrow down" },
-  { value: "validating", label: "I think I know what I want but need to validate" },
-  { value: "ready_to_decide", label: "I'm ready to make a decision, I just need structure" },
-] as const;
-
 /** Target study country preference */
 export const STUDY_COUNTRY_PREFERENCE = [
   { value: "home", label: "I prefer to study in my home country" },
   { value: "nearby", label: "I'd consider nearby countries" },
   { value: "international", label: "I'm open to studying internationally" },
   { value: "specific", label: "I have a specific country in mind" },
-] as const;
-
-/** Interest trait options for onboarding */
-export const INTEREST_TRAITS = [
-  { key: "analytical", label: "Analyzing data and patterns" },
-  { key: "creative", label: "Creating and designing" },
-  { key: "social", label: "Working with people" },
-  { key: "technical", label: "Building and coding" },
-  { key: "leadership", label: "Leading teams" },
-  { key: "research", label: "Research and discovery" },
-  { key: "hands_on", label: "Hands-on practical work" },
-  { key: "strategic", label: "Strategic planning" },
-  { key: "writing", label: "Writing and communication" },
-  { key: "teaching", label: "Teaching and mentoring" },
-  { key: "problem_solving", label: "Solving complex problems" },
-  { key: "entrepreneurial", label: "Starting new ventures" },
-  { key: "scientific", label: "Scientific inquiry" },
-  { key: "artistic", label: "Artistic expression" },
-  { key: "organizational", label: "Organizing and managing" },
-  { key: "advocacy", label: "Advocacy and social impact" },
-] as const;
-
-/** Strength trait options for onboarding */
-export const STRENGTH_TRAITS = [
-  { key: "problem_solving", label: "Problem solving" },
-  { key: "communication", label: "Communication" },
-  { key: "quantitative", label: "Numbers and data" },
-  { key: "writing", label: "Writing" },
-  { key: "teamwork", label: "Teamwork" },
-  { key: "attention_to_detail", label: "Attention to detail" },
-  { key: "adaptability", label: "Adaptability" },
-  { key: "technical_skill", label: "Technical skills" },
-  { key: "creativity", label: "Creative thinking" },
-  { key: "leadership", label: "Leadership" },
-  { key: "time_management", label: "Time management" },
-  { key: "critical_thinking", label: "Critical thinking" },
-  { key: "empathy", label: "Empathy" },
-  { key: "negotiation", label: "Negotiation" },
-  { key: "public_speaking", label: "Public speaking" },
-  { key: "resilience", label: "Resilience under pressure" },
-] as const;
-
-/** Value options for onboarding */
-export const VALUE_OPTIONS = [
-  { key: "autonomy", label: "Independence and autonomy" },
-  { key: "stability", label: "Job stability and security" },
-  { key: "helping_others", label: "Helping others" },
-  { key: "innovation", label: "Innovation and new ideas" },
-  { key: "recognition", label: "Recognition and prestige" },
-  { key: "work_life_balance", label: "Work-life balance" },
-  { key: "financial_reward", label: "Financial reward" },
-  { key: "intellectual_challenge", label: "Intellectual challenge" },
-  { key: "community", label: "Community and belonging" },
-  { key: "growth", label: "Personal growth" },
-  { key: "legacy", label: "Leaving a legacy" },
-  { key: "variety", label: "Variety in daily work" },
-] as const;
-
-/** Work-style options for onboarding */
-export const WORKSTYLE_OPTIONS = [
-  { key: "remote", label: "Remote / work from anywhere" },
-  { key: "office", label: "Office-based team environment" },
-  { key: "hybrid", label: "Hybrid mix" },
-  { key: "solo", label: "Independent solo work" },
-  { key: "collaborative", label: "Highly collaborative" },
-  { key: "structured", label: "Structured and predictable" },
-  { key: "dynamic", label: "Fast-paced and dynamic" },
-  { key: "outdoor", label: "Outdoor or field-based" },
-  { key: "travel", label: "Travel-heavy" },
-  { key: "flexible_hours", label: "Flexible hours" },
 ] as const;

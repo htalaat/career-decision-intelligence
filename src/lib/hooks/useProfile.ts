@@ -87,15 +87,25 @@ export function useSaveOnboarding() {
         }
       }
 
-      // Save constraints
-      if (answers.constraints) {
-        const c = answers.constraints as Record<string, string>;
+      // Save constraints — now sourced from separate money/duration screens
+      const financialLevel = answers.financial_level as string | undefined;
+      const familyExpectation = answers.family_expectation as string | undefined;
+      const riskTolerance = answers.risk_tolerance as string | undefined;
+      if (financialLevel || familyExpectation || riskTolerance) {
         await supabase.from("constraint_sets").upsert({
           profile_id: profileId,
-          financial_level: c.financial_level,
-          family_expectation: c.family_expectation,
-          risk_tolerance: c.risk_tolerance,
+          financial_level: financialLevel ?? null,
+          family_expectation: familyExpectation ?? null,
+          risk_tolerance: riskTolerance ?? null,
         });
+      }
+
+      // Save max study years from duration screen
+      if (answers.max_study_years !== undefined) {
+        await supabase
+          .from("student_profiles")
+          .update({ max_study_years: answers.max_study_years as number | null })
+          .eq("id", profileId);
       }
 
       // Save weights

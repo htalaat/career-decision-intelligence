@@ -5,7 +5,7 @@ import { ChipGroup } from "../../components/ui/ChipGroup";
 import { useOnboardingStore } from "../../stores/onboardingStore";
 import { VALUE_OPTIONS } from "../../lib/utils/constants";
 
-/** Step 6: What matters most */
+/** Step 6: If your future job could only guarantee 3 things */
 export default function ValuesScreen() {
   const router = useRouter();
   const { setAnswer, nextStep, prevStep } = useOnboardingStore();
@@ -17,9 +17,9 @@ export default function ValuesScreen() {
 
   return (
     <OnboardingQuestion
-      question="What matters most to you in a career?"
-      hint="Pick the values that you'd prioritize above others."
-      onNext={() => { setAnswer("values", selected); nextStep(); router.push("/(onboarding)/workstyle"); }}
+      question="If your future job could only guarantee 3 things, what would they be?"
+      hint="These might change \u2014 that's okay. Pick what matters today."
+      onNext={() => { setAnswer("values", selected); nextStep(); router.push("/(onboarding)/workstyle" as never); }}
       onBack={() => { prevStep(); router.back(); }}
       nextDisabled={selected.length < 3}
     >

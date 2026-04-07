@@ -13,8 +13,7 @@ import { showSuccessToast, showErrorToast } from "../../components/ui/Toast";
 import { useTokens } from "../../lib/theme/PersonaProvider";
 import {
   INTEREST_TRAITS, STRENGTH_TRAITS, VALUE_OPTIONS, WORKSTYLE_OPTIONS,
-  COUNTRIES, FACULTY_CLUSTERS, INTENDED_FIELDS, RELOCATION_OPTIONS,
-  READINESS_OPTIONS, STUDY_DURATION_OPTIONS, STAGE_OPTIONS,
+  COUNTRIES, RELOCATION_OPTIONS, READINESS_OPTIONS, STAGE_OPTIONS,
 } from "../../lib/utils/constants";
 
 function lookupLabels(keys: string[], options: ReadonlyArray<{ key: string; label: string }>) {
@@ -47,31 +46,24 @@ export default function SummaryScreen() {
   const strengths = (answers.strengths as string[]) ?? [];
   const values = (answers.values as string[]) ?? [];
   const workstyle = (answers.workstyle as string[]) ?? [];
-  const constraints = (answers.constraints as Record<string, string | number | null>) ?? {};
 
   const summaryItems = [
     // Identity & stage
     { label: "Life stage", values: [lookupValue(answers.current_stage as string, [...STAGE_OPTIONS])] },
-    // Academic context
-    ...(answers.current_school ? [{ label: "School/University", values: [answers.current_school as string] }] : []),
-    ...(answers.current_faculty ? [{ label: "Faculty/Area", values: [FACULTY_CLUSTERS.find((f) => f.key === answers.current_faculty)?.label ?? (answers.current_faculty as string)] }] : []),
-    ...(answers.intended_field ? [{ label: "Intended field", values: [INTENDED_FIELDS.find((f) => f.key === answers.intended_field)?.label ?? (answers.intended_field as string)] }] : []),
-    // Location
-    ...(answers.country ? [{ label: "Country", values: [lookupCountry(answers.country as string)] }] : []),
-    ...(answers.city_region ? [{ label: "City/Region", values: [answers.city_region as string] }] : []),
-    ...(answers.relocation_willingness ? [{ label: "Relocation", values: [lookupValue(answers.relocation_willingness as string, [...RELOCATION_OPTIONS])] }] : []),
-    // Interests, strengths, values, workstyle
+    // Discovery
     { label: "Interests", values: lookupLabels(interests, [...INTEREST_TRAITS]) },
     { label: "Strengths", values: lookupLabels(strengths, [...STRENGTH_TRAITS]) },
     { label: "Values", values: lookupLabels(values, [...VALUE_OPTIONS]) },
-    { label: "Work style", values: lookupLabels(workstyle, [...WORKSTYLE_OPTIONS]) },
-    // Constraints
-    ...(constraints.financial_level ? [{ label: "Budget", values: [constraints.financial_level as string] }] : []),
-    ...(constraints.family_expectation ? [{ label: "Family expectations", values: [constraints.family_expectation as string] }] : []),
-    ...(constraints.risk_tolerance ? [{ label: "Risk tolerance", values: [constraints.risk_tolerance as string] }] : []),
-    ...(constraints.max_study_years != null ? [{ label: "Max study duration", values: [`${constraints.max_study_years} years`] }] : []),
+    { label: "Work vibes", values: lookupLabels(workstyle, [...WORKSTYLE_OPTIONS]) },
     // Readiness
     ...(answers.decision_readiness ? [{ label: "Decision readiness", values: [lookupValue(answers.decision_readiness as string, [...READINESS_OPTIONS])] }] : []),
+    // Practical — from separate screens
+    ...(answers.country ? [{ label: "Country", values: [lookupCountry(answers.country as string)] }] : []),
+    ...(answers.relocation_willingness ? [{ label: "Open to relocating", values: [lookupValue(answers.relocation_willingness as string, [...RELOCATION_OPTIONS])] }] : []),
+    ...(answers.financial_level ? [{ label: "Budget", values: [answers.financial_level as string] }] : []),
+    ...(answers.family_expectation ? [{ label: "Family expectations", values: [answers.family_expectation as string] }] : []),
+    ...(answers.risk_tolerance ? [{ label: "Risk tolerance", values: [answers.risk_tolerance as string] }] : []),
+    ...(answers.max_study_years != null ? [{ label: "Max study duration", values: [`${answers.max_study_years} years`] }] : []),
   ].filter((item) => item.values.length > 0 && item.values[0] !== "—");
 
   const handleComplete = async () => {
