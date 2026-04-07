@@ -65,9 +65,8 @@ export default function SubjectsScreen() {
                       opacity: pressed ? 0.9 : 1,
                       transform: [{ scale: pressed ? 0.98 : 1 }],
                       minHeight: 48,
-                      flexDirection: "row",
-                      alignItems: "center",
-                      gap: 12,
+                      flexDirection: "row" as const,
+                      alignItems: "center" as const,
                     })}
                   >
                     <View style={{
@@ -79,6 +78,7 @@ export default function SubjectsScreen() {
                       backgroundColor: isSelected ? tokens.colors.accent.DEFAULT : "transparent",
                       alignItems: "center",
                       justifyContent: "center",
+                      marginRight: 12,
                     }}>
                       {isSelected && (
                         <Text style={{ color: tokens.colors.text.inverse, fontSize: 12, fontWeight: "700" }}>✓</Text>

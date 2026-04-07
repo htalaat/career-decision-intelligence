@@ -21,7 +21,7 @@ export default function Index() {
   }
 
   if (!data?.profile.onboarding_completed) {
-    return <Redirect href="/(onboarding)/welcome" />;
+    return <Redirect href={"/(onboarding)/splash" as never} />;
   }
 
   return <Redirect href="/(tabs)" />;
