@@ -8,7 +8,7 @@ import { useTokens } from "../../lib/theme/PersonaProvider";
 
 type Feeling = "enjoy" | "good_at" | "dislike" | null;
 
-/** Step 6: How do you feel about each subject? */
+/** Step 6: How do you feel about each subject? — clean row layout */
 export default function SubjectFeelingsScreen() {
   const router = useRouter();
   const tokens = useTokens();
@@ -36,25 +36,45 @@ export default function SubjectFeelingsScreen() {
     router.push("/(onboarding)/interests" as never);
   };
 
-  const feelingOptions: Array<{ value: Feeling; label: string; emoji: string; color: string }> = [
-    { value: "enjoy", label: "I enjoy this", emoji: "💚", color: tokens.colors.success },
-    { value: "good_at", label: "I'm good at this", emoji: "💪", color: tokens.colors.accent.DEFAULT },
-    { value: "dislike", label: "Not for me", emoji: "👎", color: tokens.colors.error },
-  ];
+  const formatLabel = (key: string): string =>
+    key.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 
-  const formatSubjectLabel = (key: string): string => {
-    return key.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
-  };
+  const buttons: Array<{ value: Feeling; emoji: string; tip: string; color: string }> = [
+    { value: "enjoy", emoji: "💚", tip: "Enjoy", color: tokens.colors.success },
+    { value: "good_at", emoji: "💪", tip: "Strong", color: tokens.colors.accent.DEFAULT },
+    { value: "dislike", emoji: "👎", tip: "Dislike", color: tokens.colors.error },
+  ];
 
   return (
     <OnboardingQuestion
-      question="How do you feel about each subject?"
-      hint="Tap to tell us how you feel. You can pick one feeling per subject, or skip ones you're unsure about."
+      question="How do you feel about your subjects?"
+      hint="Tap one reaction per subject. Skip any you're unsure about."
       onNext={handleNext}
       onBack={() => { prevStep(); router.back(); }}
       nextDisabled={ratedCount < 2}
     >
-      <View style={{ gap: 16 }}>
+      <View style={{ gap: 6 }}>
+        {/* Legend */}
+        <View style={{
+          display: "flex" as never,
+          flexDirection: "row" as never,
+          justifyContent: "flex-end" as never,
+          marginBottom: 4,
+        }}>
+          {buttons.map((b) => (
+            <View key={b.value} style={{
+              display: "flex" as never,
+              flexDirection: "row" as never,
+              alignItems: "center" as never,
+              marginLeft: 12,
+            }}>
+              <Text style={{ fontSize: 14 }}>{b.emoji}</Text>
+              <Text style={{ fontSize: 11, color: tokens.colors.text.muted, marginLeft: 3 }}>{b.tip}</Text>
+            </View>
+          ))}
+        </View>
+
+        {/* Subject rows */}
         {subjects.map((subject) => {
           const current = feelings[subject] ?? null;
           return (
@@ -62,57 +82,67 @@ export default function SubjectFeelingsScreen() {
               key={subject}
               style={{
                 backgroundColor: tokens.colors.surface.secondary,
-                borderRadius: tokens.borderRadius.lg,
+                borderRadius: 12,
                 borderWidth: 1,
-                borderColor: tokens.colors.border.DEFAULT,
-                padding: 14,
-                gap: 10,
+                borderColor: current ? (
+                  current === "enjoy" ? tokens.colors.success + "40" :
+                  current === "good_at" ? tokens.colors.accent.DEFAULT + "40" :
+                  tokens.colors.error + "40"
+                ) : tokens.colors.border.DEFAULT,
+                paddingLeft: 14,
+                paddingRight: 8,
+                paddingTop: 10,
+                paddingBottom: 10,
+                display: "flex" as never,
+                flexDirection: "row" as never,
+                alignItems: "center" as never,
+                minHeight: 52,
               }}
             >
+              {/* Subject name */}
               <Text style={{
                 fontSize: tokens.typography.bodySize,
-                fontWeight: "600",
+                fontWeight: current ? "600" : "400",
                 color: tokens.colors.text.primary,
+                flex: 1,
+                marginRight: 8,
               }}>
-                {formatSubjectLabel(subject)}
+                {formatLabel(subject)}
               </Text>
-              <View style={{ flexDirection: "row", gap: 8 }}>
-                {feelingOptions.map((opt) => {
-                  const isSelected = current === opt.value;
-                  return (
-                    <Pressable
-                      key={opt.value}
-                      onPress={() => setFeeling(subject, opt.value)}
-                      accessibilityLabel={`${opt.label} for ${formatSubjectLabel(subject)}`}
-                      accessibilityRole="radio"
-                      style={({ pressed }) => ({
-                        flex: 1,
-                        paddingVertical: 8,
-                        borderRadius: tokens.borderRadius.md,
-                        backgroundColor: isSelected ? opt.color + "20" : tokens.colors.surface.elevated,
-                        borderWidth: 2,
-                        borderColor: isSelected ? opt.color : "transparent",
-                        alignItems: "center",
-                        opacity: pressed ? 0.85 : 1,
-                      })}
-                    >
-                      <Text style={{ fontSize: 16 }}>{opt.emoji}</Text>
-                      <Text style={{
-                        fontSize: 11,
-                        fontWeight: isSelected ? "600" : "400",
-                        color: isSelected ? opt.color : tokens.colors.text.secondary,
-                        textAlign: "center",
-                      }}>
-                        {opt.label}
+
+              {/* 3 reaction buttons */}
+              {buttons.map((btn) => {
+                const isActive = current === btn.value;
+                return (
+                  <Pressable
+                    key={btn.value}
+                    onPress={() => setFeeling(subject, btn.value)}
+                    accessibilityLabel={`${btn.tip} ${formatLabel(subject)}`}
+                    accessibilityRole="radio"
+                  >
+                    <View style={{
+                      width: 40,
+                      height: 40,
+                      borderRadius: 12,
+                      backgroundColor: isActive ? btn.color + "25" : "transparent",
+                      borderWidth: isActive ? 2 : 0,
+                      borderColor: isActive ? btn.color : "transparent",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      marginLeft: 4,
+                    }}>
+                      <Text style={{ fontSize: isActive ? 20 : 16, opacity: isActive ? 1 : 0.5 }}>
+                        {btn.emoji}
                       </Text>
-                    </Pressable>
-                  );
-                })}
-              </View>
+                    </View>
+                  </Pressable>
+                );
+              })}
             </View>
           );
         })}
 
+        {/* Early cluster preview */}
         {ratedCount >= 2 && (
           <ClusterPreview
             partialProfile={{
@@ -123,6 +153,10 @@ export default function SubjectFeelingsScreen() {
             }}
           />
         )}
+
+        <Text style={{ fontSize: tokens.typography.captionSize, color: tokens.colors.text.muted, textAlign: "center" }}>
+          {ratedCount} of {subjects.length} rated
+        </Text>
       </View>
     </OnboardingQuestion>
   );

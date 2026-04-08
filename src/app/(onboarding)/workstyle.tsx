@@ -17,7 +17,7 @@ export default function WorkstyleScreen() {
 
   return (
     <OnboardingQuestion
-      question="Pick the work vibes that feel right"
+      question="How do you like to work?"
       hint="Think about how you'd actually want to spend your days."
       onNext={() => { setAnswer("workstyle", selected); nextStep(); router.push("/(onboarding)/readiness" as never); }}
       onBack={() => { prevStep(); router.back(); }}

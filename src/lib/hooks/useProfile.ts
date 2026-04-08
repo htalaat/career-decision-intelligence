@@ -92,40 +92,33 @@ export function useSaveOnboarding() {
         }
       }
 
-      // Save constraints — from separate money/duration screens
-      const financialLevel = answers.financial_level as string | undefined;
-      const familyExpectation = answers.family_expectation as string | undefined;
-      const riskTolerance = answers.risk_tolerance as string | undefined;
-      const maxStudyYears = answers.max_study_years as number | null | undefined;
-
-      if (financialLevel || familyExpectation || riskTolerance || maxStudyYears !== undefined) {
-        const { error: constraintError } = await supabase.from("constraint_sets").upsert(
-          {
-            profile_id: profileId,
-            financial_level: financialLevel ?? null,
-            family_expectation: familyExpectation ?? null,
-            risk_tolerance: riskTolerance ?? null,
-            max_study_years: maxStudyYears ?? null,
-          },
-          { onConflict: "profile_id" },
-        );
-        if (constraintError) {
-          console.error("Constraint save error:", constraintError);
-        }
+      // ALWAYS save constraints — use defaults for missing values
+      const { error: constraintError } = await supabase.from("constraint_sets").upsert(
+        {
+          profile_id: profileId,
+          financial_level: (answers.financial_level as string) ?? null,
+          family_expectation: (answers.family_expectation as string) ?? null,
+          risk_tolerance: (answers.risk_tolerance as string) ?? null,
+          max_study_years: (answers.max_study_years as number) ?? null,
+        },
+        { onConflict: "profile_id" },
+      );
+      if (constraintError) {
+        console.error("Constraint save error:", constraintError);
       }
 
-      // Save weights
-      if (answers.weights) {
-        const { error: weightsError } = await supabase.from("preference_weights").upsert(
-          {
-            profile_id: profileId,
-            ...(answers.weights as Record<string, number>),
-          },
-          { onConflict: "profile_id" },
-        );
-        if (weightsError) {
-          console.error("Weights save error:", weightsError);
-        }
+      // ALWAYS save weights — use defaults (50) when no goals screen exists
+      const defaultWeights = { income: 50, stability: 50, flexibility: 50, prestige: 50, creativity: 50, impact: 50, study_duration: 50, risk: 50 };
+      const weights = answers.weights ? (answers.weights as Record<string, number>) : defaultWeights;
+      const { error: weightsError } = await supabase.from("preference_weights").upsert(
+        {
+          profile_id: profileId,
+          ...weights,
+        },
+        { onConflict: "profile_id" },
+      );
+      if (weightsError) {
+        console.error("Weights save error:", weightsError);
       }
     },
     onSuccess: () => {

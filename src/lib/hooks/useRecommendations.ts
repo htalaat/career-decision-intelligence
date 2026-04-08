@@ -131,19 +131,19 @@ export async function buildEngineProfile(userId: string): Promise<EngineProfile>
     .select("question_key, answer_value")
     .eq("profile_id", sp.id);
 
-  // Get weights
+  // Get weights (may not exist yet — handle gracefully)
   const { data: weights } = await supabase
     .from("preference_weights")
     .select("*")
     .eq("profile_id", sp.id)
-    .single();
+    .maybeSingle();
 
-  // Get constraints
+  // Get constraints (may not exist yet — handle gracefully)
   const { data: constraints } = await supabase
     .from("constraint_sets")
     .select("*")
     .eq("profile_id", sp.id)
-    .single();
+    .maybeSingle();
 
   const answerMap = new Map(
     (answers ?? []).map((a) => [a.question_key, a.answer_value]),

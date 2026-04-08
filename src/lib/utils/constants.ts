@@ -9,7 +9,7 @@ export const ONBOARDING_STEPS = [
   { key: "interests", label: "Interests", path: "/(onboarding)/interests" },
   { key: "strengths", label: "Strengths", path: "/(onboarding)/strengths" },
   { key: "values", label: "Values", path: "/(onboarding)/values" },
-  { key: "workstyle", label: "Vibes", path: "/(onboarding)/workstyle" },
+  { key: "workstyle", label: "Work style", path: "/(onboarding)/workstyle" },
   { key: "readiness", label: "Ready?", path: "/(onboarding)/readiness" },
   { key: "clusters", label: "Directions", path: "/(onboarding)/clusters" },
   { key: "country", label: "Location", path: "/(onboarding)/country" },
