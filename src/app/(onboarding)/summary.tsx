@@ -164,7 +164,7 @@ export default function SummaryScreen() {
       console.log("[Generate] Step 4 complete: recommendations saved");
 
       showSuccessToast("Recommendations ready!");
-      router.replace("/(tabs)/discover" as never);
+      router.replace("/" as never);
     } catch (err) {
       console.error("[Generate] FAILED:", err);
       const message = err instanceof Error ? err.message : String(err);
