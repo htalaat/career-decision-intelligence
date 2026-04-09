@@ -84,11 +84,15 @@ export function useSaveOnboarding() {
       ];
       for (const key of answerKeys) {
         if (answers[key]) {
-          await supabase.from("profile_answers").insert({
+          const { error: answerError } = await supabase.from("profile_answers").insert({
             profile_id: profileId,
             question_key: key,
             answer_value: answers[key],
           });
+          if (answerError) {
+            console.error(`Answer save error (${key}):`, answerError);
+            throw new Error(`Failed to save ${key}: ${answerError.message}`);
+          }
         }
       }
 
@@ -105,6 +109,7 @@ export function useSaveOnboarding() {
       );
       if (constraintError) {
         console.error("Constraint save error:", constraintError);
+        throw new Error(`Failed to save constraints: ${constraintError.message}`);
       }
 
       // ALWAYS save weights — use defaults (50) when no goals screen exists
@@ -119,6 +124,7 @@ export function useSaveOnboarding() {
       );
       if (weightsError) {
         console.error("Weights save error:", weightsError);
+        throw new Error(`Failed to save weights: ${weightsError.message}`);
       }
     },
     onSuccess: () => {

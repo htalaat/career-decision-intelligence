@@ -15,6 +15,7 @@ import {
   INTEREST_TRAITS, STRENGTH_TRAITS, VALUE_OPTIONS, WORKSTYLE_OPTIONS,
   COUNTRIES, RELOCATION_OPTIONS, READINESS_OPTIONS, STAGE_OPTIONS,
   SCHOOL_SYSTEMS, CURRICULUM_LEVELS, SUBJECT_CATEGORIES,
+  BUDGET_OPTIONS, FAMILY_OPTIONS, RISK_OPTIONS,
 } from "../../lib/utils/constants";
 
 function lookupLabels(keys: string[], options: ReadonlyArray<{ key: string; label: string }>) {
@@ -102,14 +103,23 @@ export default function SummaryScreen() {
     // Practical — from separate screens
     ...(answers.country ? [{ label: "Country", values: [lookupCountry(answers.country as string)] }] : []),
     ...(answers.relocation_willingness ? [{ label: "Open to relocating", values: [lookupValue(answers.relocation_willingness as string, [...RELOCATION_OPTIONS])] }] : []),
-    ...(answers.financial_level ? [{ label: "Budget", values: [answers.financial_level as string] }] : []),
-    ...(answers.family_expectation ? [{ label: "Family expectations", values: [answers.family_expectation as string] }] : []),
-    ...(answers.risk_tolerance ? [{ label: "Risk tolerance", values: [answers.risk_tolerance as string] }] : []),
+    ...(answers.financial_level ? [{ label: "Budget", values: [lookupValue(answers.financial_level as string, [...BUDGET_OPTIONS])] }] : []),
+    ...(answers.family_expectation ? [{ label: "Family expectations", values: [lookupValue(answers.family_expectation as string, [...FAMILY_OPTIONS])] }] : []),
+    ...(answers.risk_tolerance ? [{ label: "Risk tolerance", values: [lookupValue(answers.risk_tolerance as string, [...RISK_OPTIONS])] }] : []),
     ...(answers.max_study_years != null ? [{ label: "Max study duration", values: [`${answers.max_study_years} years`] }] : []),
   ].filter((item) => item.values.length > 0 && item.values[0] !== "—");
 
+  const isCareerDataReady = !!(careerData?.paths?.length);
+
   const handleComplete = async () => {
-    if (!userId) return;
+    if (!userId) {
+      showErrorToast("Session expired", "Please sign in again to continue.");
+      return;
+    }
+    if (!isCareerDataReady) {
+      showErrorToast("Still loading", "Career data is loading — please try again in a moment.");
+      return;
+    }
     setIsGenerating(true);
 
     try {
@@ -117,10 +127,14 @@ export default function SummaryScreen() {
 
       const engineProfile = await buildEngineProfile(userId);
       const enginePaths = buildEngineCareerPaths(
-        careerData?.paths ?? [],
-        careerData?.mappings ?? [],
-        careerData?.studyDirections ?? [],
+        careerData.paths,
+        careerData.mappings ?? [],
+        careerData.studyDirections ?? [],
       );
+
+      if (enginePaths.length === 0) {
+        throw new Error("No career paths available for scoring");
+      }
 
       await runRecommendations.mutateAsync({
         engineProfile,
@@ -148,10 +162,10 @@ export default function SummaryScreen() {
       </ScrollView>
       <View style={{ gap: 12, paddingTop: 16 }}>
         <Button
-          label={isGenerating ? "Analyzing your profile..." : "Generate my recommendations"}
+          label={isGenerating ? "Analyzing your profile..." : !isCareerDataReady ? "Loading career data..." : "Generate my recommendations"}
           onPress={handleComplete}
-          loading={isGenerating}
-          disabled={isGenerating}
+          loading={isGenerating || !isCareerDataReady}
+          disabled={isGenerating || !isCareerDataReady}
         />
         <Button
           label="Go back and edit"

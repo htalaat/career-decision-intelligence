@@ -21,7 +21,7 @@ export const useOnboardingStore = create<OnboardingState>((set) => ({
 
   nextStep: () =>
     set((s) => {
-      const next = Math.min(s.currentStep + 1, 13);
+      const next = Math.min(s.currentStep + 1, 15);
       trackEvent(EVENTS.ONBOARDING_STEP_COMPLETED, { step: s.currentStep, nextStep: next });
       return { currentStep: next };
     }),

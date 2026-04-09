@@ -4,21 +4,7 @@ import { useRouter } from "expo-router";
 import { OnboardingQuestion } from "../../components/features/OnboardingQuestion";
 import { Select } from "../../components/ui/Select";
 import { useOnboardingStore } from "../../stores/onboardingStore";
-
-const BUDGET_OPTIONS = [
-  { value: "tight", label: "Pretty tight \u2014 cost matters a lot" },
-  { value: "moderate", label: "Somewhere in the middle" },
-  { value: "comfortable", label: "Pretty comfortable \u2014 cost isn't a big worry" },
-  { value: "not_thought", label: "I haven't thought about this yet" },
-] as const;
-
-const FAMILY_OPTIONS = [
-  { value: "none", label: "They let me decide" },
-  { value: "some_input", label: "They have opinions but it's my call" },
-  { value: "significant", label: "They have strong expectations" },
-  { value: "deciding", label: "They're mostly making this decision" },
-  { value: "not_sure", label: "I'm not sure yet" },
-] as const;
+import { BUDGET_OPTIONS, FAMILY_OPTIONS } from "../../lib/utils/constants";
 
 /** Step 11: Let's be real about money and family */
 export default function MoneyScreen() {

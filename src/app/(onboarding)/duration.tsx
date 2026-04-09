@@ -4,14 +4,7 @@ import { useRouter } from "expo-router";
 import { OnboardingQuestion } from "../../components/features/OnboardingQuestion";
 import { Select } from "../../components/ui/Select";
 import { useOnboardingStore } from "../../stores/onboardingStore";
-import { STUDY_DURATION_OPTIONS } from "../../lib/utils/constants";
-
-const RISK_OPTIONS = [
-  { value: "safe", label: "I like safe, predictable paths" },
-  { value: "moderate", label: "I'm open to some risk" },
-  { value: "high", label: "I'm comfortable with uncertainty" },
-  { value: "figure_out_later", label: "I'll figure this out later" },
-] as const;
+import { STUDY_DURATION_OPTIONS, RISK_OPTIONS } from "../../lib/utils/constants";
 
 /** Step 12: How long can you study? */
 export default function DurationScreen() {

@@ -293,6 +293,29 @@ export const RELOCATION_OPTIONS = [
   { value: "flexible", label: "Fully flexible \u2014 wherever the best opportunity is" },
 ] as const;
 
+/** Budget / financial constraint options — values match constraint_sets.financial_level CHECK */
+export const BUDGET_OPTIONS = [
+  { value: "low", label: "Pretty tight — cost matters a lot" },
+  { value: "medium", label: "Somewhere in the middle" },
+  { value: "high", label: "Pretty comfortable — cost isn't a big worry" },
+  { value: "flexible", label: "I haven't thought about this yet" },
+] as const;
+
+/** Family expectation options — values match constraint_sets.family_expectation CHECK */
+export const FAMILY_OPTIONS = [
+  { value: "none", label: "They let me decide" },
+  { value: "low", label: "They have opinions but it's my call" },
+  { value: "medium", label: "They have strong expectations" },
+  { value: "high", label: "They're mostly making this decision" },
+] as const;
+
+/** Risk tolerance options — values match constraint_sets.risk_tolerance CHECK */
+export const RISK_OPTIONS = [
+  { value: "low", label: "I like safe, predictable paths" },
+  { value: "medium", label: "I'm open to some risk" },
+  { value: "high", label: "I'm comfortable with uncertainty" },
+] as const;
+
 /** Study duration tolerance options */
 export const STUDY_DURATION_OPTIONS = [
   { value: "1", label: "1 year or less (certificate / bootcamp)" },
