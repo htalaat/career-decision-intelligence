@@ -18,7 +18,7 @@ export default function AdminLayout() {
   }
 
   if (data?.profile?.role !== "admin") {
-    return <Redirect href="/(tabs)" />;
+    return <Redirect href={"/(tabs)/discover" as never} />;
   }
 
   return (

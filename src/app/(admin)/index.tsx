@@ -40,7 +40,7 @@ export default function AdminDashboard() {
           ))}
         </View>
 
-        <Button label="Back to app" variant="ghost" onPress={() => router.push("/(tabs)")} />
+        <Button label="Back to app" variant="ghost" onPress={() => router.push("/(tabs)/discover" as never)} />
       </View>
     </Screen>
   );

@@ -186,7 +186,7 @@ export default function ActionPlanScreen() {
         <Button
           label="Back to decisions"
           variant="secondary"
-          onPress={() => router.push("/(tabs)/decisions")}
+          onPress={() => router.push("/(tabs)/plan" as never)}
         />
       </View>
     </Screen>
