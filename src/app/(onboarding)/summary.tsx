@@ -123,9 +123,27 @@ export default function SummaryScreen() {
     setIsGenerating(true);
 
     try {
+      // Step 1: Save onboarding answers to Supabase
+      console.log("[Generate] Step 1: Saving onboarding answers...", Object.keys(answers));
       await saveOnboarding.mutateAsync(answers);
+      console.log("[Generate] Step 1 complete: answers saved");
 
+      // Step 2: Build engine profile from saved data
+      console.log("[Generate] Step 2: Building engine profile...");
       const engineProfile = await buildEngineProfile(userId);
+      console.log("[Generate] Step 2 complete:", {
+        interests: engineProfile.interests.length,
+        strengths: engineProfile.strengths.length,
+        values: engineProfile.values.length,
+        constraints: engineProfile.constraints,
+      });
+
+      // Step 3: Build career paths for scoring
+      console.log("[Generate] Step 3: Building career paths...", {
+        paths: careerData.paths?.length,
+        mappings: careerData.mappings?.length,
+        studyDirections: careerData.studyDirections?.length,
+      });
       const enginePaths = buildEngineCareerPaths(
         careerData.paths,
         careerData.mappings ?? [],
@@ -135,17 +153,22 @@ export default function SummaryScreen() {
       if (enginePaths.length === 0) {
         throw new Error("No career paths available for scoring");
       }
+      console.log("[Generate] Step 3 complete:", enginePaths.length, "career paths");
 
+      // Step 4: Run scoring engine + save results
+      console.log("[Generate] Step 4: Running recommendation engine...");
       await runRecommendations.mutateAsync({
         engineProfile,
         careerPaths: enginePaths,
       });
+      console.log("[Generate] Step 4 complete: recommendations saved");
 
       showSuccessToast("Recommendations ready!");
       router.replace("/(tabs)" as never);
     } catch (err) {
-      console.error("Generate recommendations failed:", err);
-      showErrorToast("Something went wrong", String(err));
+      console.error("[Generate] FAILED:", err);
+      const message = err instanceof Error ? err.message : String(err);
+      showErrorToast("Generation failed", message);
     } finally {
       setIsGenerating(false);
     }
