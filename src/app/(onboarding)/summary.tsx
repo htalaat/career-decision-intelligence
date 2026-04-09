@@ -165,9 +165,9 @@ export default function SummaryScreen() {
 
       showSuccessToast("Recommendations ready!");
       if (Platform.OS === "web") {
-        window.location.href = "/";
+        window.location.href = "/discover";
       } else {
-        router.replace("/" as never);
+        router.replace("/(tabs)/discover" as never);
       }
     } catch (err) {
       console.error("[Generate] FAILED:", err);

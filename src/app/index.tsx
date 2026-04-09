@@ -24,5 +24,5 @@ export default function Index() {
     return <Redirect href={"/(onboarding)/splash" as never} />;
   }
 
-  return <Redirect href="/(tabs)" />;
+  return <Redirect href={"/(tabs)/discover" as never} />;
 }
