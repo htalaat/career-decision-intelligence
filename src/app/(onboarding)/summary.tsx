@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, Platform } from "react-native";
 import { useRouter } from "expo-router";
 import { Button } from "../../components/ui/Button";
 import { ProfileSummaryCard } from "../../components/features/ProfileSummaryCard";
@@ -164,7 +164,11 @@ export default function SummaryScreen() {
       console.log("[Generate] Step 4 complete: recommendations saved");
 
       showSuccessToast("Recommendations ready!");
-      router.replace("/" as never);
+      if (Platform.OS === "web") {
+        window.location.href = "/";
+      } else {
+        router.replace("/" as never);
+      }
     } catch (err) {
       console.error("[Generate] FAILED:", err);
       const message = err instanceof Error ? err.message : String(err);
