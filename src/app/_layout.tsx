@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
+import { Platform } from "react-native";
 import { Stack } from "expo-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Toaster } from "burnt/web";
 import { PersonaProvider } from "../lib/theme/PersonaProvider";
 import { useAuthStore } from "../stores/authStore";
 import "../global.css";
@@ -28,6 +30,7 @@ export default function RootLayout() {
             contentStyle: { backgroundColor: "#F7F8FC" },
           }}
         />
+        {Platform.OS === "web" && <Toaster />}
       </PersonaProvider>
     </QueryClientProvider>
   );
