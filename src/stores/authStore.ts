@@ -21,12 +21,29 @@ export const useAuthStore = create<AuthState>((set) => ({
   initialize: async () => {
     try {
       const { data } = await supabase.auth.getSession();
-      set({
-        session: data.session,
-        user: data.session?.user ?? null,
-        isAuthenticated: !!data.session,
-        isLoading: false,
-      });
+
+      if (data.session) {
+        set({
+          session: data.session,
+          user: data.session.user,
+          isAuthenticated: true,
+          isLoading: false,
+        });
+      } else {
+        // Auto sign-in anonymously — no email or magic link needed
+        const { data: anonData, error: anonError } = await supabase.auth.signInAnonymously();
+        if (anonError) {
+          console.error("[Auth] Anonymous sign-in failed:", anonError.message);
+          set({ isLoading: false });
+        } else {
+          set({
+            session: anonData.session,
+            user: anonData.session?.user ?? null,
+            isAuthenticated: !!anonData.session,
+            isLoading: false,
+          });
+        }
+      }
     } catch {
       set({ isLoading: false });
     }
