@@ -3,6 +3,9 @@
 // used across the career-decision engine.
 // ============================================================
 
+/** Current mappings version tag */
+export const MAPPINGS_VERSION = "v1" as const;
+
 // -----------------------------------------------------------
 // 1. Subject-to-Domain mapping
 // -----------------------------------------------------------

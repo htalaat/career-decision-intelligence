@@ -5,6 +5,7 @@ import { useRecommendationStore } from "../../stores/recommendationStore";
 import { generateRecommendations } from "../engine/rank";
 import type { EngineProfile, EngineCareerPath } from "../engine/types";
 import { trackEvent, EVENTS } from "../utils/analytics";
+import { CONFIG_VERSION } from "../config";
 
 /** Fetch the latest recommendation run for the current user */
 export function useLatestRecommendation() {
@@ -68,7 +69,10 @@ export function useRunRecommendations() {
         .from("recommendation_runs")
         .insert({
           user_id: userId,
-          profile_snapshot: result.profileSnapshot as unknown as Record<string, unknown>,
+          profile_snapshot: {
+            ...(result.profileSnapshot as unknown as Record<string, unknown>),
+            config_version: CONFIG_VERSION,
+          },
           scoring_model_version: result.scoringModelVersion,
         })
         .select("id")
