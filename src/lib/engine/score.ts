@@ -12,6 +12,23 @@ import {
   RISKY_DOMAINS,
   SAFE_DOMAINS,
 } from "../config/mappings";
+import {
+  TRAIT_OVERLAP,
+  GOALS_FIT,
+  FEASIBILITY,
+  EDUCATION_FIT,
+  COUNTRY_FIT,
+  CLUSTER_REACTION_FIT,
+  INCOME_POTENTIAL_MAP,
+  STABILITY,
+  FLEXIBILITY,
+  PRESTIGE,
+  CREATIVITY,
+  IMPACT,
+  DURATION_FIT,
+  RISK_FIT,
+  SUBJECT_FIT,
+} from "../config/scoring";
 
 /**
  * Compute fit scores between a student profile and a career path.
@@ -60,7 +77,7 @@ function computeTraitOverlap(
   mappings: EngineCareerPath["traitMappings"],
   _category: string,
 ): number {
-  if (studentTraits.length === 0) return 50; // neutral if no data
+  if (studentTraits.length === 0) return TRAIT_OVERLAP.neutralScore; // neutral if no data
 
   let totalScore = 0;
   let matchCount = 0;
@@ -73,11 +90,11 @@ function computeTraitOverlap(
     }
   }
 
-  if (matchCount === 0) return 30; // low score if no overlap at all
+  if (matchCount === 0) return TRAIT_OVERLAP.noOverlapScore; // low score if no overlap at all
 
   // Base score from matches, with a bonus for having many matches
   const avgMatchScore = totalScore / matchCount;
-  const coverageBonus = (matchCount / studentTraits.length) * 20;
+  const coverageBonus = (matchCount / studentTraits.length) * TRAIT_OVERLAP.coverageBonusMax;
 
   return avgMatchScore + coverageBonus;
 }
@@ -91,7 +108,7 @@ function computeGoalsFit(profile: EngineProfile, career: EngineCareerPath): numb
   const totalWeight = w.income + w.stability + w.flexibility + w.prestige +
     w.creativity + w.impact + w.study_duration + w.risk;
 
-  if (totalWeight === 0) return 50;
+  if (totalWeight === 0) return GOALS_FIT.defaultScore;
 
   // Map career properties to how well they satisfy each goal
   const incomeScore = mapIncomePotential(career.income_potential);
@@ -121,21 +138,21 @@ function computeGoalsFit(profile: EngineProfile, career: EngineCareerPath): numb
  * Compute practical feasibility based on constraints.
  */
 function computeFeasibility(profile: EngineProfile, career: EngineCareerPath): number {
-  let score = 70; // baseline feasibility
+  let score = FEASIBILITY.baseline; // baseline feasibility
 
   // Duration check
   if (profile.constraints.max_study_years != null && career.typical_duration_years != null) {
     if (career.typical_duration_years <= profile.constraints.max_study_years) {
-      score += 15;
+      score += FEASIBILITY.durationMatchBonus;
     } else {
       const overshoot = career.typical_duration_years - profile.constraints.max_study_years;
-      score -= overshoot * 10;
+      score -= overshoot * FEASIBILITY.durationOvershootPenaltyPerYear;
     }
   }
 
   // Financial check — expensive paths score lower for tight budgets
-  if (profile.constraints.financial_level === "low" && career.typical_duration_years != null && career.typical_duration_years > 4) {
-    score -= 15;
+  if (profile.constraints.financial_level === "low" && career.typical_duration_years != null && career.typical_duration_years > FEASIBILITY.lowBudgetDurationThreshold) {
+    score -= FEASIBILITY.lowBudgetLongDurationPenalty;
   }
 
   return score;
@@ -146,10 +163,10 @@ function computeFeasibility(profile: EngineProfile, career: EngineCareerPath): n
  * align with the career's required study directions?
  */
 function computeEducationFit(profile: EngineProfile, career: EngineCareerPath): number {
-  if (career.studyDirections.length === 0) return 60; // no data = neutral
+  if (career.studyDirections.length === 0) return EDUCATION_FIT.noDataScore; // no data = neutral
 
   const studentField = profile.intended_field ?? profile.current_faculty;
-  if (!studentField || studentField === "undecided") return 55; // undecided = slight neutral
+  if (!studentField || studentField === "undecided") return EDUCATION_FIT.undecidedScore; // undecided = slight neutral
 
   // Check if any study direction matches the student's field
   const primaryMatch = career.studyDirections.some(
@@ -157,16 +174,16 @@ function computeEducationFit(profile: EngineProfile, career: EngineCareerPath): 
             studentField.includes(sd.faculty_cluster.replace(/_/g, " "))
   );
 
-  if (primaryMatch) return 90;
+  if (primaryMatch) return EDUCATION_FIT.primaryMatchScore;
 
   // Check secondary matches via faculty cluster
   const clusterMatch = career.studyDirections.some(
     (sd) => sd.faculty_cluster === profile.current_faculty
   );
 
-  if (clusterMatch) return 70;
+  if (clusterMatch) return EDUCATION_FIT.clusterMatchScore;
 
-  return 40; // no match
+  return EDUCATION_FIT.noMatchScore; // no match
 }
 
 /**
@@ -174,9 +191,9 @@ function computeEducationFit(profile: EngineProfile, career: EngineCareerPath): 
  * and career domain availability.
  */
 function computeCountryFit(profile: EngineProfile, career: EngineCareerPath): number {
-  if (!profile.country) return 60; // no country = neutral
+  if (!profile.country) return COUNTRY_FIT.noCountryScore; // no country = neutral
 
-  let score = 70; // baseline
+  let score = COUNTRY_FIT.baseline; // baseline
 
   // Check if career has country-specific study direction notes
   const hasCountryNotes = career.studyDirections.some((sd) => sd.country_notes);
@@ -184,12 +201,12 @@ function computeCountryFit(profile: EngineProfile, career: EngineCareerPath): nu
   // Relocation affects feasibility
   if (profile.relocation_willingness === "no") {
     // Some careers are harder to pursue locally in certain regions
-    if (GLOBAL_DOMAINS.includes(career.domain)) score += 10;
+    if (GLOBAL_DOMAINS.includes(career.domain)) score += COUNTRY_FIT.globalDomainBonus;
   } else if (profile.relocation_willingness === "international" || profile.relocation_willingness === "flexible") {
-    score += 15; // more options available
+    score += COUNTRY_FIT.internationalBonus; // more options available
   }
 
-  if (hasCountryNotes) score += 5;
+  if (hasCountryNotes) score += COUNTRY_FIT.countryNotesBonus;
 
   return score;
 }
@@ -199,22 +216,22 @@ function computeCountryFit(profile: EngineProfile, career: EngineCareerPath): nu
  * Cluster reactions are first-person signals that trait overlap can't capture.
  */
 function computeClusterReactionFit(profile: EngineProfile, career: EngineCareerPath): number {
-  if (!profile.clusterReactions) return 60; // no reactions = neutral
+  if (!profile.clusterReactions) return CLUSTER_REACTION_FIT.noReactionsScore; // no reactions = neutral
 
   const relevantClusters = DOMAIN_TO_CLUSTERS[career.domain] ?? [];
-  let bestScore = 60;
+  let bestScore: number = CLUSTER_REACTION_FIT.defaultBestScore;
 
   for (const clusterKey of relevantClusters) {
     const reaction = profile.clusterReactions[clusterKey];
     if (!reaction) continue;
 
-    let score = 60;
+    let score: number = CLUSTER_REACTION_FIT.defaultBestScore;
     switch (reaction) {
-      case "feels_like_me": score = 90; break;
-      case "explore": score = 72; break;
-      case "surprised": score = 76; break;
-      case "not_for_me": score = 35; break;
-      case "not_sure": score = 58; break;
+      case "feels_like_me": score = CLUSTER_REACTION_FIT.reactionScores.feels_like_me; break;
+      case "explore": score = CLUSTER_REACTION_FIT.reactionScores.explore; break;
+      case "surprised": score = CLUSTER_REACTION_FIT.reactionScores.surprised; break;
+      case "not_for_me": score = CLUSTER_REACTION_FIT.reactionScores.not_for_me; break;
+      case "not_sure": score = CLUSTER_REACTION_FIT.reactionScores.not_sure; break;
     }
 
     if (score > bestScore) {
@@ -229,51 +246,51 @@ function computeClusterReactionFit(profile: EngineProfile, career: EngineCareerP
 
 function mapIncomePotential(potential: string | null): number {
   switch (potential) {
-    case "very_high": return 95;
-    case "high": return 75;
-    case "medium": return 55;
-    case "low": return 35;
-    default: return 50;
+    case "very_high": return INCOME_POTENTIAL_MAP.very_high;
+    case "high": return INCOME_POTENTIAL_MAP.high;
+    case "medium": return INCOME_POTENTIAL_MAP.medium;
+    case "low": return INCOME_POTENTIAL_MAP.low;
+    default: return INCOME_POTENTIAL_MAP.default;
   }
 }
 
 function mapStability(domain: string, tags: string[]): number {
-  let score = 50;
-  if (STABLE_DOMAINS.includes(domain)) score += 25;
-  if (tags.some((t) => STABLE_TAGS.includes(t))) score += 10;
+  let score = STABILITY.base;
+  if (STABLE_DOMAINS.includes(domain)) score += STABILITY.domainBonus;
+  if (tags.some((t) => STABLE_TAGS.includes(t))) score += STABILITY.tagBonus;
   return Math.min(100, score);
 }
 
 function mapFlexibility(tags: string[]): number {
   const matches = tags.filter((t) => FLEX_TAGS.includes(t)).length;
-  return 40 + matches * 15;
+  return FLEXIBILITY.base + matches * FLEXIBILITY.perMatchBonus;
 }
 
 function mapPrestige(income: string | null, domain: string): number {
-  let score = 50;
-  if (income === "very_high") score += 20;
-  if (income === "high") score += 10;
-  if (PRESTIGE_DOMAINS.includes(domain)) score += 15;
+  let score = PRESTIGE.base;
+  if (income === "very_high") score += PRESTIGE.veryHighIncomeBonus;
+  if (income === "high") score += PRESTIGE.highIncomeBonus;
+  if (PRESTIGE_DOMAINS.includes(domain)) score += PRESTIGE.domainBonus;
   return Math.min(100, score);
 }
 
 function mapCreativity(tags: string[], mappings: EngineCareerPath["traitMappings"]): number {
-  const tagScore = tags.filter((t) => CREATIVE_TAGS.includes(t)).length * 20;
+  const tagScore = tags.filter((t) => CREATIVE_TAGS.includes(t)).length * CREATIVITY.perTagScore;
   const mappingScore = mappings.find((m) => m.trait_key === "creative")?.weight ?? 0;
-  return Math.min(100, 30 + tagScore + mappingScore * 40);
+  return Math.min(100, CREATIVITY.base + tagScore + mappingScore * CREATIVITY.mappingMultiplier);
 }
 
 function mapImpact(tags: string[], mappings: EngineCareerPath["traitMappings"]): number {
-  const tagScore = tags.filter((t) => IMPACT_TAGS.includes(t)).length * 20;
+  const tagScore = tags.filter((t) => IMPACT_TAGS.includes(t)).length * IMPACT.perTagScore;
   const mappingScore = mappings.find((m) => m.trait_key === "helping_others")?.weight ?? 0;
-  return Math.min(100, 30 + tagScore + mappingScore * 40);
+  return Math.min(100, IMPACT.base + tagScore + mappingScore * IMPACT.mappingMultiplier);
 }
 
 function mapDurationFit(careerYears: number | null, maxYears: number | null): number {
-  if (careerYears == null || maxYears == null) return 60;
-  if (careerYears <= maxYears) return 90;
+  if (careerYears == null || maxYears == null) return DURATION_FIT.noDataScore;
+  if (careerYears <= maxYears) return DURATION_FIT.fitsScore;
   const overshoot = careerYears - maxYears;
-  return Math.max(20, 90 - overshoot * 20);
+  return Math.max(DURATION_FIT.minScore, DURATION_FIT.fitsScore - overshoot * DURATION_FIT.perYearOvershootPenalty);
 }
 
 function mapRiskFit(domain: string, riskTolerance: string | null): number {
@@ -281,10 +298,10 @@ function mapRiskFit(domain: string, riskTolerance: string | null): number {
   const isSafe = SAFE_DOMAINS.includes(domain);
 
   switch (riskTolerance) {
-    case "high": return isRisky ? 85 : isSafe ? 60 : 70;
-    case "medium": return 70;
-    case "low": return isSafe ? 85 : isRisky ? 40 : 60;
-    default: return 60;
+    case "high": return isRisky ? RISK_FIT.high_risky : isSafe ? RISK_FIT.high_safe : RISK_FIT.high_other;
+    case "medium": return RISK_FIT.medium;
+    case "low": return isSafe ? RISK_FIT.low_safe : isRisky ? RISK_FIT.low_risky : RISK_FIT.low_other;
+    default: return RISK_FIT.default;
   }
 }
 
@@ -297,16 +314,16 @@ function computeSubjectFit(profile: EngineProfile, career: EngineCareerPath): nu
   const goodAt = profile.subjectsGoodAt ?? [];
   const disliked = profile.subjectsDisliked ?? [];
 
-  if (enjoyed.length === 0 && goodAt.length === 0 && disliked.length === 0) return 55;
+  if (enjoyed.length === 0 && goodAt.length === 0 && disliked.length === 0) return SUBJECT_FIT.noSubjectsScore;
 
-  let score = 50;
+  let score = SUBJECT_FIT.baseScore;
   let signals = 0;
 
   // Check if any enjoyed subjects map to this career's domain
   for (const subject of enjoyed) {
     const domains = SUBJECT_TO_DOMAINS[subject] ?? [];
     if (domains.includes(career.domain)) {
-      score += 15;
+      score += SUBJECT_FIT.enjoyedMatchBonus;
       signals++;
     }
   }
@@ -315,7 +332,7 @@ function computeSubjectFit(profile: EngineProfile, career: EngineCareerPath): nu
   for (const subject of goodAt) {
     const domains = SUBJECT_TO_DOMAINS[subject] ?? [];
     if (domains.includes(career.domain)) {
-      score += 12;
+      score += SUBJECT_FIT.goodAtMatchBonus;
       signals++;
     }
   }
@@ -324,13 +341,13 @@ function computeSubjectFit(profile: EngineProfile, career: EngineCareerPath): nu
   for (const subject of disliked) {
     const domains = SUBJECT_TO_DOMAINS[subject] ?? [];
     if (domains.includes(career.domain)) {
-      score -= 15;
+      score -= SUBJECT_FIT.dislikedMatchPenalty;
       signals++;
     }
   }
 
   // Bonus for having subject data at all
-  if (signals > 0) score += 5;
+  if (signals > 0) score += SUBJECT_FIT.anySignalsBonus;
 
   return score;
 }

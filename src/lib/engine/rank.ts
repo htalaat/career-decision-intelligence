@@ -3,22 +3,7 @@ import { computeScore } from "./score";
 import { computePenalties, totalPenalty } from "./penalties";
 import { computeConfidence } from "./confidence";
 import { generateExplanation } from "./explain";
-
-const SCORING_MODEL_VERSION = "v2";
-
-/** Weight distribution for 10 scoring dimensions */
-const DIMENSION_WEIGHTS = {
-  interestFit: 0.14,
-  strengthFit: 0.11,
-  valuesFit: 0.11,
-  workstyleFit: 0.06,
-  goalsFit: 0.08,
-  feasibilityFit: 0.07,
-  educationFit: 0.08,
-  countryFit: 0.06,
-  clusterReactionFit: 0.14,
-  subjectFit: 0.15,
-};
+import { SCORING_VERSION, DIMENSION_WEIGHTS } from "../config/scoring";
 
 /**
  * Run the full recommendation engine.
@@ -79,7 +64,7 @@ export function generateRecommendations(
 
   return {
     scoredPaths: scored,
-    scoringModelVersion: SCORING_MODEL_VERSION,
+    scoringModelVersion: SCORING_VERSION,
     profileSnapshot: profile,
   };
 }

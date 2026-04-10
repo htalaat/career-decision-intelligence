@@ -1,5 +1,6 @@
 import type { EngineProfile, EngineCareerPath, Penalty } from "./types";
 import { PENALTY_RISKY_DOMAINS, CONVENTIONAL_DOMAINS } from "../config/mappings";
+import { PENALTIES } from "../config/scoring";
 
 /**
  * Compute penalties for a career path based on constraint mismatches.
@@ -20,7 +21,7 @@ export function computePenalties(
     const overshoot = career.typical_duration_years - profile.constraints.max_study_years;
     penalties.push({
       type: "duration_mismatch",
-      severity: Math.min(20, overshoot * 8),
+      severity: Math.min(PENALTIES.duration.maxSeverity, overshoot * PENALTIES.duration.severityPerYear),
       reason: `Requires ${career.typical_duration_years} years of study, but you prefer max ${profile.constraints.max_study_years} years`,
     });
   }
@@ -29,11 +30,11 @@ export function computePenalties(
   if (
     profile.constraints.financial_level === "low" &&
     career.typical_duration_years != null &&
-    career.typical_duration_years > 4
+    career.typical_duration_years > PENALTIES.financial.durationThreshold
   ) {
     penalties.push({
       type: "financial_mismatch",
-      severity: 10,
+      severity: PENALTIES.financial.severity,
       reason: "Longer education path may be challenging with a tight budget",
     });
   }
@@ -42,7 +43,7 @@ export function computePenalties(
   if (profile.constraints.risk_tolerance === "low" && PENALTY_RISKY_DOMAINS.includes(career.domain)) {
     penalties.push({
       type: "risk_mismatch",
-      severity: 12,
+      severity: PENALTIES.risk.severity,
       reason: `${career.domain} careers tend to have higher uncertainty, and you prefer low risk`,
     });
   }
@@ -54,7 +55,7 @@ export function computePenalties(
   ) {
     penalties.push({
       type: "family_expectation",
-      severity: 8,
+      severity: PENALTIES.familyExpectation.severity,
       reason: "This path may not align with high family expectations for traditional careers",
     });
   }
