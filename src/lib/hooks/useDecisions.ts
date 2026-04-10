@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "../supabase/client";
 import { useAuthStore } from "../../stores/authStore";
 import { trackEvent, EVENTS } from "../utils/analytics";
+import { ACTION_PLAN_TEMPLATES } from "../config/content";
 
 /** Fetch all decision snapshots for the current user */
 export function useDecisions() {
@@ -158,57 +159,57 @@ export function generateActionPlanTemplate(
   const validationQs = explanation?.validationQuestions ?? [];
   const countryNotes = explanation?.countryConsiderations;
 
-  const sevenDayTasks = [
-    { id: "7d-1", text: `Research what a typical day looks like for a ${careerTitle}`, done: false },
-    { id: "7d-2", text: `Find 2-3 people working as a ${careerTitle} on LinkedIn and read their profiles`, done: false },
-    { id: "7d-3", text: "Write down your top 3 questions about this career path", done: false },
+  const sevenDayTasks: { id: string; text: string; done: boolean }[] = [
+    { id: "7d-1", text: ACTION_PLAN_TEMPLATES.sevenDay.researchDay(careerTitle), done: false },
+    { id: "7d-2", text: ACTION_PLAN_TEMPLATES.sevenDay.findProfessionals(careerTitle), done: false },
+    { id: "7d-3", text: ACTION_PLAN_TEMPLATES.sevenDay.writeQuestions, done: false },
   ];
 
   // Add validation question tasks
   validationQs.slice(0, 2).forEach((q, i) => {
-    sevenDayTasks.push({ id: `7d-vq-${i}`, text: `Investigate: ${q}`, done: false });
+    sevenDayTasks.push({ id: `7d-vq-${i}`, text: ACTION_PLAN_TEMPLATES.sevenDay.investigateQuestion(q), done: false });
   });
 
-  const thirtyDayTasks = [
-    { id: "30d-1", text: `Talk to at least one ${careerTitle} about their experience and daily reality`, done: false },
+  const thirtyDayTasks: { id: string; text: string; done: boolean }[] = [
+    { id: "30d-1", text: ACTION_PLAN_TEMPLATES.thirtyDay.talkToProfessional(careerTitle), done: false },
   ];
 
   // Add education research tasks
   if (faculty) {
-    thirtyDayTasks.push({ id: "30d-edu-1", text: `Research ${faculty} programs at universities you're considering`, done: false });
+    thirtyDayTasks.push({ id: "30d-edu-1", text: ACTION_PLAN_TEMPLATES.thirtyDay.researchFacultyPrograms(faculty), done: false });
   }
   if (degree) {
-    thirtyDayTasks.push({ id: "30d-edu-2", text: `Look into requirements for ${degree}`, done: false });
+    thirtyDayTasks.push({ id: "30d-edu-2", text: ACTION_PLAN_TEMPLATES.thirtyDay.lookIntoDegree(degree), done: false });
   }
   if (educationPath) {
-    thirtyDayTasks.push({ id: "30d-edu-3", text: `Research education path: ${educationPath}`, done: false });
+    thirtyDayTasks.push({ id: "30d-edu-3", text: ACTION_PLAN_TEMPLATES.thirtyDay.researchEducationPath(educationPath), done: false });
   }
 
   thirtyDayTasks.push(
-    { id: "30d-3", text: "Identify one skill you could start building now for this career", done: false },
-    { id: "30d-4", text: "Compare this path against your other shortlisted options", done: false },
+    { id: "30d-3", text: ACTION_PLAN_TEMPLATES.thirtyDay.identifySkill, done: false },
+    { id: "30d-4", text: ACTION_PLAN_TEMPLATES.thirtyDay.comparePaths, done: false },
   );
 
   // Add blocker investigation tasks
   blockers.slice(0, 2).forEach((b, i) => {
-    thirtyDayTasks.push({ id: `30d-block-${i}`, text: `Address potential blocker: ${b}`, done: false });
+    thirtyDayTasks.push({ id: `30d-block-${i}`, text: ACTION_PLAN_TEMPLATES.thirtyDay.addressBlocker(b), done: false });
   });
 
   // Add country-specific task
   if (countryNotes) {
-    thirtyDayTasks.push({ id: "30d-country", text: `Research country considerations: ${countryNotes}`, done: false });
+    thirtyDayTasks.push({ id: "30d-country", text: ACTION_PLAN_TEMPLATES.thirtyDay.researchCountry(countryNotes), done: false });
   }
 
-  const ninetyDayTasks = [
-    { id: "90d-1", text: "Complete an introductory course, project, or certification in this field", done: false },
-    { id: "90d-2", text: "Attend a relevant meetup, webinar, or industry event", done: false },
-    { id: "90d-3", text: "Shadow or volunteer in a related role if possible", done: false },
-    { id: "90d-4", text: "Update your decision status — has your confidence changed?", done: false },
-    { id: "90d-5", text: "Share your plan with a mentor, advisor, or trusted person for feedback", done: false },
+  const ninetyDayTasks: { id: string; text: string; done: boolean }[] = [
+    { id: "90d-1", text: ACTION_PLAN_TEMPLATES.ninetyDay.completeCourse, done: false },
+    { id: "90d-2", text: ACTION_PLAN_TEMPLATES.ninetyDay.attendEvent, done: false },
+    { id: "90d-3", text: ACTION_PLAN_TEMPLATES.ninetyDay.shadowVolunteer, done: false },
+    { id: "90d-4", text: ACTION_PLAN_TEMPLATES.ninetyDay.updateDecision, done: false },
+    { id: "90d-5", text: ACTION_PLAN_TEMPLATES.ninetyDay.sharePlan, done: false },
   ];
 
   if (faculty) {
-    ninetyDayTasks.push({ id: "90d-apply", text: `Prepare application materials for ${faculty} programs if applicable`, done: false });
+    ninetyDayTasks.push({ id: "90d-apply", text: ACTION_PLAN_TEMPLATES.ninetyDay.prepareApplication(faculty), done: false });
   }
 
   return {

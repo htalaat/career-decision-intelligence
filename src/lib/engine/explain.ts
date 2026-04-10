@@ -1,6 +1,7 @@
 import type { EngineProfile, EngineCareerPath, ScoreBreakdown, Penalty, Explanation } from "./types";
 import { DIRECTION_CLUSTERS } from "../utils/constants";
 import { SUBJECT_TO_DOMAINS, DOMAIN_TO_CLUSTERS } from "../config/mappings";
+import { EXPLANATION_TEMPLATES, FACULTY_LABEL_MAP } from "../config/content";
 
 /**
  * Generate a human-readable explanation for why a career path scored the way it did.
@@ -32,25 +33,25 @@ export function generateExplanation(
 
   // --- Positives ---
   if (matchingInterests.length > 0) {
-    topPositives.push(`Matches your interests: ${matchingInterests.map(formatTraitLabel).join(", ")}`);
+    topPositives.push(EXPLANATION_TEMPLATES.matchesInterests(matchingInterests.map(formatTraitLabel).join(", ")));
   }
   if (matchingStrengths.length > 0) {
-    topPositives.push(`Leverages your strengths: ${matchingStrengths.map(formatTraitLabel).join(", ")}`);
+    topPositives.push(EXPLANATION_TEMPLATES.leveragesStrengths(matchingStrengths.map(formatTraitLabel).join(", ")));
   }
   if (matchingValues.length > 0) {
-    topPositives.push(`Aligns with your values: ${matchingValues.map(formatTraitLabel).join(", ")}`);
+    topPositives.push(EXPLANATION_TEMPLATES.alignsValues(matchingValues.map(formatTraitLabel).join(", ")));
   }
   if (breakdown.goalsFit >= 70) {
-    topPositives.push("Strong alignment with your priority goals");
+    topPositives.push(EXPLANATION_TEMPLATES.strongGoalAlignment);
   }
   if (breakdown.feasibilityFit >= 80) {
-    topPositives.push("Practical constraints look favorable");
+    topPositives.push(EXPLANATION_TEMPLATES.constraintsFavorable);
   }
   if (breakdown.educationFit >= 80) {
-    topPositives.push("Your academic direction aligns well with this path");
+    topPositives.push(EXPLANATION_TEMPLATES.academicAligns);
   }
   if (breakdown.countryFit >= 80) {
-    topPositives.push("Good fit for your location and mobility preferences");
+    topPositives.push(EXPLANATION_TEMPLATES.locationFit);
   }
 
   // --- Cluster reaction signals ---
@@ -62,9 +63,9 @@ export function generateExplanation(
       const clusterDef = DIRECTION_CLUSTERS.find((c) => c.key === clusterKey);
       const clusterLabel = clusterDef?.label ?? clusterKey;
       if (reaction === "feels_like_me") {
-        topPositives.push(`You said '${clusterLabel}' feels like you — this career is at the heart of that direction`);
+        topPositives.push(EXPLANATION_TEMPLATES.clusterFeelsLikeMe(clusterLabel));
       } else if (reaction === "not_for_me") {
-        topNegatives.push(`You said '${clusterLabel}' wasn't for you, but your profile suggests some fit — worth a second look?`);
+        topNegatives.push(EXPLANATION_TEMPLATES.clusterNotForMe(clusterLabel));
       }
     }
   }
@@ -85,14 +86,14 @@ export function generateExplanation(
     });
 
     if (enjoyedMatch.length > 0) {
-      topPositives.push(`You enjoy ${formatSubjectList(enjoyedMatch)} — directly relevant to this path`);
+      topPositives.push(EXPLANATION_TEMPLATES.enjoyedSubjects(formatSubjectList(enjoyedMatch)));
     }
     if (goodAtMatch.length > 0) {
-      topPositives.push(`You're strong in ${formatSubjectList(goodAtMatch)} — a good foundation`);
+      topPositives.push(EXPLANATION_TEMPLATES.strongInSubjects(formatSubjectList(goodAtMatch)));
     }
     if (dislikedMatch.length > 0) {
-      topNegatives.push(`You said ${formatSubjectList(dislikedMatch)} isn't for you — but this path involves it`);
-      whatMayBlock.push(`This career area connects to subjects you don't enjoy (${formatSubjectList(dislikedMatch)})`);
+      topNegatives.push(EXPLANATION_TEMPLATES.dislikedSubjectWarning(formatSubjectList(dislikedMatch)));
+      whatMayBlock.push(EXPLANATION_TEMPLATES.dislikedSubjectBlocker(formatSubjectList(dislikedMatch)));
     }
   }
 
@@ -101,24 +102,24 @@ export function generateExplanation(
     topNegatives.push(penalty.reason);
   }
   if (matchingInterests.length === 0) {
-    topNegatives.push("Limited overlap with your stated interests");
+    topNegatives.push(EXPLANATION_TEMPLATES.limitedInterestOverlap);
   }
   if (breakdown.goalsFit < 40) {
-    topNegatives.push("Weaker alignment with your stated priorities");
+    topNegatives.push(EXPLANATION_TEMPLATES.weakGoalAlignment);
   }
   if (breakdown.educationFit < 50 && profile.intended_field && profile.intended_field !== "undecided") {
-    topNegatives.push(`Your intended field (${formatTraitLabel(profile.intended_field)}) differs from typical study paths for this career`);
+    topNegatives.push(EXPLANATION_TEMPLATES.intendedFieldMismatch(formatTraitLabel(profile.intended_field)));
   }
 
   // --- What may block this path ---
   if (profile.constraints.financial_level === "low" && career.typical_duration_years && career.typical_duration_years > 4) {
-    whatMayBlock.push("Extended study duration may be financially challenging");
+    whatMayBlock.push(EXPLANATION_TEMPLATES.financiallyChallengingDuration);
   }
   if (profile.constraints.max_study_years && career.typical_duration_years && career.typical_duration_years > profile.constraints.max_study_years) {
-    whatMayBlock.push(`This path typically requires ${career.typical_duration_years} years of study, exceeding your preference of ${profile.constraints.max_study_years} years`);
+    whatMayBlock.push(EXPLANATION_TEMPLATES.exceedsMaxStudyYears(career.typical_duration_years, profile.constraints.max_study_years));
   }
   if (profile.relocation_willingness === "no" && career.studyDirections.some((sd) => sd.country_notes?.includes("international"))) {
-    whatMayBlock.push("Some study options for this career may require relocating");
+    whatMayBlock.push(EXPLANATION_TEMPLATES.relocationRequired);
   }
   for (const penalty of penalties) {
     if (penalty.severity >= 10) {
@@ -129,9 +130,9 @@ export function generateExplanation(
   // --- Study direction ---
   const primaryDirection = career.studyDirections.find((sd) => sd.relevance_level === "primary");
   const studyDirection = primaryDirection
-    ? `To pursue ${career.title}, the primary study path is ${primaryDirection.field_of_study} (${primaryDirection.degree_type})`
+    ? EXPLANATION_TEMPLATES.primaryStudyPath(career.title, primaryDirection.field_of_study, primaryDirection.degree_type)
     : career.education_path
-      ? `Typical education: ${career.education_path}`
+      ? EXPLANATION_TEMPLATES.typicalEducation(career.education_path)
       : null;
 
   const suggestedFaculty = primaryDirection?.faculty_cluster
@@ -145,7 +146,7 @@ export function generateExplanation(
   const whatToStudy = primaryDirection
     ? buildWhatToStudy(career, primaryDirection)
     : career.education_path
-      ? `Suggested education: ${career.education_path}`
+      ? EXPLANATION_TEMPLATES.suggestedEducation(career.education_path)
       : null;
 
   // --- Country considerations ---
@@ -155,30 +156,30 @@ export function generateExplanation(
     : null;
 
   // --- Missing info ---
-  if (profile.interests.length < 3) missingInfo.push("More interest selections would improve accuracy");
-  if (profile.strengths.length < 3) missingInfo.push("More strength selections would improve accuracy");
-  if (!profile.constraints.financial_level) missingInfo.push("Financial constraints not specified");
-  if (!profile.country) missingInfo.push("Country not specified — location-aware guidance unavailable");
+  if (profile.interests.length < 3) missingInfo.push(EXPLANATION_TEMPLATES.moreInterestsNeeded);
+  if (profile.strengths.length < 3) missingInfo.push(EXPLANATION_TEMPLATES.moreStrengthsNeeded);
+  if (!profile.constraints.financial_level) missingInfo.push(EXPLANATION_TEMPLATES.financialNotSpecified);
+  if (!profile.country) missingInfo.push(EXPLANATION_TEMPLATES.countryNotSpecified);
   if (!profile.intended_field || profile.intended_field === "undecided") {
-    missingInfo.push("No intended field of study selected — education fit is approximate");
+    missingInfo.push(EXPLANATION_TEMPLATES.noIntendedField);
   }
 
   // --- Validation questions ---
-  validationQuestions.push(`Have you talked to someone who works as a ${career.title}?`);
-  validationQuestions.push(`Do you know what a typical day looks like in ${career.domain}?`);
+  validationQuestions.push(EXPLANATION_TEMPLATES.validationTalkTo(career.title));
+  validationQuestions.push(EXPLANATION_TEMPLATES.validationTypicalDay(career.domain));
   if (primaryDirection?.prerequisites) {
-    validationQuestions.push(`Do you meet the prerequisites: ${primaryDirection.prerequisites}?`);
+    validationQuestions.push(EXPLANATION_TEMPLATES.validationPrerequisites(primaryDirection.prerequisites));
   }
   if (career.education_path) {
-    validationQuestions.push(`Are you prepared for the education path: ${career.education_path}?`);
+    validationQuestions.push(EXPLANATION_TEMPLATES.validationEducationPath(career.education_path));
   }
   if (profile.country) {
-    validationQuestions.push(`Have you researched ${career.title} opportunities in your country/region?`);
+    validationQuestions.push(EXPLANATION_TEMPLATES.validationCountryResearch(career.title));
   }
 
   // Ensure at least one positive
   if (topPositives.length === 0) {
-    topPositives.push(`${career.domain} is a recognized career domain with established paths`);
+    topPositives.push(EXPLANATION_TEMPLATES.defaultPositive(career.domain));
   }
 
   return {
@@ -206,22 +207,7 @@ function formatSubjectList(subjects: string[]): string {
 }
 
 function formatFacultyLabel(cluster: string): string {
-  const map: Record<string, string> = {
-    engineering_technology: "Engineering & Technology",
-    computer_science_it: "Computer Science & IT",
-    business_management: "Business & Management",
-    finance_economics: "Finance & Economics",
-    medicine_health: "Medicine & Health Sciences",
-    law_political_science: "Law & Political Science",
-    natural_sciences: "Natural Sciences",
-    social_sciences: "Social Sciences",
-    arts_design: "Arts, Design & Architecture",
-    media_communications: "Media & Communications",
-    education: "Education",
-    humanities_languages: "Humanities & Languages",
-    environmental_agriculture: "Environmental Science",
-  };
-  return map[cluster] ?? cluster.replace(/_/g, " ");
+  return FACULTY_LABEL_MAP[cluster] ?? cluster.replace(/_/g, " ");
 }
 
 function capitalize(s: string): string {
@@ -233,14 +219,14 @@ function buildWhatToStudy(
   direction: EngineCareerPath["studyDirections"][0],
 ): string {
   const parts: string[] = [];
-  parts.push(`Study direction: ${direction.field_of_study}`);
-  parts.push(`Faculty: ${formatFacultyLabel(direction.faculty_cluster)}`);
-  parts.push(`Degree: ${capitalize(direction.degree_type)}`);
+  parts.push(EXPLANATION_TEMPLATES.studyDirectionLine(direction.field_of_study));
+  parts.push(EXPLANATION_TEMPLATES.facultyLine(formatFacultyLabel(direction.faculty_cluster)));
+  parts.push(EXPLANATION_TEMPLATES.degreeLine(capitalize(direction.degree_type)));
   if (direction.typical_duration_years) {
-    parts.push(`Duration: ~${direction.typical_duration_years} years`);
+    parts.push(EXPLANATION_TEMPLATES.durationLine(direction.typical_duration_years));
   }
   if (direction.prerequisites) {
-    parts.push(`Prerequisites: ${direction.prerequisites}`);
+    parts.push(EXPLANATION_TEMPLATES.prerequisitesLine(direction.prerequisites));
   }
   return parts.join(". ");
 }
@@ -257,10 +243,10 @@ function buildCountryConsiderations(
   }
 
   if (profile.relocation_willingness === "international" || profile.relocation_willingness === "flexible") {
-    parts.push("Your openness to international study/work expands your options for this path");
+    parts.push(EXPLANATION_TEMPLATES.internationalOpenness);
   } else if (profile.relocation_willingness === "no") {
-    parts.push("You prefer to stay local — verify that this career has strong local demand in your area");
+    parts.push(EXPLANATION_TEMPLATES.preferLocalDemand);
   }
 
-  return parts.length > 0 ? parts.join(". ") : "No country-specific considerations available";
+  return parts.length > 0 ? parts.join(". ") : EXPLANATION_TEMPLATES.noCountryConsiderations;
 }
