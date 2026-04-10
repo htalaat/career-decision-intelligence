@@ -1,36 +1,6 @@
 import type { EngineProfile, EngineCareerPath, ScoreBreakdown, Penalty, Explanation } from "./types";
 import { DIRECTION_CLUSTERS } from "../utils/constants";
-
-const SUBJECT_TO_DOMAINS: Record<string, string[]> = {
-  physics: ["Engineering", "Technology"],
-  chemistry: ["Healthcare", "Engineering"],
-  biology: ["Healthcare"],
-  environmental_science: ["Engineering"],
-  computer_science: ["Technology"],
-  math: ["Technology", "Finance", "Engineering"],
-  further_math: ["Technology", "Finance", "Engineering"],
-  statistics: ["Finance", "Technology"],
-  english: ["Media/Comms", "Education", "Law/Policy"],
-  arabic: ["Media/Comms", "Education"],
-  french: ["Media/Comms", "Education"],
-  spanish: ["Media/Comms", "Education"],
-  german: ["Media/Comms", "Education"],
-  other_language: ["Media/Comms", "Education"],
-  history: ["Law/Policy", "Education"],
-  geography: ["Engineering", "Education"],
-  economics: ["Finance", "Business"],
-  psychology: ["Healthcare", "Education"],
-  sociology: ["Education", "Law/Policy"],
-  political_science: ["Law/Policy"],
-  philosophy: ["Law/Policy", "Education"],
-  business_studies: ["Business", "Entrepreneurship"],
-  accounting: ["Finance"],
-  art: ["Design"],
-  music: ["Media/Comms"],
-  drama: ["Media/Comms"],
-  design_tech: ["Design", "Engineering"],
-  media_studies: ["Media/Comms", "Design"],
-};
+import { SUBJECT_TO_DOMAINS, DOMAIN_TO_CLUSTERS } from "../config/mappings";
 
 /**
  * Generate a human-readable explanation for why a career path scored the way it did.
@@ -85,19 +55,7 @@ export function generateExplanation(
 
   // --- Cluster reaction signals ---
   if (profile.clusterReactions) {
-    const domainToCluster: Record<string, string[]> = {
-      "Technology": ["tech_solving", "science_research"],
-      "Business": ["business_money", "startup_create"],
-      "Finance": ["business_money"],
-      "Design": ["design_create"],
-      "Healthcare": ["health_care", "science_research"],
-      "Law/Policy": ["law_justice"],
-      "Media/Comms": ["media_stories"],
-      "Engineering": ["engineering_build", "science_research"],
-      "Education": ["science_research"],
-      "Entrepreneurship": ["startup_create", "business_money"],
-    };
-    const relevantClusters = domainToCluster[career.domain] ?? [];
+    const relevantClusters = DOMAIN_TO_CLUSTERS[career.domain] ?? [];
     for (const clusterKey of relevantClusters) {
       const reaction = profile.clusterReactions[clusterKey];
       if (!reaction) continue;

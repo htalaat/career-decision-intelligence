@@ -1,35 +1,17 @@
 import type { EngineProfile, EngineCareerPath, ScoreBreakdown } from "./types";
-
-const SUBJECT_TO_DOMAINS: Record<string, string[]> = {
-  physics: ["Engineering", "Technology"],
-  chemistry: ["Healthcare", "Engineering"],
-  biology: ["Healthcare"],
-  environmental_science: ["Engineering"],
-  computer_science: ["Technology"],
-  math: ["Technology", "Finance", "Engineering"],
-  further_math: ["Technology", "Finance", "Engineering"],
-  statistics: ["Finance", "Technology"],
-  english: ["Media/Comms", "Education", "Law/Policy"],
-  arabic: ["Media/Comms", "Education"],
-  french: ["Media/Comms", "Education"],
-  spanish: ["Media/Comms", "Education"],
-  german: ["Media/Comms", "Education"],
-  other_language: ["Media/Comms", "Education"],
-  history: ["Law/Policy", "Education"],
-  geography: ["Engineering", "Education"],
-  economics: ["Finance", "Business"],
-  psychology: ["Healthcare", "Education"],
-  sociology: ["Education", "Law/Policy"],
-  political_science: ["Law/Policy"],
-  philosophy: ["Law/Policy", "Education"],
-  business_studies: ["Business", "Entrepreneurship"],
-  accounting: ["Finance"],
-  art: ["Design"],
-  music: ["Media/Comms"],
-  drama: ["Media/Comms"],
-  design_tech: ["Design", "Engineering"],
-  media_studies: ["Media/Comms", "Design"],
-};
+import {
+  SUBJECT_TO_DOMAINS,
+  DOMAIN_TO_CLUSTERS,
+  GLOBAL_DOMAINS,
+  STABLE_DOMAINS,
+  STABLE_TAGS,
+  FLEX_TAGS,
+  PRESTIGE_DOMAINS,
+  CREATIVE_TAGS,
+  IMPACT_TAGS,
+  RISKY_DOMAINS,
+  SAFE_DOMAINS,
+} from "../config/mappings";
 
 /**
  * Compute fit scores between a student profile and a career path.
@@ -202,8 +184,7 @@ function computeCountryFit(profile: EngineProfile, career: EngineCareerPath): nu
   // Relocation affects feasibility
   if (profile.relocation_willingness === "no") {
     // Some careers are harder to pursue locally in certain regions
-    const globalDomains = ["Technology", "Entrepreneurship"];
-    if (globalDomains.includes(career.domain)) score += 10;
+    if (GLOBAL_DOMAINS.includes(career.domain)) score += 10;
   } else if (profile.relocation_willingness === "international" || profile.relocation_willingness === "flexible") {
     score += 15; // more options available
   }
@@ -220,21 +201,7 @@ function computeCountryFit(profile: EngineProfile, career: EngineCareerPath): nu
 function computeClusterReactionFit(profile: EngineProfile, career: EngineCareerPath): number {
   if (!profile.clusterReactions) return 60; // no reactions = neutral
 
-  // Map career domains to relevant direction clusters
-  const domainToCluster: Record<string, string[]> = {
-    "Technology": ["tech_solving", "science_research"],
-    "Business": ["business_money", "startup_create"],
-    "Finance": ["business_money"],
-    "Design": ["design_create"],
-    "Healthcare": ["health_care", "science_research"],
-    "Law/Policy": ["law_justice"],
-    "Media/Comms": ["media_stories"],
-    "Engineering": ["engineering_build", "science_research"],
-    "Education": ["science_research"],
-    "Entrepreneurship": ["startup_create", "business_money"],
-  };
-
-  const relevantClusters = domainToCluster[career.domain] ?? [];
+  const relevantClusters = DOMAIN_TO_CLUSTERS[career.domain] ?? [];
   let bestScore = 60;
 
   for (const clusterKey of relevantClusters) {
@@ -271,17 +238,14 @@ function mapIncomePotential(potential: string | null): number {
 }
 
 function mapStability(domain: string, tags: string[]): number {
-  const stableDomains = ["Healthcare", "Finance", "Engineering", "Law/Policy"];
-  const stableTags = ["stability", "organizational"];
   let score = 50;
-  if (stableDomains.includes(domain)) score += 25;
-  if (tags.some((t) => stableTags.includes(t))) score += 10;
+  if (STABLE_DOMAINS.includes(domain)) score += 25;
+  if (tags.some((t) => STABLE_TAGS.includes(t))) score += 10;
   return Math.min(100, score);
 }
 
 function mapFlexibility(tags: string[]): number {
-  const flexTags = ["remote", "flexible_hours", "autonomy", "entrepreneurial"];
-  const matches = tags.filter((t) => flexTags.includes(t)).length;
+  const matches = tags.filter((t) => FLEX_TAGS.includes(t)).length;
   return 40 + matches * 15;
 }
 
@@ -289,21 +253,18 @@ function mapPrestige(income: string | null, domain: string): number {
   let score = 50;
   if (income === "very_high") score += 20;
   if (income === "high") score += 10;
-  const prestigeDomains = ["Law/Policy", "Finance", "Healthcare", "Technology"];
-  if (prestigeDomains.includes(domain)) score += 15;
+  if (PRESTIGE_DOMAINS.includes(domain)) score += 15;
   return Math.min(100, score);
 }
 
 function mapCreativity(tags: string[], mappings: EngineCareerPath["traitMappings"]): number {
-  const creativeTags = ["creative", "artistic", "innovative"];
-  const tagScore = tags.filter((t) => creativeTags.includes(t)).length * 20;
+  const tagScore = tags.filter((t) => CREATIVE_TAGS.includes(t)).length * 20;
   const mappingScore = mappings.find((m) => m.trait_key === "creative")?.weight ?? 0;
   return Math.min(100, 30 + tagScore + mappingScore * 40);
 }
 
 function mapImpact(tags: string[], mappings: EngineCareerPath["traitMappings"]): number {
-  const impactTags = ["advocacy", "helping_others", "teaching", "social"];
-  const tagScore = tags.filter((t) => impactTags.includes(t)).length * 20;
+  const tagScore = tags.filter((t) => IMPACT_TAGS.includes(t)).length * 20;
   const mappingScore = mappings.find((m) => m.trait_key === "helping_others")?.weight ?? 0;
   return Math.min(100, 30 + tagScore + mappingScore * 40);
 }
@@ -316,10 +277,8 @@ function mapDurationFit(careerYears: number | null, maxYears: number | null): nu
 }
 
 function mapRiskFit(domain: string, riskTolerance: string | null): number {
-  const riskyDomains = ["Entrepreneurship", "Media/Comms", "Design"];
-  const safeDomains = ["Healthcare", "Finance", "Engineering", "Law/Policy"];
-  const isRisky = riskyDomains.includes(domain);
-  const isSafe = safeDomains.includes(domain);
+  const isRisky = RISKY_DOMAINS.includes(domain);
+  const isSafe = SAFE_DOMAINS.includes(domain);
 
   switch (riskTolerance) {
     case "high": return isRisky ? 85 : isSafe ? 60 : 70;

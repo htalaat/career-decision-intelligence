@@ -1,4 +1,5 @@
 import type { EngineProfile, EngineCareerPath, Penalty } from "./types";
+import { PENALTY_RISKY_DOMAINS, CONVENTIONAL_DOMAINS } from "../config/mappings";
 
 /**
  * Compute penalties for a career path based on constraint mismatches.
@@ -38,8 +39,7 @@ export function computePenalties(
   }
 
   // Risk tolerance penalty
-  const riskyDomains = ["Entrepreneurship", "Media/Comms"];
-  if (profile.constraints.risk_tolerance === "low" && riskyDomains.includes(career.domain)) {
+  if (profile.constraints.risk_tolerance === "low" && PENALTY_RISKY_DOMAINS.includes(career.domain)) {
     penalties.push({
       type: "risk_mismatch",
       severity: 12,
@@ -48,10 +48,9 @@ export function computePenalties(
   }
 
   // Family expectation — penalize unconventional paths when family pressure is high
-  const conventionalDomains = ["Healthcare", "Engineering", "Finance", "Law/Policy", "Business"];
   if (
     profile.constraints.family_expectation === "high" &&
-    !conventionalDomains.includes(career.domain)
+    !CONVENTIONAL_DOMAINS.includes(career.domain)
   ) {
     penalties.push({
       type: "family_expectation",
