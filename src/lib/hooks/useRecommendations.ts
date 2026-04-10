@@ -129,7 +129,9 @@ export async function buildEngineProfile(userId: string): Promise<EngineProfile>
   const { data: answers } = await supabase
     .from("profile_answers")
     .select("question_key, answer_value")
-    .eq("profile_id", sp.id);
+    .eq("profile_id", sp.id)
+    .order("version", { ascending: false })
+    .order("created_at", { ascending: false });
 
   // Get weights (may not exist yet — handle gracefully)
   const { data: weights } = await supabase

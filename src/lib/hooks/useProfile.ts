@@ -84,6 +84,13 @@ export function useSaveOnboarding() {
       ];
       for (const key of answerKeys) {
         if (answers[key]) {
+          // Delete any existing answer for this key (same version) before inserting fresh
+          await supabase.from("profile_answers")
+            .delete()
+            .eq("profile_id", profileId)
+            .eq("question_key", key)
+            .eq("version", 1);
+
           const { error: answerError } = await supabase.from("profile_answers").insert({
             profile_id: profileId,
             question_key: key,
